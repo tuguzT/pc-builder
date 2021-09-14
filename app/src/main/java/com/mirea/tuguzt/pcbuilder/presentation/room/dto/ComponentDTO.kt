@@ -7,6 +7,11 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.domain.model.Grams
 import com.mirea.tuguzt.pcbuilder.domain.model.Size
 
+/**
+ * Data Transfer Object for `Component` class.
+ *
+ * @see Component
+ */
 @Entity(tableName = "component")
 data class ComponentDTO(
     @PrimaryKey(autoGenerate = true) val id: Int,
