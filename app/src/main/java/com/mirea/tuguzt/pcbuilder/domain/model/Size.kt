@@ -1,5 +1,7 @@
 package com.mirea.tuguzt.pcbuilder.domain.model
 
+import com.mirea.tuguzt.pcbuilder.domain.Millimeters
+
 /**
  * Data class that represents physical size of the PC component.
  */

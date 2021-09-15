@@ -8,7 +8,7 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.room.dto.ComponentDTO
 
 /**
- * Data Access Object for `Component` class.
+ * Data Access Object for [Component].
  *
  * @see Component
  */
