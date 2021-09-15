@@ -15,6 +15,27 @@ typealias Millimeters = UInt
 typealias Grams = UInt
 
 /**
+ * Representation of pixels.
+ */
+typealias Pixels = UInt
+
+/**
+ * Representation of hertz (Hz).
+ */
+typealias Hertz = UInt
+
+/**
+ * Representation of milliseconds.
+ */
+typealias Milliseconds = Float
+
+/**
+ * Representation of non-SI unit of **luminance**
+ * (SI unit is called *candela per square metre* and is equal to nit).
+ */
+typealias Nit = UInt
+
+/**
  * Shorthand for central processing unit.
  *
  * @see CentralProcessingUnit
