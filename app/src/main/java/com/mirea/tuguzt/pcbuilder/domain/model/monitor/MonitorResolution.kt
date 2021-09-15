@@ -8,4 +8,6 @@ import com.mirea.tuguzt.pcbuilder.domain.Pixels
  * @see Monitor
  * @see Pixels
  */
-data class MonitorResolution(val width: Pixels, val height: Pixels)
+data class MonitorResolution(val width: Pixels, val height: Pixels) {
+    override fun toString() = "$width × $height"
+}
