@@ -2,6 +2,8 @@ package com.mirea.tuguzt.pcbuilder.domain.model.monitor
 
 /**
  * Enum represents interface used by the monitor.
+ *
+ * @see Monitor
  */
 enum class MonitorInterface {
     /** High Definition Multimedia Interface */

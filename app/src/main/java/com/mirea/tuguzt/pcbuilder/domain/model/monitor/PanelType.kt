@@ -2,6 +2,8 @@ package com.mirea.tuguzt.pcbuilder.domain.model.monitor
 
 /**
  * Enum represents all panel types of the monitor.
+ *
+ * @see Monitor
  */
 enum class PanelType {
     /** Twisted Nematic */

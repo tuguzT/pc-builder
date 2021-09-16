@@ -2,6 +2,8 @@ package com.mirea.tuguzt.pcbuilder.domain.model.monitor
 
 /**
  * Enum represents frame synchronization technology supported by the monitor.
+ *
+ * @see Monitor
  */
 enum class FrameSyncType {
     /**
