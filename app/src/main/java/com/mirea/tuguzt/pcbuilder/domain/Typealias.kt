@@ -51,6 +51,11 @@ typealias Volt = Float
 typealias Gigabytes = UInt
 
 /**
+ * Representation of memory capacity in megabytes (MB).
+ */
+typealias Megabytes = UInt
+
+/**
  * Shorthand for central processing unit.
  *
  * @see CentralProcessingUnit
