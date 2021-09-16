@@ -20,6 +20,6 @@ interface Monitor : Component {
     val screenType: ScreenType
     val contrastRatio: ContrastRatio
     val monitorInterface: MonitorInterface
-    val pulseWidthModulation: Hertz
+    val pwmType: MonitorPWMType
     val frameSyncType: FrameSyncType?
 }
