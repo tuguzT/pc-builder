@@ -1,6 +1,6 @@
 package com.mirea.tuguzt.pcbuilder.domain
 
-import com.mirea.tuguzt.pcbuilder.domain.model.CentralProcessingUnit
+import com.mirea.tuguzt.pcbuilder.domain.model.cpu.CentralProcessingUnit
 import com.mirea.tuguzt.pcbuilder.domain.model.GraphicsProcessingUnit
 import com.mirea.tuguzt.pcbuilder.domain.model.PowerSupplyUnit
 
@@ -8,6 +8,11 @@ import com.mirea.tuguzt.pcbuilder.domain.model.PowerSupplyUnit
  * Representation of millimeters.
  */
 typealias Millimeters = UInt
+
+/**
+ * Representation of nanometers.
+ */
+typealias Nanometers = UInt
 
 /**
  * Representation of grams.
@@ -30,6 +35,16 @@ typealias Hertz = UInt
 typealias MegaHertz = UInt
 
 /**
+ * Representation of gigahertz (GHz).
+ */
+typealias GigaHertz = Float
+
+/**
+ * Representation of a unit of power in watts.
+ */
+typealias Watt = UInt
+
+/**
  * Representation of milliseconds.
  */
 typealias Milliseconds = Float
@@ -46,14 +61,14 @@ typealias Nit = UInt
 typealias Volt = Float
 
 /**
- * Representation of memory capacity in gigabytes (GB).
- */
-typealias Gigabytes = UInt
-
-/**
  * Representation of memory capacity in megabytes (MB).
  */
 typealias Megabytes = UInt
+
+/**
+ * Representation of memory capacity in gigabytes (GB).
+ */
+typealias Gigabytes = UInt
 
 /**
  * Shorthand for central processing unit.
