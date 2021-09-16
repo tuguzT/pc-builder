@@ -25,6 +25,11 @@ typealias Pixels = UInt
 typealias Hertz = UInt
 
 /**
+ * Representation of megahertz (MHz).
+ */
+typealias MegaHertz = UInt
+
+/**
  * Representation of milliseconds.
  */
 typealias Milliseconds = Float
@@ -34,6 +39,16 @@ typealias Milliseconds = Float
  * (SI unit is called *candela per square metre* and is equal to nit).
  */
 typealias Nit = UInt
+
+/**
+ * Representation of voltage in volts.
+ */
+typealias Volt = Float
+
+/**
+ * Representation of memory capacity in gigabytes (GB).
+ */
+typealias Gigabytes = UInt
 
 /**
  * Shorthand for central processing unit.
