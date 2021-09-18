@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.mirea.tuguzt.pcbuilder.presentation.repository.converters
 
 import androidx.room.TypeConverter
