@@ -1,11 +1,11 @@
 package com.mirea.tuguzt.pcbuilder.domain.model.memory
 
-import com.mirea.tuguzt.pcbuilder.domain.Gigabytes
+import io.nacular.measured.units.BinarySize
+import io.nacular.measured.units.Measure
 
 /**
  * Data class represents module type of memory.
  *
  * @see Memory
- * @see Gigabytes
  */
-data class MemoryModules(val count: UInt, val capacity: Gigabytes)
+data class MemoryModules(val count: UInt, val capacity: Measure<BinarySize>)

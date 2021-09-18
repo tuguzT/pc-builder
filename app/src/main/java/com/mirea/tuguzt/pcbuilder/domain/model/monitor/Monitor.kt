@@ -1,22 +1,23 @@
 package com.mirea.tuguzt.pcbuilder.domain.model.monitor
 
-import com.mirea.tuguzt.pcbuilder.domain.Hertz
-import com.mirea.tuguzt.pcbuilder.domain.Millimeters
-import com.mirea.tuguzt.pcbuilder.domain.Milliseconds
-import com.mirea.tuguzt.pcbuilder.domain.Nit
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
+import com.mirea.tuguzt.pcbuilder.domain.model.units.Frequency
+import com.mirea.tuguzt.pcbuilder.domain.model.units.Luminance
+import io.nacular.measured.units.Distance
+import io.nacular.measured.units.Measure
+import io.nacular.measured.units.Time
 
 /**
  * Interface for all monitors of PC.
  */
 interface Monitor : Component {
-    val screenSize: Millimeters
+    val screenSize: Measure<Distance>
     val resolution: MonitorResolution
-    val refreshRate: Hertz
-    val responseTime: Milliseconds
+    val refreshRate: Measure<Frequency>
+    val responseTime: Measure<Time>
     val aspectRatio: AspectRatio
     val panelType: PanelType
-    val luminance: Nit
+    val luminance: Measure<Luminance>
     val screenType: ScreenType
     val contrastRatio: ContrastRatio
     val monitorInterface: MonitorInterface

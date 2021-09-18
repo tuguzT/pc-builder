@@ -1,6 +1,7 @@
 package com.mirea.tuguzt.pcbuilder.domain.model
 
-import com.mirea.tuguzt.pcbuilder.domain.Grams
+import io.nacular.measured.units.Mass
+import io.nacular.measured.units.Measure
 
 /**
  * Base interface for all PC components.
@@ -8,6 +9,6 @@ import com.mirea.tuguzt.pcbuilder.domain.Grams
 interface Component {
     val name: String
     val description: String
-    val weight: Grams
+    val weight: Measure<Mass>
     val size: Size
 }
