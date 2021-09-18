@@ -5,4 +5,6 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
 /**
  * Interface for all coolers of PC.
  */
-interface Cooler : Component
+interface Cooler : Component {
+    // todo
+}

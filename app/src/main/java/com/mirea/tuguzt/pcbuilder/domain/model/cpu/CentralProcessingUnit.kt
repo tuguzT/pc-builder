@@ -8,6 +8,8 @@ import io.nacular.measured.units.Measure
 
 /**
  * Interface for all central processing units (CPU) of PC.
+ *
+ * @see CPU
  */
 interface CentralProcessingUnit : Component {
     val coreCount: UInt

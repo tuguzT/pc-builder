@@ -4,8 +4,12 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
 
 /**
  * Interface for all graphics processing units (GPU) of PC.
+ *
+ * @see GPU
  */
-interface GraphicsProcessingUnit : Component
+interface GraphicsProcessingUnit : Component {
+    // todo
+}
 
 /**
  * Shorthand for graphics processing unit.

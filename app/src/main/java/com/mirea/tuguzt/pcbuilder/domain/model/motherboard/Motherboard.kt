@@ -5,4 +5,6 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
 /**
  * Interface for all motherboards of PC.
  */
-interface Motherboard : Component
+interface Motherboard : Component {
+    // todo
+}

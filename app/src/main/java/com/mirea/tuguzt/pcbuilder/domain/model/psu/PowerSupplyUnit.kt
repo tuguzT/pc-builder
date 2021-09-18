@@ -4,8 +4,12 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
 
 /**
  * Interface for all power supply units (PSU) of PC.
+ *
+ * @see PSU
  */
-interface PowerSupplyUnit : Component
+interface PowerSupplyUnit : Component {
+    // todo
+}
 
 /**
  * Shorthand for power supply unit.
