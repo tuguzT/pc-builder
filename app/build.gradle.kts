@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -40,7 +41,10 @@ dependencies {
 
     // Room
     implementation("androidx.room:room-runtime:2.3.0")
-    annotationProcessor("androidx.room:room-compiler:2.3.0")
+    implementation("androidx.room:room-ktx:2.3.0")
+
+    // Room annotations with Kotlin annotation processing tool
+    kapt("androidx.room:room-compiler:2.3.0")
 
     // Third-Party
     implementation("io.nacular.measured:measured:0.3.0")
