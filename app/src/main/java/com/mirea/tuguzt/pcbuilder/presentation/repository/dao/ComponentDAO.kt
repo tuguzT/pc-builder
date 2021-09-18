@@ -1,11 +1,11 @@
-package com.mirea.tuguzt.pcbuilder.presentation.room.dao
+package com.mirea.tuguzt.pcbuilder.presentation.repository.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
-import com.mirea.tuguzt.pcbuilder.presentation.room.dto.ComponentDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
 
 /**
  * Data Access Object for [Component].
