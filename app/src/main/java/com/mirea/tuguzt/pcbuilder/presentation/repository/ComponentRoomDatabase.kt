@@ -14,7 +14,7 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
  * @see Component
  */
 @Database(entities = [ComponentDTO::class], version = 1, exportSchema = false)
-internal abstract class ComponentRoomDatabase : RoomDatabase() {
+internal abstract class ComponentRoomDatabase internal constructor(): RoomDatabase() {
     abstract val componentsDao: ComponentDAO
 
     companion object {

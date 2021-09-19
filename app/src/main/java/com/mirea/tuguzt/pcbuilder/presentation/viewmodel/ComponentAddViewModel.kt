@@ -2,8 +2,8 @@ package com.mirea.tuguzt.pcbuilder.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mirea.tuguzt.pcbuilder.MainActivity
 import com.mirea.tuguzt.pcbuilder.domain.model.Size
+import com.mirea.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.Measure
@@ -19,7 +19,7 @@ class ComponentAddViewModel : ViewModel() {
                 weight = weight,
                 size = size,
             )
-            MainActivity.repository.addComponent(component)
+            RepositoryAccess.roomRepository.addComponent(component)
         }
     }
 }

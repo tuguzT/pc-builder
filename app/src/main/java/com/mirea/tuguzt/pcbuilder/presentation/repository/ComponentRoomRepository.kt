@@ -9,7 +9,7 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
  *
  * @see ComponentRoomDatabase
  */
-class ComponentRepository(application: Application) : Repository {
+class ComponentRoomRepository internal constructor(application: Application) : Repository {
     private val roomDatabase = ComponentRoomDatabase.getInstance(application)
     private val componentDao = roomDatabase.componentsDao
 
