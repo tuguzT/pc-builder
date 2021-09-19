@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">PC Builder</string>
     <string name="add_new_component">Add new component</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="weight">Weight</string>
+    <string name="length">Length</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+    <string name="create_component">Create component</string>
 </resources>
