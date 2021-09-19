@@ -22,12 +22,22 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Rest of content for the activity (in the fragment container) -->
+    <!-- Content for the activity (in the fragment container) -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.mirea.tuguzt.pcbuilder.presentation.view.ComponentListFragment"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/add_new_component"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
