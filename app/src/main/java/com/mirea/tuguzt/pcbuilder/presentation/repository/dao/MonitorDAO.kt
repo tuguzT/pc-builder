@@ -1,5 +1,6 @@
 package com.mirea.tuguzt.pcbuilder.presentation.repository.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.mirea.tuguzt.pcbuilder.domain.model.monitor.Monitor
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.monitor.MonitorComponentDTO
@@ -20,7 +21,7 @@ interface MonitorDAO {
 
     @Transaction
     @Query("SELECT * FROM component")
-    fun getMonitorComponent(): List<MonitorComponentDTO>
+    fun getMonitorComponent(): LiveData<List<MonitorComponentDTO>>
 
     @Query("DELETE FROM monitor")
     fun deleteAllMonitors()

@@ -1,7 +1,9 @@
 package com.mirea.tuguzt.pcbuilder.presentation.repository.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
@@ -14,13 +16,16 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
 @Dao
 interface ComponentDAO {
     @Query("SELECT * FROM component WHERE name LIKE :name")
-    fun findByName(name: String): List<ComponentDTO>
+    fun findByName(name: String): LiveData<List<ComponentDTO>>
+
+    @Insert
+    fun addComponent(component: ComponentDTO)
 
     @Delete
     fun deleteComponent(component: ComponentDTO)
 
     @Query("SELECT * FROM component")
-    fun getAllComponents(): List<ComponentDTO>
+    fun getAllComponents(): LiveData<List<ComponentDTO>>
 
     @Query("DELETE FROM component")
     fun deleteAllComponents()
