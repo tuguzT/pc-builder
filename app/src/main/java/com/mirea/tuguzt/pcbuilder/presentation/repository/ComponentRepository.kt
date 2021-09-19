@@ -2,7 +2,6 @@ package com.mirea.tuguzt.pcbuilder.presentation.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
 
 /**
@@ -14,7 +13,7 @@ class ComponentRepository(application: Application) : Repository {
     private val roomDatabase = ComponentRoomDatabase.getInstance(application)
     private val componentDao = roomDatabase.componentsDao
 
-    override fun getAllComponents(): LiveData<out List<Component>> {
+    override fun getAllComponents(): LiveData<List<ComponentDTO>> {
         return componentDao.getAllComponents()
     }
 

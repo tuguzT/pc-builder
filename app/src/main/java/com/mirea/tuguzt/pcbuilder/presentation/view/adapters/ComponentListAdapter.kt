@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mirea.tuguzt.pcbuilder.databinding.ComponentItemBinding
-import com.mirea.tuguzt.pcbuilder.domain.model.Component
+import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
 
 /**
- * [RecyclerView.Adapter] that can display a [Component].
+ * [RecyclerView.Adapter] that can display a [ComponentDTO].
  *
- * @see Component
+ * @see ComponentDTO
  */
-class ComponentListAdapter(private val data: List<Component>) :
+class ComponentListAdapter(val data: List<ComponentDTO>) :
     RecyclerView.Adapter<ComponentListAdapter.ComponentViewHolder>() {
 
     inner class ComponentViewHolder(val binding: ComponentItemBinding) :

@@ -4,13 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mirea.tuguzt.pcbuilder.MainActivity
-import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ComponentListViewModel : ViewModel() {
-    fun getAllComponents(): LiveData<out List<Component>> {
+    fun getAllComponents(): LiveData<List<ComponentDTO>> {
         return MainActivity.repository.getAllComponents()
     }
 

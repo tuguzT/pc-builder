@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.mirea.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.view.adapters.ComponentListAdapter
@@ -35,7 +37,25 @@ class ComponentListFragment : Fragment() {
 
         _viewModel = ViewModelProvider(this)[ComponentListViewModel::class.java]
         viewModel.getAllComponents().observe(viewLifecycleOwner) {
-            view.adapter = ComponentListAdapter(it)
+            val adapter = ComponentListAdapter(it)
+            view.adapter = adapter
+
+            val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.ACTION_STATE_IDLE,
+                ItemTouchHelper.LEFT,
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder,
+                ) = false
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val position = viewHolder.bindingAdapterPosition
+                    viewModel.deleteComponent(adapter.data[position])
+                }
+            })
+            itemTouchHelper.attachToRecyclerView(view)
         }
 
         return view
