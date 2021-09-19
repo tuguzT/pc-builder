@@ -54,8 +54,8 @@ class ComponentAddFragment : Fragment() {
             val width = binding.width.text.toString()
             val height = binding.height.text.toString()
             if (name.isNotEmpty() && description.isNotEmpty() && weight.isNotEmpty()
-                && length.isNotEmpty() && width.isNotEmpty() && height.isNotEmpty())
-            {
+                && length.isNotEmpty() && width.isNotEmpty() && height.isNotEmpty()
+            ) {
                 val weight = weight.toDouble() * grams
                 val size = Size(
                     length.toDouble() * meters,
@@ -65,7 +65,8 @@ class ComponentAddFragment : Fragment() {
                 viewModel.addComponent(name, description, weight, size)
 
                 val fragmentManager = activity.supportFragmentManager
-                val navHostFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                val navHostFragment =
+                    fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
                 navHostFragment.navController.navigate(R.id.action_component_list_fragment)
 
                 activityBinding.fab.show()

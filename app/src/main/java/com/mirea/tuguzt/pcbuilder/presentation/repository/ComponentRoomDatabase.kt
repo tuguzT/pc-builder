@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dao.ComponentDAO
 import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
-import com.mirea.tuguzt.pcbuilder.domain.model.Component
 
 /**
  * Room database which contains all the components locally saved by user.
@@ -14,7 +14,7 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
  * @see Component
  */
 @Database(entities = [ComponentDTO::class], version = 1, exportSchema = false)
-internal abstract class ComponentRoomDatabase: RoomDatabase() {
+internal abstract class ComponentRoomDatabase : RoomDatabase() {
     abstract val componentsDao: ComponentDAO
 
     companion object {
