@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -34,6 +35,22 @@ class ComponentAddFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel get() = _viewModel!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val activity = requireActivity() as MainActivity
+        activity.onBackPressedDispatcher.addCallback {
+            activity.binding.fab.show()
+
+            val fragmentManager = activity.supportFragmentManager
+            val navHostFragment =
+                fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            navHostFragment.navController.popBackStack()
+
+            remove()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,7 +60,7 @@ class ComponentAddFragment : Fragment() {
         _viewModel = ViewModelProvider(this)[ComponentAddViewModel::class.java]
 
         val activity = requireActivity() as MainActivity
-        val activityBinding = activity.binding
+        activity.binding.fab.hide()
 
         val buttonAdd = binding.buttonAdd
         buttonAdd.setOnClickListener {
@@ -64,12 +81,13 @@ class ComponentAddFragment : Fragment() {
                 )
                 viewModel.addComponent(name, description, weight, size)
 
+                val activityBinding = activity.binding
+                activityBinding.fab.show()
+
                 val fragmentManager = activity.supportFragmentManager
                 val navHostFragment =
                     fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                navHostFragment.navController.navigate(R.id.action_component_list_fragment)
-
-                activityBinding.fab.show()
+                navHostFragment.navController.popBackStack()
             } else {
                 Snackbar.make(binding.root, "Some fields are empty!", Snackbar.LENGTH_SHORT).show()
             }

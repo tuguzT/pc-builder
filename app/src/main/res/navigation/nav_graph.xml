@@ -20,10 +20,6 @@
         android:id="@+id/component_add_fragment"
         android:name="com.mirea.tuguzt.pcbuilder.presentation.view.ComponentAddFragment"
         android:label="fragment_component_add"
-        tools:layout="@layout/fragment_component_add">
-        <action
-            android:id="@+id/action_component_list_fragment"
-            app:destination="@id/component_list_fragment" />
-    </fragment>
+        tools:layout="@layout/fragment_component_add" />
 
 </navigation>

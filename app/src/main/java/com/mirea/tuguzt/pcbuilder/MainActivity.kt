@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val fragmentContainer = binding.navHostFragment
             fragmentContainer.findNavController().navigate(R.id.action_component_add_fragment)
-            fab.hide()
         }
     }
 }

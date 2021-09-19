@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.mirea.tuguzt.pcbuilder.MainActivity
 import com.mirea.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.presentation.view.adapters.ComponentListAdapter
@@ -33,9 +34,12 @@ class ComponentListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentComponentListBinding.inflate(inflater, container, false)
-        val view = binding.root
-
         _viewModel = ViewModelProvider(this)[ComponentListViewModel::class.java]
+
+        val view = binding.root
+        val activity = requireActivity() as MainActivity
+        activity.binding.fab.show()
+
         viewModel.getAllComponents().observe(viewLifecycleOwner) {
             val adapter = ComponentListAdapter(it)
             view.adapter = adapter
