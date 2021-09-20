@@ -10,5 +10,5 @@ import kotlinx.coroutines.launch
 /**
  * Launches a new coroutine from the tied [scope][ViewModel.viewModelScope] with [Dispatchers.IO].
  */
-fun ViewModel.launchIO(block: suspend CoroutineScope.() -> Unit): Job =
+internal fun ViewModel.launchIO(block: suspend CoroutineScope.() -> Unit): Job =
     viewModelScope.launch(context = Dispatchers.IO, block = block)

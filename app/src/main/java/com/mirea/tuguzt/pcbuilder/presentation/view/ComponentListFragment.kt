@@ -57,6 +57,8 @@ class ComponentListFragment : Fragment() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val position = viewHolder.bindingAdapterPosition
                     viewModel.deleteComponent(adapter.data[position])
+
+                    snackBarShort { "Component was successfully deleted" }
                 }
             })
             itemTouchHelper.attachToRecyclerView(view)

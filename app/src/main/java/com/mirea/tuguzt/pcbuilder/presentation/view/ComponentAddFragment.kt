@@ -10,7 +10,6 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.snackbar.Snackbar
 import com.mirea.tuguzt.pcbuilder.MainActivity
 import com.mirea.tuguzt.pcbuilder.R
 import com.mirea.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
@@ -71,6 +70,7 @@ class ComponentAddFragment : Fragment() {
             val length = binding.length.text.toString()
             val width = binding.width.text.toString()
             val height = binding.height.text.toString()
+
             if (name.isNotBlank() && description.isNotBlank() && weight.isNotBlank()
                 && length.isNotBlank() && width.isNotBlank() && height.isNotBlank()
             ) {
@@ -89,11 +89,13 @@ class ComponentAddFragment : Fragment() {
                     navHostFragment.navController.popBackStack()
 
                     fab.show()
+
+                    snackBarShort { "Component was successfully added" }
                 } catch (e: NumberFormatException) {
-                    Snackbar.make(binding.root, "Incorrect input!", Snackbar.LENGTH_SHORT).show()
+                    snackBarShort { "Incorrect input!" }
                 }
             } else {
-                Snackbar.make(binding.root, "Some fields are empty!", Snackbar.LENGTH_SHORT).show()
+                snackBarShort { "Some fields are empty!" }
             }
         }
 
