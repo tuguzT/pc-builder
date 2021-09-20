@@ -15,7 +15,7 @@ import com.mirea.tuguzt.pcbuilder.presentation.view.adapters.ComponentListAdapte
 import com.mirea.tuguzt.pcbuilder.presentation.viewmodel.ComponentListViewModel
 
 /**
- * A fragment representing a list of [components][Component].
+ * A [Fragment] subclass which represents list of [components][Component].
  *
  * @see Component
  */
@@ -58,7 +58,7 @@ class ComponentListFragment : Fragment() {
                     val position = viewHolder.bindingAdapterPosition
                     viewModel.deleteComponent(adapter.data[position])
 
-                    snackBarShort { "Component was successfully deleted" }
+                    snackbarShort { "Component was successfully deleted" }
                 }
             })
             itemTouchHelper.attachToRecyclerView(view)

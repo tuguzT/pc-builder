@@ -73,12 +73,12 @@ class ComponentAddFragment : Fragment() {
 
                     fab.show()
 
-                    snackBarShort { "Component was successfully added" }
+                    snackbarShort { "Component was successfully added" }
                 } catch (e: NumberFormatException) {
-                    snackBarShort { "Incorrect input!" }
+                    snackbarShort { "Incorrect input!" }
                 }
             } else {
-                snackBarShort { "Some fields are empty!" }
+                snackbarShort { "Some fields are empty!" }
             }
         }
 
