@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -33,22 +32,6 @@ class ComponentAddFragment : Fragment() {
     // `onCreateView` and `onDestroyView`.
     private val binding get() = _binding!!
     private val viewModel get() = _viewModel!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val activity = requireActivity() as MainActivity
-        activity.onBackPressedDispatcher.addCallback {
-            activity.binding.fab.show()
-
-            val fragmentManager = activity.supportFragmentManager
-            val navHostFragment =
-                fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-            navHostFragment.navController.popBackStack()
-
-            remove()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
