@@ -7,22 +7,20 @@ import com.mirea.tuguzt.pcbuilder.databinding.ActivityMainBinding
 import com.mirea.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var _binding: ActivityMainBinding
+
+    val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+
         RepositoryAccess.initRoomRepository(application)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
-        val view = binding.root
-        setContentView(view)
-
-        val toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-
-        val fab = binding.fab
-        fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             val fragmentContainer = binding.navHostFragment
             fragmentContainer.findNavController().navigate(R.id.action_component_add_fragment)
         }
