@@ -19,6 +19,7 @@
             android:layout_marginBottom="12dp"
             android:hint="@string/name"
             android:minHeight="48dp"
+            android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
