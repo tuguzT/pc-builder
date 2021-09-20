@@ -14,10 +14,12 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
  * @see Component
  */
 @Database(entities = [ComponentDTO::class], version = 1, exportSchema = false)
-internal abstract class ComponentRoomDatabase internal constructor(): RoomDatabase() {
+internal abstract class ComponentRoomDatabase internal constructor() : RoomDatabase() {
     abstract val componentsDao: ComponentDAO
 
     companion object {
+        private const val DATABASE_NAME = "component_database"
+
         @Volatile
         private var INSTANCE: ComponentRoomDatabase? = null
 
@@ -33,7 +35,7 @@ internal abstract class ComponentRoomDatabase internal constructor(): RoomDataba
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
                             ComponentRoomDatabase::class.java,
-                            "component_database",
+                            DATABASE_NAME,
                         ).build()
                     }
                 }

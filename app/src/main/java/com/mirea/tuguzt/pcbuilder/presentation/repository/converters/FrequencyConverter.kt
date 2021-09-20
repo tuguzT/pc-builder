@@ -9,13 +9,11 @@ import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 
 object FrequencyConverter {
+    @JvmStatic
     @TypeConverter
-    fun fromFrequency(value: Measure<Frequency>?): Double? {
-        return value?.let { it `in` hertz }
-    }
+    fun fromFrequency(value: Measure<Frequency>?): Double? = value?.let { it `in` hertz }
 
+    @JvmStatic
     @TypeConverter
-    fun toFrequency(value: Double?): Measure<Frequency>? {
-        return value?.let { value * hertz }
-    }
+    fun toFrequency(value: Double?): Measure<Frequency>? = value?.let { it * hertz }
 }

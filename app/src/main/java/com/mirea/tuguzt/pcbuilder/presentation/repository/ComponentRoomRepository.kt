@@ -8,24 +8,27 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
  * Safe wrapper around Room database.
  *
  * @see ComponentRoomDatabase
+ * @see ComponentDTO
  */
-class ComponentRoomRepository internal constructor(application: Application) : Repository {
+class ComponentRoomRepository internal constructor(application: Application) :
+    Repository<ComponentDTO> {
+
     private val roomDatabase = ComponentRoomDatabase.getInstance(application)
-    private val componentDao = roomDatabase.componentsDao
+    private val componentsDao get() = roomDatabase.componentsDao
 
     override fun getAllComponents(): LiveData<List<ComponentDTO>> {
-        return componentDao.getAllComponents()
+        return componentsDao.getAllComponents()
     }
 
     override suspend fun addComponent(component: ComponentDTO) {
-        componentDao.addComponent(component)
+        componentsDao.addComponent(component)
     }
 
     override suspend fun deleteComponent(component: ComponentDTO) {
-        componentDao.deleteComponent(component)
+        componentsDao.deleteComponent(component)
     }
 
     override suspend fun deleteAllComponents() {
-        componentDao.deleteAllComponents()
+        componentsDao.deleteAllComponents()
     }
 }

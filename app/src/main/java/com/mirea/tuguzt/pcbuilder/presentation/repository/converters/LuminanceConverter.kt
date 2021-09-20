@@ -9,13 +9,11 @@ import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 
 object LuminanceConverter {
+    @JvmStatic
     @TypeConverter
-    fun fromLuminance(value: Measure<Luminance>?): Double? {
-        return value?.let { it `in` nit }
-    }
+    fun fromLuminance(value: Measure<Luminance>?): Double? = value?.let { it `in` nit }
 
+    @JvmStatic
     @TypeConverter
-    fun toLuminance(value: Double?): Measure<Luminance>? {
-        return value?.let { value * nit }
-    }
+    fun toLuminance(value: Double?): Measure<Luminance>? = value?.let { it * nit }
 }

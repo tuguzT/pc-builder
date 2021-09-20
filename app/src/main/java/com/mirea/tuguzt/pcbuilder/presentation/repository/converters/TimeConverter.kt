@@ -9,13 +9,11 @@ import io.nacular.measured.units.Time.Companion.milliseconds
 import io.nacular.measured.units.times
 
 object TimeConverter {
+    @JvmStatic
     @TypeConverter
-    fun fromTime(value: Measure<Time>?): Double? {
-        return value?.let { it `in` milliseconds }
-    }
+    fun fromTime(value: Measure<Time>?): Double? = value?.let { it `in` milliseconds }
 
+    @JvmStatic
     @TypeConverter
-    fun toTime(value: Double?): Measure<Time>? {
-        return value?.let { value * milliseconds }
-    }
+    fun toTime(value: Double?): Measure<Time>? = value?.let { it * milliseconds }
 }

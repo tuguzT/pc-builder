@@ -8,21 +8,19 @@ import com.mirea.tuguzt.pcbuilder.domain.model.units.hertz
 import io.nacular.measured.units.times
 
 object MonitorPWMTypeConverter {
+    @JvmStatic
     @TypeConverter
-    fun fromPWMType(value: MonitorPWMType?): Double? {
-        return when (value) {
-            MonitorPWMType.FlickerFree -> 0.0
-            is MonitorPWMType.PWM -> value.frequency `in` hertz
-            null -> null
-        }
+    fun fromPWMType(value: MonitorPWMType?): Double? = when (value) {
+        MonitorPWMType.FlickerFree -> 0.0
+        is MonitorPWMType.PWM -> value.frequency `in` hertz
+        null -> null
     }
 
+    @JvmStatic
     @TypeConverter
-    fun toPWMType(value: Double?): MonitorPWMType? {
-        return when (value) {
-            0.0 -> MonitorPWMType.FlickerFree
-            null -> null
-            else -> MonitorPWMType.PWM(value * hertz)
-        }
+    fun toPWMType(value: Double?): MonitorPWMType? = when (value) {
+        0.0 -> MonitorPWMType.FlickerFree
+        null -> null
+        else -> MonitorPWMType.PWM(value * hertz)
     }
 }
