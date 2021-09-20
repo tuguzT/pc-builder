@@ -1,9 +1,9 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository.dto.monitor
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.monitor
 
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.mirea.tuguzt.pcbuilder.domain.model.monitor.Monitor
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
 
 /**
  * Data Transfer Object that links [components][ComponentDTO] and [monitors][MonitorDTO] together.

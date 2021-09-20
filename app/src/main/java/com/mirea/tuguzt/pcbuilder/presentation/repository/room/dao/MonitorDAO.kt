@@ -1,10 +1,10 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository.dao
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.mirea.tuguzt.pcbuilder.domain.model.monitor.Monitor
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.monitor.MonitorComponentDTO
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.monitor.MonitorDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.monitor.MonitorComponentDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.monitor.MonitorDTO
 
 /**
  * Data Access Object for [Monitor].

@@ -1,4 +1,4 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository.converters
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.converters
 
 import androidx.room.TypeConverter
 import io.nacular.measured.units.Mass

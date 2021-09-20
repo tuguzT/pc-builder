@@ -1,4 +1,4 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository.dao
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
 
 /**
  * Data Access Object for [Component].

@@ -1,4 +1,4 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository.dto
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto
 
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.domain.model.Size

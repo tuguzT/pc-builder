@@ -1,12 +1,12 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dao.ComponentDAO
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDAO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
 
 /**
  * Room database which contains all the components locally saved by user.
@@ -14,27 +14,27 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
  * @see Component
  */
 @Database(entities = [ComponentDTO::class], version = 1, exportSchema = false)
-internal abstract class ComponentRoomDatabase internal constructor() : RoomDatabase() {
+internal abstract class RoomComponentDatabase internal constructor() : RoomDatabase() {
     abstract val componentsDao: ComponentDAO
 
     companion object {
         private const val DATABASE_NAME = "component_database"
 
         @Volatile
-        private var INSTANCE: ComponentRoomDatabase? = null
+        private var INSTANCE: RoomComponentDatabase? = null
 
         /**
          * Get unique instance of the Room database.
          * @return unique instance of the Room database
          */
         @JvmStatic
-        fun getInstance(context: Context): ComponentRoomDatabase {
+        fun getInstance(context: Context): RoomComponentDatabase {
             if (INSTANCE == null) {
-                synchronized(ComponentRoomDatabase::class) {
+                synchronized(RoomComponentDatabase::class) {
                     if (INSTANCE == null) {
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
-                            ComponentRoomDatabase::class.java,
+                            RoomComponentDatabase::class.java,
                             DATABASE_NAME,
                         ).build()
                     }

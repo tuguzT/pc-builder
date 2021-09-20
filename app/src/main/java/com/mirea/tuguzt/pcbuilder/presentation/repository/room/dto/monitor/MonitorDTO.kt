@@ -1,12 +1,12 @@
-package com.mirea.tuguzt.pcbuilder.presentation.repository.dto.monitor
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.monitor
 
 import androidx.room.*
 import com.mirea.tuguzt.pcbuilder.domain.model.monitor.*
 import com.mirea.tuguzt.pcbuilder.domain.model.units.Frequency
 import com.mirea.tuguzt.pcbuilder.domain.model.units.Luminance
-import com.mirea.tuguzt.pcbuilder.presentation.repository.converters.*
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentChild
-import com.mirea.tuguzt.pcbuilder.presentation.repository.dto.ComponentDTO
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.converters.*
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentChild
+import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
 import io.nacular.measured.units.Distance
 import io.nacular.measured.units.Measure
 import io.nacular.measured.units.Time

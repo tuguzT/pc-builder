@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.mirea.tuguzt.pcbuilder.presentation.repository.converters
+package com.mirea.tuguzt.pcbuilder.presentation.repository.room.converters
 
 import androidx.room.TypeConverter
 import com.mirea.tuguzt.pcbuilder.domain.model.units.Luminance
