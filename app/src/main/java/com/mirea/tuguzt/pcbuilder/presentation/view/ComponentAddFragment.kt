@@ -60,7 +60,8 @@ class ComponentAddFragment : Fragment() {
         _viewModel = ViewModelProvider(this)[ComponentAddViewModel::class.java]
 
         val activity = requireActivity() as MainActivity
-        activity.binding.fab.hide()
+        val fab = activity.binding.fab
+        fab.hide()
 
         val buttonAdd = binding.buttonAdd
         buttonAdd.setOnClickListener {
@@ -70,24 +71,27 @@ class ComponentAddFragment : Fragment() {
             val length = binding.length.text.toString()
             val width = binding.width.text.toString()
             val height = binding.height.text.toString()
-            if (name.isNotEmpty() && description.isNotEmpty() && weight.isNotEmpty()
-                && length.isNotEmpty() && width.isNotEmpty() && height.isNotEmpty()
+            if (name.isNotBlank() && description.isNotBlank() && weight.isNotBlank()
+                && length.isNotBlank() && width.isNotBlank() && height.isNotBlank()
             ) {
-                val weight = weight.toDouble() * grams
-                val size = Size(
-                    length.toDouble() * meters,
-                    width.toDouble() * meters,
-                    height.toDouble() * meters,
-                )
-                viewModel.addComponent(name, description, weight, size)
+                try {
+                    val weight = weight.toDouble() * grams
+                    val size = Size(
+                        length.toDouble() * meters,
+                        width.toDouble() * meters,
+                        height.toDouble() * meters,
+                    )
+                    viewModel.addComponent(name, description, weight, size)
 
-                val activityBinding = activity.binding
-                activityBinding.fab.show()
+                    val fragmentManager = activity.supportFragmentManager
+                    val navHostFragment =
+                        fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                    navHostFragment.navController.popBackStack()
 
-                val fragmentManager = activity.supportFragmentManager
-                val navHostFragment =
-                    fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                navHostFragment.navController.popBackStack()
+                    fab.show()
+                } catch (e: NumberFormatException) {
+                    Snackbar.make(binding.root, "Incorrect input!", Snackbar.LENGTH_SHORT).show()
+                }
             } else {
                 Snackbar.make(binding.root, "Some fields are empty!", Snackbar.LENGTH_SHORT).show()
             }
