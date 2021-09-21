@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.mirea.tuguzt.pcbuilder.MainActivity
 import com.mirea.tuguzt.pcbuilder.R
@@ -25,13 +25,11 @@ import io.nacular.measured.units.times
  * @see Component
  */
 class ComponentAddFragment : Fragment() {
-    private var _binding: FragmentComponentAddBinding? = null
-    private var _viewModel: ComponentAddViewModel? = null
+    private val viewModel: ComponentAddViewModel by activityViewModels()
 
-    // This helper properties are only valid between
-    // `onCreateView` and `onDestroyView`.
+    private var _binding: FragmentComponentAddBinding? = null
+    // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private val binding get() = _binding!!
-    private val viewModel get() = _viewModel!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +37,6 @@ class ComponentAddFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentComponentAddBinding.inflate(inflater, container, false)
-        _viewModel = ViewModelProvider(this)[ComponentAddViewModel::class.java]
 
         val activity = requireActivity() as MainActivity
         val fab = activity.binding.fab
@@ -88,6 +85,5 @@ class ComponentAddFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        _viewModel = null
     }
 }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.mirea.tuguzt.pcbuilder.MainActivity
@@ -20,13 +20,12 @@ import com.mirea.tuguzt.pcbuilder.presentation.viewmodel.ComponentListViewModel
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private var _binding: FragmentComponentListBinding? = null
-    private var _viewModel: ComponentListViewModel? = null
+    private val viewModel: ComponentListViewModel by activityViewModels()
 
-    // This helper properties are only valid between
+    private var _binding: FragmentComponentListBinding? = null
+    // This helper property is only valid between
     // `onCreateView` and `onDestroyView`.
     private val binding get() = _binding!!
-    private val viewModel get() = _viewModel!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +33,6 @@ class ComponentListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentComponentListBinding.inflate(inflater, container, false)
-        _viewModel = ViewModelProvider(this)[ComponentListViewModel::class.java]
 
         val view = binding.root
         val activity = requireActivity() as MainActivity
@@ -72,6 +70,5 @@ class ComponentListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        _viewModel = null
     }
 }
