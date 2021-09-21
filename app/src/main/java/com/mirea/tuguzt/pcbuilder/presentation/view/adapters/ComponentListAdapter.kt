@@ -2,6 +2,7 @@ package com.mirea.tuguzt.pcbuilder.presentation.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mirea.tuguzt.pcbuilder.databinding.ComponentItemBinding
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
@@ -11,8 +12,8 @@ import com.mirea.tuguzt.pcbuilder.domain.model.Component
  *
  * @see Component
  */
-class ComponentListAdapter(val data: List<Component>) :
-    RecyclerView.Adapter<ComponentListAdapter.ComponentViewHolder>() {
+class ComponentListAdapter :
+    ListAdapter<Component, ComponentListAdapter.ComponentViewHolder>(ComponentDiffCallback) {
 
     inner class ComponentViewHolder(val binding: ComponentItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -27,12 +28,10 @@ class ComponentListAdapter(val data: List<Component>) :
     }
 
     override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
-        val item = data[position]
+        val item = currentList[position]
         holder.binding.run {
             name.text = item.name
             description.text = item.description
         }
     }
-
-    override fun getItemCount() = data.size
 }

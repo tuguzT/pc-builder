@@ -6,8 +6,6 @@
     android:id="@+id/component_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="8dp"
-    android:clipToPadding="false"
     app:layoutManager="LinearLayoutManager"
     tools:context=".presentation.view.ComponentListFragment"
     tools:listitem="@layout/component_item" />

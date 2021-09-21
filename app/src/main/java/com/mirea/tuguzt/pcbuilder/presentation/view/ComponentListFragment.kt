@@ -40,28 +40,30 @@ class ComponentListFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.binding.fab.show()
 
+        val adapter = ComponentListAdapter()
+        view.adapter = adapter
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.ACTION_STATE_IDLE,
+            ItemTouchHelper.LEFT,
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ) = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                viewModel.deleteComponent(adapter.currentList[position])
+
+                snackbarShort { "Component was successfully deleted" }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(view)
+
         viewModel.getAllComponents().observe(viewLifecycleOwner) {
-            val adapter = ComponentListAdapter(it)
-            view.adapter = adapter
-
-            val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.ACTION_STATE_IDLE,
-                ItemTouchHelper.LEFT,
-            ) {
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder,
-                ) = false
-
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val position = viewHolder.bindingAdapterPosition
-                    viewModel.deleteComponent(adapter.data[position])
-
-                    snackbarShort { "Component was successfully deleted" }
-                }
-            })
-            itemTouchHelper.attachToRecyclerView(view)
+            adapter.submitList(it)
         }
 
         return view

@@ -32,16 +32,16 @@ object MockComponentRepository : Repository<MockComponent> {
 
     override suspend fun addComponent(component: MockComponent) {
         list += component
-        data.postValue(list)
+        data.value = list
     }
 
     override suspend fun deleteComponent(component: MockComponent) {
         list -= component
-        data.postValue(list)
+        data.value = list
     }
 
     override suspend fun deleteAllComponents() {
         list.clear()
-        data.postValue(list)
+        data.value = list
     }
 }

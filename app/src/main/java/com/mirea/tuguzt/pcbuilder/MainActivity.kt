@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.mirea.tuguzt.pcbuilder.databinding.ActivityMainBinding
-//import com.mirea.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
+import com.mirea.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 
 class MainActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityMainBinding
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
-//        RepositoryAccess.initRoom(application)
+        RepositoryAccess.initRoom(application)
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
