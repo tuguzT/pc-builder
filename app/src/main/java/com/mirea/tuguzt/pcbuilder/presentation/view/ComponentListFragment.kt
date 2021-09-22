@@ -61,7 +61,7 @@ class ComponentListFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(view)
 
         viewModel.getAllComponents().observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            it?.let { adapter.submitList(it) }
         }
 
         return view

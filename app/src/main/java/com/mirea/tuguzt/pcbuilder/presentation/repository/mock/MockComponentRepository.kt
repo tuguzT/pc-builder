@@ -7,6 +7,8 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.Repository
 import io.nacular.measured.units.Length.Companion.centimeters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Mock repository of [components][MockComponent].
@@ -26,22 +28,24 @@ object MockComponentRepository : Repository<MockComponent> {
             ),
         )
     }
-    private val data = MutableLiveData(list)
+    private val data = MutableLiveData(list as List<MockComponent>)
+
+    override val defaultDispatcher = Dispatchers.Main
 
     override fun getAllComponents(): LiveData<out List<MockComponent>> = data
 
-    override suspend fun addComponent(component: MockComponent) {
+    override suspend fun addComponent(component: MockComponent) = withContext(defaultDispatcher) {
         list += component
-        data.value = list
+        data.value = list.toMutableList()
     }
 
-    override suspend fun deleteComponent(component: MockComponent) {
+    override suspend fun deleteComponent(component: MockComponent) = withContext(defaultDispatcher) {
         list -= component
-        data.value = list
+        data.value = list.toMutableList()
     }
 
-    override suspend fun deleteAllComponents() {
+    override suspend fun deleteAllComponents() = withContext(defaultDispatcher) {
         list.clear()
-        data.value = list
+        data.value = list.toMutableList()
     }
 }

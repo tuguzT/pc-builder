@@ -1,6 +1,7 @@
 package com.mirea.tuguzt.pcbuilder.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mirea.tuguzt.pcbuilder.domain.model.Component
 import com.mirea.tuguzt.pcbuilder.domain.model.Size
 import com.mirea.tuguzt.pcbuilder.presentation.repository.Repository
@@ -11,6 +12,7 @@ import com.mirea.tuguzt.pcbuilder.presentation.repository.room.RoomComponentRepo
 import com.mirea.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.Measure
+import kotlinx.coroutines.launch
 
 class ComponentAddViewModel : ViewModel() {
     fun addComponent(name: String, description: String, weight: Measure<Mass>, size: Size) {
@@ -20,7 +22,7 @@ class ComponentAddViewModel : ViewModel() {
             MockComponentRepository -> MockComponent(name, description, weight, size)
             else -> throw IllegalStateException("Unknown type of local repository!!!")
         }
-        launchIO {
+        viewModelScope.launch {
             localRepository.addComponent(component)
         }
     }
