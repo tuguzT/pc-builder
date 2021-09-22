@@ -9,7 +9,7 @@ android {
     compileSdk = 30
 
     defaultConfig {
-        applicationId = "com.mirea.tuguzt.pcbuilder"
+        applicationId = "io.github.tuguzt.pcbuilder"
         minSdk = 16
         targetSdk = 30
         versionCode = 1
@@ -49,7 +49,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
 

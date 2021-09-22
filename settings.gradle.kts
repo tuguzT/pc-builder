@@ -5,5 +5,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "PC Builder"
 include(":app")

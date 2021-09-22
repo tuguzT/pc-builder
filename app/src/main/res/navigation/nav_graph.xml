@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/component_list_fragment"
-        android:name="com.mirea.tuguzt.pcbuilder.presentation.view.ComponentListFragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentListFragment"
         android:label="fragment_component_list"
         tools:layout="@layout/fragment_component_list">
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/component_add_fragment"
-        android:name="com.mirea.tuguzt.pcbuilder.presentation.view.ComponentAddFragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentAddFragment"
         android:label="fragment_component_add"
         tools:layout="@layout/fragment_component_add" />
 
