@@ -13,6 +13,10 @@
         tools:layout="@layout/fragment_component_list">
         <action
             android:id="@+id/action_component_add_fragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"
             app:destination="@id/component_add_fragment" />
     </fragment>
 
