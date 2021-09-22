@@ -9,9 +9,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.MainActivity
+import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.Component
 import io.github.tuguzt.pcbuilder.presentation.view.adapters.ComponentListAdapter
+import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.ComponentListViewModel
 
 /**
@@ -41,6 +43,9 @@ class ComponentListFragment : Fragment() {
 
         val adapter = ComponentListAdapter()
         view.adapter = adapter
+
+        val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
+        view.addItemDecoration(MarginDecoration(spaceSize))
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.ACTION_STATE_IDLE,
