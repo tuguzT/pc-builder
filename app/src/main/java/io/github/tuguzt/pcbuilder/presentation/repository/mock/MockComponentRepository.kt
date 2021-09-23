@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
  * @see MockComponent
  */
 object MockComponentRepository : Repository<MockComponent> {
-    private val list = MutableList(20) { index ->
+    private var list = List(20) { index ->
         MockComponent(
             name = "name $index",
             description = "description $index",
@@ -28,25 +28,25 @@ object MockComponentRepository : Repository<MockComponent> {
             ),
         )
     }
-    private val data = MutableLiveData(list as List<MockComponent>)
+    private val data = MutableLiveData(list)
 
     override val defaultDispatcher = Dispatchers.Main
 
     override fun getAllComponents(): LiveData<out List<MockComponent>> = data
 
     override suspend fun addComponent(component: MockComponent) = withContext(defaultDispatcher) {
-        list += component
-        data.value = list.toMutableList()
+        list = list + component
+        data.value = list
     }
 
     override suspend fun deleteComponent(component: MockComponent) =
         withContext(defaultDispatcher) {
-            list -= component
-            data.value = list.toMutableList()
+            list = list - component
+            data.value = list
         }
 
     override suspend fun deleteAllComponents() = withContext(defaultDispatcher) {
-        list.clear()
-        data.value = list.toMutableList()
+        list = listOf()
+        data.value = list
     }
 }
