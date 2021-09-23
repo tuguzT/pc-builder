@@ -15,8 +15,16 @@ import io.github.tuguzt.pcbuilder.domain.model.Component
 class ComponentListAdapter :
     ListAdapter<Component, ComponentListAdapter.ComponentViewHolder>(ComponentDiffCallback) {
 
-    inner class ComponentViewHolder(val binding: ComponentItemBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class ComponentViewHolder(private val binding: ComponentItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(component: Component) {
+            binding.run {
+                name.text = component.name
+                description.text = component.description
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val binding = ComponentItemBinding.inflate(
@@ -28,10 +36,7 @@ class ComponentListAdapter :
     }
 
     override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
-        val item = currentList[position]
-        holder.binding.run {
-            name.text = item.name
-            description.text = item.description
-        }
+        val component = currentList[position]
+        holder.bind(component)
     }
 }
