@@ -1,9 +1,8 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -11,23 +10,23 @@ import kotlinx.coroutines.withContext
  * Safe wrapper around Room database.
  *
  * @see RoomComponentDatabase
- * @see ComponentDTO
+ * @see ComponentDto
  */
 class RoomComponentRepository internal constructor(application: Application) :
-    Repository<ComponentDTO> {
+    Repository<ComponentDto> {
 
     private val roomDatabase = RoomComponentDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao
 
     override val defaultDispatcher = Dispatchers.IO
 
-    override fun getAllComponents(): LiveData<List<ComponentDTO>> = componentsDao.getAllComponents()
+    override val allComponents = componentsDao.getAllComponents()
 
-    override suspend fun addComponent(component: ComponentDTO) = withContext(defaultDispatcher) {
+    override suspend fun addComponent(component: ComponentDto) = withContext(defaultDispatcher) {
         componentsDao.addComponent(component)
     }
 
-    override suspend fun deleteComponent(component: ComponentDTO) = withContext(defaultDispatcher) {
+    override suspend fun deleteComponent(component: ComponentDto) = withContext(defaultDispatcher) {
         componentsDao.deleteComponent(component)
     }
 

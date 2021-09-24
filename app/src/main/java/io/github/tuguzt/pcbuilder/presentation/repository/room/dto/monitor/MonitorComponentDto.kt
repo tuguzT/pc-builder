@@ -3,19 +3,19 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.monitor
 import androidx.room.Embedded
 import androidx.room.Relation
 import io.github.tuguzt.pcbuilder.domain.model.monitor.Monitor
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 
 /**
- * Data Transfer Object that links [components][ComponentDTO] and [monitors][MonitorDTO] together.
+ * Data Transfer Object that links [components][ComponentDto] and [monitors][MonitorDto] together.
  *
  * Represents **one-to-one** relationship.
  *
- * @see ComponentDTO
- * @see MonitorDTO
+ * @see ComponentDto
+ * @see MonitorDto
  */
-data class MonitorComponentDTO(
-    @Embedded private val component: ComponentDTO,
-    @Relation(parentColumn = "id", entityColumn = "id") private val monitor: MonitorDTO,
+data class MonitorComponentDto(
+    @Embedded private val component: ComponentDto,
+    @Relation(parentColumn = "id", entityColumn = "id") private val monitor: MonitorDto,
 ) : Monitor {
     val id = component.id
     override val name = component.name

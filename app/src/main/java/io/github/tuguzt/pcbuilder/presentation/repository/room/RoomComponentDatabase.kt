@@ -5,17 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.github.tuguzt.pcbuilder.domain.model.Component
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDAO
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 
 /**
  * Room database which contains all the components locally saved by user.
  *
  * @see Component
  */
-@Database(entities = [ComponentDTO::class], version = 1, exportSchema = false)
+@Database(entities = [ComponentDto::class], version = 1, exportSchema = false)
 internal abstract class RoomComponentDatabase internal constructor() : RoomDatabase() {
-    abstract val componentsDao: ComponentDAO
+    abstract val componentsDao: ComponentDao
 
     companion object {
         private const val DATABASE_NAME = "component_database"

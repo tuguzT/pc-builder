@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 interface Repository<C : Component> {
     val defaultDispatcher: CoroutineDispatcher
 
-    fun getAllComponents(): LiveData<out List<C>>
+    val allComponents: LiveData<out List<C>>
 
     suspend fun addComponent(component: C)
 

@@ -6,7 +6,7 @@ import io.github.tuguzt.pcbuilder.domain.model.units.Frequency
 import io.github.tuguzt.pcbuilder.domain.model.units.Luminance
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.*
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentChild
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import io.nacular.measured.units.Distance
 import io.nacular.measured.units.Measure
 import io.nacular.measured.units.Time
@@ -19,7 +19,7 @@ import io.nacular.measured.units.Time
 @Entity(
     tableName = "monitor",
     foreignKeys = [ForeignKey(
-        entity = ComponentDTO::class,
+        entity = ComponentDto::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("id"),
         onDelete = ForeignKey.CASCADE,
@@ -32,7 +32,7 @@ import io.nacular.measured.units.Time
     LuminanceConverter::class,
     MonitorPWMTypeConverter::class,
 )
-data class MonitorDTO(
+data class MonitorDto(
     val id: Long = 0L,
     @ColumnInfo(name = "screen_size") override val screenSize: Measure<Distance>,
     @Embedded(prefix = "resolution_") override val resolution: MonitorResolution,

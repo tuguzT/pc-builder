@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import io.github.tuguzt.pcbuilder.domain.model.Component
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 
 /**
  * Data Access Object for [Component].
@@ -14,19 +14,19 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDTO
  * @see Component
  */
 @Dao
-interface ComponentDAO {
+interface ComponentDao {
     @Query("SELECT * FROM component WHERE name LIKE :name")
-    fun findByName(name: String): LiveData<List<ComponentDTO>>
+    fun findByName(name: String): LiveData<List<ComponentDto>>
 
     @Insert
-    fun addComponent(component: ComponentDTO)
+    suspend fun addComponent(component: ComponentDto)
 
     @Delete
-    fun deleteComponent(component: ComponentDTO)
+    suspend fun deleteComponent(component: ComponentDto)
 
     @Query("SELECT * FROM component")
-    fun getAllComponents(): LiveData<List<ComponentDTO>>
+    fun getAllComponents(): LiveData<List<ComponentDto>>
 
     @Query("DELETE FROM component")
-    fun deleteAllComponents()
+    suspend fun deleteAllComponents()
 }

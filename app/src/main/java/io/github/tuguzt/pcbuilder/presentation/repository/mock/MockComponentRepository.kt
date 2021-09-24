@@ -32,7 +32,7 @@ object MockComponentRepository : Repository<MockComponent> {
 
     override val defaultDispatcher = Dispatchers.Main
 
-    override fun getAllComponents(): LiveData<out List<MockComponent>> = data
+    override val allComponents: LiveData<out List<MockComponent>> get() = data
 
     override suspend fun addComponent(component: MockComponent) = withContext(defaultDispatcher) {
         list = list + component

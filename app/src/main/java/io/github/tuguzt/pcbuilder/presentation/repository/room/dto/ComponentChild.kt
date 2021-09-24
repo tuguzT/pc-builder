@@ -7,13 +7,13 @@ import io.nacular.measured.units.Measure
 import kotlin.reflect.KProperty
 
 /**
- * Interface for entities which have foreign key [`id`][ComponentDTO.id]
- * from [`component`][ComponentDTO] table.
+ * Interface for entities which have foreign key [`id`][ComponentDto.id]
+ * from [`component`][ComponentDto] table.
  *
  * On attempt to get any field of [Component] will throw an exception
- * (because child table mustn't duplicate data from the [parent table][ComponentDTO]).
+ * (because child table mustn't duplicate data from the [parent table][ComponentDto]).
  *
- * @see ComponentDTO
+ * @see ComponentDto
  * @see Component
  */
 internal interface ComponentChild : Component {

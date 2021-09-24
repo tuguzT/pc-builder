@@ -18,7 +18,7 @@ import io.nacular.measured.units.Measure
  */
 @Entity(tableName = "component")
 @TypeConverters(MassConverter::class, DistanceConverter::class)
-data class ComponentDTO(
+data class ComponentDto(
     override val name: String,
     override val description: String,
     override val weight: Measure<Mass>,
