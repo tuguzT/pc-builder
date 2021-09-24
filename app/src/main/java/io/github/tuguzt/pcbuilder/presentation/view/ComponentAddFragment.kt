@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
-import io.github.tuguzt.pcbuilder.MainActivity
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.Component
 import io.github.tuguzt.pcbuilder.domain.model.Size
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.ComponentAddViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.MainActivityState
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.MainActivityViewModel
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
@@ -26,6 +27,7 @@ import io.nacular.measured.units.times
  */
 class ComponentAddFragment : Fragment() {
     private val viewModel: ComponentAddViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     private var _binding: FragmentComponentAddBinding? = null
 
@@ -39,9 +41,7 @@ class ComponentAddFragment : Fragment() {
     ): View {
         _binding = FragmentComponentAddBinding.inflate(inflater, container, false)
 
-        val activity = requireActivity() as MainActivity
-        val fab = activity.binding.fab
-        fab.hide()
+        activityViewModel.setActivityState(MainActivityState.FabVisibility(visible = false))
 
         val buttonAdd = binding.buttonAdd
         buttonAdd.setOnClickListener {
@@ -64,12 +64,12 @@ class ComponentAddFragment : Fragment() {
                     )
                     viewModel.addComponent(name, description, weight, size)
 
-                    val fragmentManager = activity.supportFragmentManager
+                    val fragmentManager = requireActivity().supportFragmentManager
                     val navHostFragment =
                         fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
                     navHostFragment.navController.popBackStack()
 
-                    fab.show()
+                    activityViewModel.setActivityState(MainActivityState.FabVisibility(visible = true))
 
                     snackbarShort { "Component was successfully added" }
                 } catch (e: NumberFormatException) {
