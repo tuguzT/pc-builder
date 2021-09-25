@@ -12,20 +12,7 @@ import io.github.tuguzt.pcbuilder.domain.model.Component
  *
  * @see Component
  */
-class ComponentListAdapter :
-    ListAdapter<Component, ComponentListAdapter.ComponentViewHolder>(ComponentDiffCallback) {
-
-    inner class ComponentViewHolder(private val binding: ComponentItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(component: Component) {
-            binding.run {
-                name.text = component.name
-                description.text = component.description
-            }
-        }
-    }
-
+class ComponentListAdapter : ListAdapter<Component, ComponentViewHolder>(ComponentDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val binding = ComponentItemBinding.inflate(
             LayoutInflater.from(parent.context),

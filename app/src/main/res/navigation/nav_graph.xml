@@ -13,11 +13,33 @@
         tools:layout="@layout/fragment_component_list">
         <action
             android:id="@+id/action_component_add_fragment"
+            app:destination="@id/component_add_fragment" />
+        <action
+            android:id="@+id/action_component_fragment"
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
-            app:destination="@id/component_add_fragment" />
+            app:destination="@id/component_fragment">
+            <argument
+                android:name="name"
+                app:argType="string" />
+            <argument
+                android:name="description"
+                app:argType="string" />
+            <argument
+                android:name="weight"
+                app:argType="float" />
+            <argument
+                android:name="length"
+                app:argType="float" />
+            <argument
+                android:name="width"
+                app:argType="float" />
+            <argument
+                android:name="height"
+                app:argType="float" />
+        </action>
     </fragment>
 
     <fragment
@@ -25,5 +47,11 @@
         android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentAddFragment"
         android:label="fragment_component_add"
         tools:layout="@layout/fragment_component_add" />
+
+    <fragment
+        android:id="@+id/component_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentFragment"
+        android:label="fragment_component"
+        tools:layout="@layout/fragment_component" />
 
 </navigation>
