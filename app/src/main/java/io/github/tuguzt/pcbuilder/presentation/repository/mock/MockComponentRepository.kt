@@ -3,6 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.mock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.github.tuguzt.pcbuilder.domain.model.Size
+import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.nacular.measured.units.Length.Companion.centimeters
 import io.nacular.measured.units.Mass.Companion.grams
@@ -11,13 +12,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Mock repository of [components][MockComponent].
+ * Mock repository of [components][ComponentData].
  *
- * @see MockComponent
+ * @see ComponentData
  */
-object MockComponentRepository : Repository<MockComponent> {
+object MockComponentRepository : Repository<ComponentData> {
     private var list = List(20) { index ->
-        MockComponent(
+        ComponentData(
             name = "name $index",
             description = "description $index",
             weight = index * grams,
@@ -32,14 +33,14 @@ object MockComponentRepository : Repository<MockComponent> {
 
     override val defaultDispatcher = Dispatchers.Main
 
-    override val allComponents: LiveData<out List<MockComponent>> get() = data
+    override val allComponents: LiveData<out List<ComponentData>> get() = data
 
-    override suspend fun addComponent(component: MockComponent) = withContext(defaultDispatcher) {
+    override suspend fun addComponent(component: ComponentData) = withContext(defaultDispatcher) {
         list = list + component
         data.value = list
     }
 
-    override suspend fun deleteComponent(component: MockComponent) =
+    override suspend fun deleteComponent(component: ComponentData) =
         withContext(defaultDispatcher) {
             list = list - component
             data.value = list

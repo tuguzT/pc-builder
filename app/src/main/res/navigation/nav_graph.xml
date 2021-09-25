@@ -21,24 +21,6 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
             app:destination="@id/component_fragment">
-            <argument
-                android:name="name"
-                app:argType="string" />
-            <argument
-                android:name="description"
-                app:argType="string" />
-            <argument
-                android:name="weight"
-                app:argType="float" />
-            <argument
-                android:name="length"
-                app:argType="float" />
-            <argument
-                android:name="width"
-                app:argType="float" />
-            <argument
-                android:name="height"
-                app:argType="float" />
         </action>
     </fragment>
 
@@ -52,6 +34,12 @@
         android:id="@+id/component_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentFragment"
         android:label="fragment_component"
-        tools:layout="@layout/fragment_component" />
+        tools:layout="@layout/fragment_component">
+
+        <argument
+            android:name="component"
+            app:argType="io.github.tuguzt.pcbuilder.presentation.model.ComponentData" />
+
+    </fragment>
 
 </navigation>

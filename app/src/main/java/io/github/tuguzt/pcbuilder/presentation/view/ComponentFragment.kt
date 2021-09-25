@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentBinding
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.MainActivityState
@@ -13,6 +14,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.MainActivityViewModel
 
 class ComponentFragment : Fragment() {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val args: ComponentFragmentArgs by navArgs()
 
     private var _binding: FragmentComponentBinding? = null
 
@@ -29,7 +31,7 @@ class ComponentFragment : Fragment() {
 
         activityViewModel.setActivityState(MainActivityState.FabVisibility(visible = false))
 
-        val component = requireArguments().toComponent()
+        val component = args.component
         binding.run {
             name.text = getString(R.string.component_name, component.name)
             description.text = getString(R.string.component_description, component.description)
