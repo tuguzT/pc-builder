@@ -23,5 +23,7 @@ data class ComponentDto(
     override val description: String,
     override val weight: Measure<Mass>,
     @Embedded override val size: Size,
-    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-) : Component
+    @PrimaryKey(autoGenerate = true) val id: Long,
+) : Component {
+    constructor(c: Component) : this(c.name, c.description, c.weight, c.size, id = 0L)
+}

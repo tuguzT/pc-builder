@@ -14,9 +14,9 @@ interface Repository<C : Component> {
 
     val allComponents: LiveData<out List<C>>
 
-    suspend fun addComponent(component: C)
+    suspend fun add(component: Component)
 
-    suspend fun deleteComponent(component: C)
+    suspend fun remove(component: C)
 
-    suspend fun deleteAllComponents()
+    suspend fun clear()
 }

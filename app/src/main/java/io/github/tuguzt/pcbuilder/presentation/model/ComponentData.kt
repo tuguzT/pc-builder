@@ -17,10 +17,5 @@ data class ComponentData(
     override val weight: @WriteWith<MassParceler>() Measure<Mass>,
     override val size: @WriteWith<SizeParceler>() Size,
 ) : Component, Parcelable {
-    constructor(component: Component) : this(
-        component.name,
-        component.description,
-        component.weight,
-        component.size,
-    )
+    constructor(c: Component) : this(c.name, c.description, c.weight, c.size)
 }

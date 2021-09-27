@@ -15,13 +15,13 @@ class ComponentListViewModel : ViewModel() {
 
     fun deleteComponent(component: Component) {
         viewModelScope.launch {
-            RepositoryAccess.localRepository.deleteComponent(component)
+            RepositoryAccess.localRepository.remove(component)
         }
     }
 
     fun deleteAllComponents() {
         viewModelScope.launch {
-            RepositoryAccess.localRepository.deleteAllComponents()
+            RepositoryAccess.localRepository.clear()
         }
     }
 }

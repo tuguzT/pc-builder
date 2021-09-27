@@ -2,6 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.mock
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.github.tuguzt.pcbuilder.domain.model.Component
 import io.github.tuguzt.pcbuilder.domain.model.Size
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
@@ -35,19 +36,29 @@ object MockComponentRepository : Repository<ComponentData> {
 
     override val allComponents: LiveData<out List<ComponentData>> get() = data
 
-    override suspend fun addComponent(component: ComponentData) = withContext(defaultDispatcher) {
+    override suspend fun add(component: Component) {
+        @Suppress("NAME_SHADOWING")
+        val component = when (component) {
+            is ComponentData -> component
+            else -> ComponentData(component)
+        }
         list = list + component
-        data.value = list
-    }
-
-    override suspend fun deleteComponent(component: ComponentData) =
         withContext(defaultDispatcher) {
-            list = list - component
             data.value = list
         }
+    }
 
-    override suspend fun deleteAllComponents() = withContext(defaultDispatcher) {
+    override suspend fun remove(component: ComponentData) {
+        list = list - component
+        withContext(defaultDispatcher) {
+            data.value = list
+        }
+    }
+
+    override suspend fun clear() {
         list = listOf()
-        data.value = list
+        withContext(defaultDispatcher) {
+            data.value = list
+        }
     }
 }

@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import android.app.Application
+import io.github.tuguzt.pcbuilder.domain.model.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import kotlinx.coroutines.Dispatchers
@@ -22,15 +23,22 @@ class RoomComponentRepository internal constructor(application: Application) :
 
     override val allComponents = componentsDao.getAllComponents()
 
-    override suspend fun addComponent(component: ComponentDto) = withContext(defaultDispatcher) {
-        componentsDao.addComponent(component)
+    override suspend fun add(component: Component) {
+        @Suppress("NAME_SHADOWING")
+        val component = when (component) {
+            is ComponentDto -> component
+            else -> ComponentDto(component)
+        }
+        withContext(defaultDispatcher) {
+            componentsDao.addComponent(component)
+        }
     }
 
-    override suspend fun deleteComponent(component: ComponentDto) = withContext(defaultDispatcher) {
+    override suspend fun remove(component: ComponentDto) = withContext(defaultDispatcher) {
         componentsDao.deleteComponent(component)
     }
 
-    override suspend fun deleteAllComponents() = withContext(defaultDispatcher) {
+    override suspend fun clear() = withContext(defaultDispatcher) {
         componentsDao.deleteAllComponents()
     }
 }
