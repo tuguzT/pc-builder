@@ -14,15 +14,15 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.monitor.Monit
 @Dao
 interface MonitorDao {
     @Insert
-    suspend fun addMonitor(monitor: MonitorDto)
+    suspend fun insert(monitor: MonitorDto)
 
     @Delete
-    suspend fun deleteMonitor(monitor: MonitorDto)
+    suspend fun delete(monitor: MonitorDto)
 
     @Transaction
     @Query("SELECT * FROM component")
-    fun getMonitorComponent(): LiveData<List<MonitorComponentDto>>
+    fun getAll(): LiveData<List<MonitorComponentDto>>
 
     @Query("DELETE FROM monitor")
-    suspend fun deleteAllMonitors()
+    suspend fun deleteAll()
 }

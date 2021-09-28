@@ -19,14 +19,14 @@ interface ComponentDao {
     fun findByName(name: String): LiveData<List<ComponentDto>>
 
     @Insert
-    suspend fun addComponent(component: ComponentDto)
+    suspend fun insert(component: ComponentDto)
 
     @Delete
-    suspend fun deleteComponent(component: ComponentDto)
+    suspend fun delete(component: ComponentDto)
 
     @Query("SELECT * FROM component")
-    fun getAllComponents(): LiveData<List<ComponentDto>>
+    fun getAll(): LiveData<List<ComponentDto>>
 
     @Query("DELETE FROM component")
-    suspend fun deleteAllComponents()
+    suspend fun deleteAll()
 }

@@ -21,7 +21,7 @@ class RoomComponentRepository internal constructor(application: Application) :
 
     override val defaultDispatcher = Dispatchers.IO
 
-    override val allComponents = componentsDao.getAllComponents()
+    override val allComponents = componentsDao.getAll()
 
     override suspend fun add(component: Component) {
         @Suppress("NAME_SHADOWING")
@@ -30,15 +30,15 @@ class RoomComponentRepository internal constructor(application: Application) :
             else -> ComponentDto(component)
         }
         withContext(defaultDispatcher) {
-            componentsDao.addComponent(component)
+            componentsDao.insert(component)
         }
     }
 
     override suspend fun remove(component: ComponentDto) = withContext(defaultDispatcher) {
-        componentsDao.deleteComponent(component)
+        componentsDao.delete(component)
     }
 
     override suspend fun clear() = withContext(defaultDispatcher) {
-        componentsDao.deleteAllComponents()
+        componentsDao.deleteAll()
     }
 }
