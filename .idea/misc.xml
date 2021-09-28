@@ -3,9 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/drawable/ic_outline_computer_24.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/drawable/ic_outline_memory_24.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/drawable/ic_outline_person_24.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/fragment_component.xml" value="0.1" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/fragment_login.xml" value="0.2" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.2553846153846154" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2755208333333333" />
       </map>
     </option>
   </component>

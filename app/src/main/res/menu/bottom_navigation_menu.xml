@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/components"
+        android:enabled="true"
+        android:icon="@drawable/ic_outline_memory_24"
+        android:title="@string/components" />
+    <item
+        android:id="@+id/builds"
+        android:enabled="true"
+        android:icon="@drawable/ic_outline_computer_24"
+        android:title="@string/builds" />
+    <item
+        android:id="@+id/account"
+        android:enabled="true"
+        android:icon="@drawable/ic_outline_person_24"
+        android:title="@string/account" />
+</menu>

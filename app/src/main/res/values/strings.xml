@@ -20,4 +20,8 @@
 
     <string name="height">Height</string>
     <string name="component_height">Height: %1$s</string>
+
+    <string name="builds">Builds</string>
+    <string name="components">Components</string>
+    <string name="account">Account</string>
 </resources>
