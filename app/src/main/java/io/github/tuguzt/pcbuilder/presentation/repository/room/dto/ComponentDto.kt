@@ -4,8 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import io.github.tuguzt.pcbuilder.domain.model.Component
-import io.github.tuguzt.pcbuilder.domain.model.Size
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.DistanceConverter
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.MassConverter
 import io.nacular.measured.units.Mass

@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository
 
 import androidx.lifecycle.LiveData
-import io.github.tuguzt.pcbuilder.domain.model.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**

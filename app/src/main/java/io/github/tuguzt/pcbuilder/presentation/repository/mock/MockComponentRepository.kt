@@ -2,8 +2,8 @@ package io.github.tuguzt.pcbuilder.presentation.repository.mock
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.github.tuguzt.pcbuilder.domain.model.Component
-import io.github.tuguzt.pcbuilder.domain.model.Size
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.nacular.measured.units.Length.Companion.centimeters

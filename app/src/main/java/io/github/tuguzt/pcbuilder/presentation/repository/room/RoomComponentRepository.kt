@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import android.app.Application
-import io.github.tuguzt.pcbuilder.domain.model.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import kotlinx.coroutines.Dispatchers

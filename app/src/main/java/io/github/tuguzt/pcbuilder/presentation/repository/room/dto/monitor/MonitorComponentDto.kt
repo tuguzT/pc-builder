@@ -2,7 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.monitor
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import io.github.tuguzt.pcbuilder.domain.model.monitor.Monitor
+import io.github.tuguzt.pcbuilder.domain.model.component.monitor.Monitor
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 
 /**

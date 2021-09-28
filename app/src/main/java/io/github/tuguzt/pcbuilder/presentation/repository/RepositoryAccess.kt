@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository
 
 import android.app.Application
-import io.github.tuguzt.pcbuilder.domain.model.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.mock.MockComponentRepository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomComponentRepository
 

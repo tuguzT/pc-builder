@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.monitor
 
 import androidx.room.*
-import io.github.tuguzt.pcbuilder.domain.model.monitor.*
+import io.github.tuguzt.pcbuilder.domain.model.component.monitor.*
 import io.github.tuguzt.pcbuilder.domain.model.units.Frequency
 import io.github.tuguzt.pcbuilder.domain.model.units.Luminance
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.*

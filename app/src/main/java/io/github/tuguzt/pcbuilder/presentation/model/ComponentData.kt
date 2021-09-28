@@ -1,8 +1,8 @@
 package io.github.tuguzt.pcbuilder.presentation.model
 
 import android.os.Parcelable
-import io.github.tuguzt.pcbuilder.domain.model.Component
-import io.github.tuguzt.pcbuilder.domain.model.Size
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.model.parceler.MassParceler
 import io.github.tuguzt.pcbuilder.presentation.model.parceler.SizeParceler
 import io.nacular.measured.units.Mass

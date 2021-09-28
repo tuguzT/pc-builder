@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.adapters
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ComponentItemBinding
-import io.github.tuguzt.pcbuilder.domain.model.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.ComponentListFragmentDirections
 

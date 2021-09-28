@@ -3,7 +3,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room.converters
 
 import androidx.room.TypeConverter
-import io.github.tuguzt.pcbuilder.domain.model.monitor.MonitorPWMType
+import io.github.tuguzt.pcbuilder.domain.model.component.monitor.MonitorPWMType
 import io.github.tuguzt.pcbuilder.domain.model.units.hertz
 import io.nacular.measured.units.times
 

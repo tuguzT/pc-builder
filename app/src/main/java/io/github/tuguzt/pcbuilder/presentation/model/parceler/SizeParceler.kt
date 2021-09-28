@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.model.parceler
 
 import android.os.Parcel
-import io.github.tuguzt.pcbuilder.domain.model.Size
+import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.times
 import kotlinx.parcelize.Parceler
