@@ -7,7 +7,7 @@ import io.nacular.measured.units.Measure
 import kotlin.reflect.KProperty
 
 /**
- * Interface for entities which have foreign key [`id`][ComponentDto.id]
+ * Interface for entities which have foreign key [`id`][Component.id]
  * from [`component`][ComponentDto] table.
  *
  * On attempt to get any field of [Component] will throw an exception
@@ -17,6 +17,7 @@ import kotlin.reflect.KProperty
  * @see Component
  */
 internal interface ComponentChild : Component {
+    override val id: String get() = noField(this::id)
     override val name: String get() = noField(this::name)
     override val description: String get() = noField(this::description)
     override val weight: Measure<Mass> get() = noField(this::weight)

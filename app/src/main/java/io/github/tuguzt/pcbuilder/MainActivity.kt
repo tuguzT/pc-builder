@@ -2,10 +2,15 @@ package io.github.tuguzt.pcbuilder
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
+import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
+import io.github.tuguzt.pcbuilder.presentation.repository.findById
+import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragmentDirections
+import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 
 /**
  * Entry point of the application.
@@ -23,11 +28,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        val navController = run {
+        binding.bottomNavigation.setupWithNavController(navController)
+
+        handleIntent()
+    }
+
+    private val navController: NavController
+        get() {
             val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
-            navHostFragment.navController
+            return navHostFragment.navController
         }
-        binding.bottomNavigation.setupWithNavController(navController)
+
+    private fun handleIntent() {
+        intent?.data?.let { data ->
+            val path = data.toString()
+            if (path.contains("components")) {
+                val id = path.split("/").last()
+                val liveData = RepositoryAccess.localRepository.findById(id, this)
+                liveData.observe(this) {
+                    if (it != null) {
+                        val component = when (it) {
+                            is ComponentData -> it
+                            else -> ComponentData(it)
+                        }
+                        val action = ComponentListFragmentDirections.actionComponentItemFragment(component)
+                        navController.navigate(action)
+                    } else {
+                        snackbarShort(binding.root) { "Such component does not exist!" }.show()
+                    }
+                    liveData.removeObservers(this)
+                }
+                return
+            }
+            if (path.contains("builds")) {
+                TODO("PC builds are not ready neither in Presentation, nor in Domain")
+            }
+        }
     }
 }

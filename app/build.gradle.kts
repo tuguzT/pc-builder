@@ -64,6 +64,7 @@ dependencies {
 
     // Third-Party
     implementation("io.nacular.measured:measured:0.3.0")
+    implementation("com.aventrix.jnanoid:jnanoid:2.0.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

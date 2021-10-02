@@ -20,6 +20,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.storage.Storage
  * @see Component
  */
 interface Build {
+    val id: String
     val case: Case?
     val cooler: Cooler?
     val centralProcessingUnit: CentralProcessingUnit?
@@ -36,18 +37,18 @@ interface Build {
  *
  * @see CPU
  */
-val Build.cpu: CPU? get() = centralProcessingUnit
+inline val Build.cpu: CPU? get() = centralProcessingUnit
 
 /**
  * Shorthand for [Build.graphicsProcessingUnit].
  *
  * @see GPU
  */
-val Build.gpu: GPU? get() = graphicsProcessingUnit
+inline val Build.gpu: GPU? get() = graphicsProcessingUnit
 
 /**
  * Shorthand for [Build.powerSupplyUnit].
  *
  * @see PSU
  */
-val Build.psu: PSU? get() = powerSupplyUnit
+inline val Build.psu: PSU? get() = powerSupplyUnit

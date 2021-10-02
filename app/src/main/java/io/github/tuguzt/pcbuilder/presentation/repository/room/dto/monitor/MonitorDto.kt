@@ -33,7 +33,7 @@ import io.nacular.measured.units.Time
     MonitorPWMTypeConverter::class,
 )
 data class MonitorDto(
-    val id: Long = 0L,
+    override val id: String,
     @ColumnInfo(name = "screen_size") override val screenSize: Measure<Distance>,
     @Embedded(prefix = "resolution_") override val resolution: MonitorResolution,
     @ColumnInfo(name = "refresh_rate") override val refreshRate: Measure<Frequency>,

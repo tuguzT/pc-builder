@@ -12,10 +12,11 @@ import kotlinx.parcelize.WriteWith
 
 @Parcelize
 data class ComponentData(
+    override val id: String,
     override val name: String,
     override val description: String,
     override val weight: @WriteWith<MassParceler> Measure<Mass>,
     override val size: @WriteWith<SizeParceler> Size,
 ) : Component, Parcelable {
-    constructor(c: Component) : this(c.name, c.description, c.weight, c.size)
+    constructor(c: Component) : this(c.id, c.name, c.description, c.weight, c.size)
 }

@@ -14,7 +14,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.psu.PowerSupplyUnit
 import io.github.tuguzt.pcbuilder.domain.model.component.storage.Storage
 
 /**
- * [Build] which could be mutated.
+ * [Build] which could be mutated (but [id] cannot be mutated).
  *
  * @see Build
  */
@@ -35,7 +35,7 @@ interface MutableBuild : Build {
  *
  * @see CPU
  */
-var MutableBuild.cpu: CPU?
+inline var MutableBuild.cpu: CPU?
     get() = centralProcessingUnit
     set(value) {
         centralProcessingUnit = value
@@ -46,7 +46,7 @@ var MutableBuild.cpu: CPU?
  *
  * @see GPU
  */
-var MutableBuild.gpu: GPU?
+inline var MutableBuild.gpu: GPU?
     get() = graphicsProcessingUnit
     set(value) {
         graphicsProcessingUnit = value
@@ -57,7 +57,7 @@ var MutableBuild.gpu: GPU?
  *
  * @see PSU
  */
-var MutableBuild.psu: PSU?
+inline var MutableBuild.psu: PSU?
     get() = powerSupplyUnit
     set(value) {
         powerSupplyUnit = value

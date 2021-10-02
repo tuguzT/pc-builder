@@ -19,11 +19,11 @@ import io.nacular.measured.units.Measure
 @Entity(tableName = "component")
 @TypeConverters(MassConverter::class, DistanceConverter::class)
 data class ComponentDto(
+    @PrimaryKey override val id: String,
     override val name: String,
     override val description: String,
     override val weight: Measure<Mass>,
     @Embedded override val size: Size,
-    @PrimaryKey(autoGenerate = true) val id: Long,
 ) : Component {
-    constructor(c: Component) : this(c.name, c.description, c.weight, c.size, id = 0L)
+    constructor(c: Component) : this(c.id, c.name, c.description, c.weight, c.size)
 }

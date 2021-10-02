@@ -7,6 +7,7 @@ import io.nacular.measured.units.Measure
  * Base interface for all PC components.
  */
 interface Component {
+    val id: String
     val name: String
     val description: String
     val weight: Measure<Mass>
