@@ -14,8 +14,8 @@ import kotlinx.parcelize.WriteWith
 data class ComponentData(
     override val name: String,
     override val description: String,
-    override val weight: @WriteWith<MassParceler>() Measure<Mass>,
-    override val size: @WriteWith<SizeParceler>() Size,
+    override val weight: @WriteWith<MassParceler> Measure<Mass>,
+    override val size: @WriteWith<SizeParceler> Size,
 ) : Component, Parcelable {
     constructor(c: Component) : this(c.name, c.description, c.weight, c.size)
 }

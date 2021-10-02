@@ -26,4 +26,17 @@ class ComponentListAdapter : ListAdapter<Component, ComponentViewHolder>(Compone
         val component = currentList[position]
         holder.bind(component)
     }
+
+    fun add(index: Int, component: Component) {
+        val newList = currentList.toMutableList().apply {
+            add(index, component)
+        }
+        submitList(newList)
+    }
+
+    fun removeAt(position: Int): Component {
+        val component = currentList[position]
+        submitList(currentList - component)
+        return component
+    }
 }

@@ -71,12 +71,12 @@ class ComponentAddFragment : Fragment() {
 
                     activityViewModel.setActivityState(MainActivityState.FabVisibility(visible = true))
 
-                    snackbarShort { "Component was successfully added" }
+                    snackbarShort { "Component was successfully added" }.show()
                 } catch (e: NumberFormatException) {
-                    snackbarShort { "Incorrect input!" }
+                    snackbarShort { "Incorrect input!" }.show()
                 }
             } else {
-                snackbarShort { "Some fields are empty!" }
+                snackbarShort { "Some fields are empty!" }.show()
             }
         }
 
