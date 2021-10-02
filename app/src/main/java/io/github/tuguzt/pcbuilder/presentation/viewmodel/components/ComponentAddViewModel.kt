@@ -19,8 +19,8 @@ class ComponentAddViewModel : ViewModel() {
         val id = NanoIdUtils.randomNanoId()
         val repository = RepositoryAccess.localRepository
         val component = when (repository as MutableRepository<out Component>) {
-            is MockComponentRepository -> ComponentData(id, name, description, weight, size)
-            else -> ComponentDto(id, name, description, weight, size)
+            is MockComponentRepository -> ComponentData(id, name, description, weight, size, null)
+            else -> ComponentDto(id, name, description, weight, size, null)
         }
         viewModelScope.launch {
             repository.add(component)

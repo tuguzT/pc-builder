@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 
 /**
@@ -26,7 +27,10 @@ class ComponentListAdapter :
     }
 
     override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
-        val component = currentList[position]
+        val component = when (val component = currentList[position]) {
+            is ComponentData -> component
+            else -> ComponentData(component)
+        }
         holder.bind(component)
     }
 

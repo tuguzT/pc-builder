@@ -1,9 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room.dto
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
+import androidx.room.*
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.DistanceConverter
@@ -24,6 +21,7 @@ data class ComponentDto(
     override val description: String,
     override val weight: Measure<Mass>,
     @Embedded override val size: Size,
+    @ColumnInfo(name = "image_uri") val imageUri: String?,
 ) : Component {
-    constructor(c: Component) : this(c.id, c.name, c.description, c.weight, c.size)
+    constructor(c: Component) : this(c.id, c.name, c.description, c.weight, c.size, null)
 }

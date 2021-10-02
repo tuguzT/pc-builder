@@ -29,6 +29,7 @@ object MockComponentRepository : MutableRepository<ComponentData> {
                 width = index * centimeters,
                 height = index * centimeters,
             ),
+            imageUri = null,
         )
     }
     private val data = MutableLiveData(list)

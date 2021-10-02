@@ -4,6 +4,8 @@
     <string name="add_new_component">Add new component</string>
     <string name="create_component">Create component</string>
     <string name="item_component_share_title">Share your component</string>
+    <string name="component_image">Component image</string>
+    <string name="item_component_choose_image">Choose custom image for component</string>
 
     <string name="add_new_build">Add new build</string>
     <string name="create_build">Create build</string>

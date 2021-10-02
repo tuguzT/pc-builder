@@ -1,16 +1,23 @@
 package io.github.tuguzt.pcbuilder.presentation.view.components
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentItemBinding
+import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
+import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentListViewModel
 
 class ComponentItemFragment : Fragment() {
     private val args: ComponentItemFragmentArgs by navArgs()
+    private val viewModel: ComponentListViewModel by viewModels()
 
     private var _binding: FragmentComponentItemBinding? = null
 
@@ -56,6 +63,32 @@ class ComponentItemFragment : Fragment() {
             val shareIntent = Intent.createChooser(sendIntent, title)
             startActivity(shareIntent)
             true
+        }
+        R.id.component_item_image -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                val activity = requireActivity()
+                activity.activityResultRegistry
+                    .register("key", ActivityResultContracts.OpenDocument()) { uri ->
+                        activity.applicationContext.contentResolver.takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                        )
+                        val component = args.component
+                        viewModel.updateComponent(ComponentData(
+                            component.id,
+                            component.name,
+                            component.description,
+                            component.weight,
+                            component.size,
+                            uri.toString(),
+                        ))
+                    }
+                    .launch(arrayOf("image/*"))
+                true
+            } else {
+                snackbarShort { "This is supported only on Android devices above 4.4 KitKat" }.show()
+                super.onOptionsItemSelected(item)
+            }
         }
         else -> super.onOptionsItemSelected(item)
     }
