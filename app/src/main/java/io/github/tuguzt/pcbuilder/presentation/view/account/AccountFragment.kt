@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import io.github.tuguzt.pcbuilder.databinding.AccountFragmentBinding
+import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 
 /**
@@ -15,7 +15,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewMode
 class AccountFragment : Fragment() {
     private val viewModel: AccountViewModel by activityViewModels()
 
-    private var _binding: AccountFragmentBinding? = null
+    private var _binding: FragmentAccountBinding? = null
 
     // This helper property is only valid between
     // `onCreateView` and `onDestroyView`.
@@ -26,7 +26,7 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = AccountFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentAccountBinding.inflate(inflater, container, false)
         return binding.root
     }
 

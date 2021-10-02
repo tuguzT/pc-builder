@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.github.tuguzt.pcbuilder.databinding.ComponentItemBinding
+import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 
 /**
@@ -14,7 +14,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
  */
 class ComponentListAdapter : ListAdapter<Component, ComponentViewHolder>(ComponentDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
-        val binding = ComponentItemBinding.inflate(
+        val binding = ItemComponentBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false,

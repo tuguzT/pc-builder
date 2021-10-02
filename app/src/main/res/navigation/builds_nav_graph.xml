@@ -10,6 +10,6 @@
         android:id="@+id/builds_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.builds.BuildListFragment"
         android:label="builds_fragment"
-        tools:layout="@layout/build_list_fragment" />
+        tools:layout="@layout/fragment_build_list" />
 
 </navigation>
