@@ -66,7 +66,7 @@ class ComponentListFragment : Fragment() {
                         }
                         addCallback(object : Snackbar.Callback() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                if (event == DISMISS_EVENT_TIMEOUT) {
+                                if (event != DISMISS_EVENT_ACTION) {
                                     viewModel.deleteComponent(item)
                                 }
                             }
