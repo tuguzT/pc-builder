@@ -14,7 +14,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.psu.PowerSupplyUnit
 import io.github.tuguzt.pcbuilder.domain.model.component.storage.Storage
 
 /**
- * [Build] which could be mutated (but [id] cannot be mutated).
+ * [Build] which could be mutated.
  *
  * @see Build
  */

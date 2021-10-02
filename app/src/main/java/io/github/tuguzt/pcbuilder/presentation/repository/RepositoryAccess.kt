@@ -11,10 +11,10 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomComponentRepo
 @Suppress("UNCHECKED_CAST")
 object RepositoryAccess {
     @JvmStatic
-    val localRepository: Repository<Component>
+    val localRepository: MutableRepository<String, Component>
         get() {
             if (pLocalRepository == null) {
-                pLocalRepository = MockComponentRepository as Repository<Component>
+                pLocalRepository = MockComponentRepository as MutableRepository<String, Component>
             }
             return pLocalRepository!!
         }
@@ -22,9 +22,9 @@ object RepositoryAccess {
     @JvmStatic
     fun initRoom(application: Application): RoomComponentRepository {
         val roomRepository = RoomComponentRepository(application)
-        pLocalRepository = roomRepository as Repository<Component>
+        pLocalRepository = roomRepository as MutableRepository<String, Component>
         return roomRepository
     }
 
-    private var pLocalRepository: Repository<Component>? = null
+    private var pLocalRepository: MutableRepository<String, Component>? = null
 }

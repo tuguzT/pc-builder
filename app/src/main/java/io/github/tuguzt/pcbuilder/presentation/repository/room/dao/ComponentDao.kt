@@ -1,10 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 
@@ -20,6 +17,9 @@ interface ComponentDao {
 
     @Insert
     suspend fun insert(component: ComponentDto)
+
+    @Update
+    suspend fun update(component: ComponentDto)
 
     @Delete
     suspend fun delete(component: ComponentDto)

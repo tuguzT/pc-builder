@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
  * [ViewModel] subclass for [ComponentAddFragment].
  */
 class ComponentListViewModel : ViewModel() {
-    val allComponents = RepositoryAccess.localRepository.allComponents
+    val allComponents = RepositoryAccess.localRepository.allData
 
     fun deleteComponent(component: Component) {
         viewModelScope.launch {

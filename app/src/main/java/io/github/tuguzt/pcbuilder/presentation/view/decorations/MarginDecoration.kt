@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.view.components.decorations
+package io.github.tuguzt.pcbuilder.presentation.view.decorations
 
 import android.graphics.Rect
 import android.view.View

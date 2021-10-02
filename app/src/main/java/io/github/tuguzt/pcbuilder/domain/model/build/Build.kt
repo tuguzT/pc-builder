@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.domain.model.build
 
+import io.github.tuguzt.pcbuilder.domain.model.Identifiable
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.cases.Case
 import io.github.tuguzt.pcbuilder.domain.model.component.cooler.Cooler
@@ -19,8 +20,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.storage.Storage
  *
  * @see Component
  */
-interface Build {
-    val id: String
+interface Build : Identifiable<String> {
     val case: Case?
     val cooler: Cooler?
     val centralProcessingUnit: CentralProcessingUnit?

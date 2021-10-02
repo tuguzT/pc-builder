@@ -16,6 +16,9 @@ interface MonitorDao {
     @Insert
     suspend fun insert(monitor: MonitorDto)
 
+    @Update
+    suspend fun update(monitor: MonitorDto)
+
     @Delete
     suspend fun delete(monitor: MonitorDto)
 

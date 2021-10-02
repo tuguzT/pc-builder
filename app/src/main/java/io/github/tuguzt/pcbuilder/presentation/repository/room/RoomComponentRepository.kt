@@ -1,8 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import android.app.Application
-import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.repository.Repository
+import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,28 +13,25 @@ import kotlinx.coroutines.withContext
  * @see ComponentDto
  */
 class RoomComponentRepository internal constructor(application: Application) :
-    Repository<ComponentDto> {
+    MutableRepository<String, ComponentDto> {
 
     private val roomDatabase = RoomComponentDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao
 
     override val defaultDispatcher = Dispatchers.IO
 
-    override val allComponents = componentsDao.getAll()
+    override val allData = componentsDao.getAll()
 
-    override suspend fun add(component: Component) {
-        @Suppress("NAME_SHADOWING")
-        val component = when (component) {
-            is ComponentDto -> component
-            else -> ComponentDto(component)
-        }
-        withContext(defaultDispatcher) {
-            componentsDao.insert(component)
-        }
+    override suspend fun add(item: ComponentDto) = withContext(defaultDispatcher) {
+        componentsDao.insert(item)
     }
 
-    override suspend fun remove(component: ComponentDto) = withContext(defaultDispatcher) {
-        componentsDao.delete(component)
+    override suspend fun update(item: ComponentDto) = withContext(defaultDispatcher) {
+        componentsDao.update(item)
+    }
+
+    override suspend fun remove(item: ComponentDto) = withContext(defaultDispatcher) {
+        componentsDao.delete(item)
     }
 
     override suspend fun clear() = withContext(defaultDispatcher) {

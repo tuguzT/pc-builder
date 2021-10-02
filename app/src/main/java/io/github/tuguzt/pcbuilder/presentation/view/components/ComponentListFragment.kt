@@ -14,7 +14,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
-import io.github.tuguzt.pcbuilder.presentation.view.components.decorations.MarginDecoration
+import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentListViewModel
 

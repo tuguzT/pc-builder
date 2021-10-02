@@ -17,7 +17,6 @@ import kotlin.reflect.KProperty
  * @see Component
  */
 internal interface ComponentChild : Component {
-    override val id: String get() = noField(this::id)
     override val name: String get() = noField(this::name)
     override val description: String get() = noField(this::description)
     override val weight: Measure<Mass> get() = noField(this::weight)
