@@ -19,6 +19,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.storage.Storage
  * @see Build
  */
 interface MutableBuild : Build {
+    override var name: String
     override var case: Case?
     override var cooler: Cooler?
     override var centralProcessingUnit: CentralProcessingUnit?

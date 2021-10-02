@@ -52,7 +52,7 @@ class ComponentItemFragment : Fragment() {
                 putExtra(Intent.EXTRA_TEXT, link)
                 type = "text/plain"
             }
-            val title = getString(R.string.component_item_share_title)
+            val title = getString(R.string.item_component_share_title)
             val shareIntent = Intent.createChooser(sendIntent, title)
             startActivity(shareIntent)
             true

@@ -21,6 +21,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.storage.Storage
  * @see Component
  */
 interface Build : Identifiable<String> {
+    val name: String
     val case: Case?
     val cooler: Cooler?
     val centralProcessingUnit: CentralProcessingUnit?

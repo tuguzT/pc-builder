@@ -20,8 +20,8 @@ import io.nacular.measured.units.Time
     tableName = "monitor",
     foreignKeys = [ForeignKey(
         entity = ComponentDto::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("id"),
+        parentColumns = ["id"],
+        childColumns = ["id"],
         onDelete = ForeignKey.CASCADE,
     )],
 )

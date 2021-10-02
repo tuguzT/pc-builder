@@ -40,10 +40,10 @@ class ComponentListFragment : Fragment() {
         _binding = FragmentComponentListBinding.inflate(inflater, container, false)
 
         val adapter = ComponentListAdapter()
-        binding.componentList.adapter = adapter
+        binding.list.adapter = adapter
 
         val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
-        binding.componentList.addItemDecoration(MarginDecoration(spaceSize))
+        binding.list.addItemDecoration(MarginDecoration(spaceSize))
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.ACTION_STATE_IDLE,
@@ -75,7 +75,7 @@ class ComponentListFragment : Fragment() {
                     .show()
             }
         })
-        itemTouchHelper.attachToRecyclerView(binding.componentList)
+        itemTouchHelper.attachToRecyclerView(binding.list)
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_component_add_fragment)

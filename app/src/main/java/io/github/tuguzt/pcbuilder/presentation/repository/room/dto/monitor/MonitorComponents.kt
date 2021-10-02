@@ -13,9 +13,9 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
  * @see ComponentDto
  * @see MonitorDto
  */
-data class MonitorComponentDto(
-    @Embedded private val component: ComponentDto,
-    @Relation(parentColumn = "id", entityColumn = "id") private val monitor: MonitorDto,
+data class MonitorComponents(
+    @Embedded private val monitor: MonitorDto,
+    @Relation(parentColumn = "id", entityColumn = "id") private val component: ComponentDto,
 ) : Monitor {
     override val id = component.id
     override val name = component.name

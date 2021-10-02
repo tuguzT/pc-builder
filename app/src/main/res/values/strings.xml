@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">PC Builder</string>
+
     <string name="add_new_component">Add new component</string>
     <string name="create_component">Create component</string>
-    <string name="component_item_share_title">Share your component</string>
+    <string name="item_component_share_title">Share your component</string>
+
+    <string name="add_new_build">Add new build</string>
+    <string name="create_build">Create build</string>
+    <string name="item_build_share_title">Share your build</string>
 
     <string name="name">Name</string>
     <string name="component_name">Name: %1$s</string>
