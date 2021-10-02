@@ -12,16 +12,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.monitor.Monit
  * @see Monitor
  */
 @Dao
-interface MonitorDao {
-    @Insert
-    suspend fun insert(monitor: MonitorDto)
-
-    @Update
-    suspend fun update(monitor: MonitorDto)
-
-    @Delete
-    suspend fun delete(monitor: MonitorDto)
-
+interface MonitorDao : IDao<MonitorDto> {
     @Transaction
     @Query("SELECT * FROM component")
     fun getAll(): LiveData<List<MonitorComponentDto>>

@@ -18,7 +18,7 @@ class ComponentAddViewModel : ViewModel() {
     fun addComponent(name: String, description: String, weight: Measure<Mass>, size: Size) {
         val id = NanoIdUtils.randomNanoId()
         val repository = RepositoryAccess.localRepository
-        val component = when (repository as MutableRepository<String, out Component>) {
+        val component = when (repository as MutableRepository<out Component>) {
             is MockComponentRepository -> ComponentData(id, name, description, weight, size)
             else -> ComponentDto(id, name, description, weight, size)
         }

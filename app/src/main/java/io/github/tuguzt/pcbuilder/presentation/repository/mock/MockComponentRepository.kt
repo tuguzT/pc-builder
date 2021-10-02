@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
  *
  * @see ComponentData
  */
-object MockComponentRepository : MutableRepository<String, ComponentData> {
+object MockComponentRepository : MutableRepository<ComponentData> {
     private var list = List(20) { index ->
         ComponentData(
             id = NanoIdUtils.randomNanoId(),

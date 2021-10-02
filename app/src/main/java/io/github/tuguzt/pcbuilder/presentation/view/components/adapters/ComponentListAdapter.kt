@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 
 /**
  * [RecyclerView.Adapter] that can display a [Component].
  *
  * @see Component
  */
-class ComponentListAdapter : ListAdapter<Component, ComponentViewHolder>(ComponentDiffCallback) {
+class ComponentListAdapter :
+    ListAdapter<Component, ComponentViewHolder>(DiffCallback<String, Component>()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val binding = ItemComponentBinding.inflate(
             LayoutInflater.from(parent.context),

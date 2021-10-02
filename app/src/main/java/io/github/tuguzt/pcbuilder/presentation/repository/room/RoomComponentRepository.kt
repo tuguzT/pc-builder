@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
  * @see ComponentDto
  */
 class RoomComponentRepository internal constructor(application: Application) :
-    MutableRepository<String, ComponentDto> {
+    MutableRepository<ComponentDto> {
 
     private val roomDatabase = RoomComponentDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao

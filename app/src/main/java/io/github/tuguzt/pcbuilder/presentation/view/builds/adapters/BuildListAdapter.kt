@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemBuildBinding
 import io.github.tuguzt.pcbuilder.domain.model.build.Build
+import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 
 /**
  * [RecyclerView.Adapter] that can display a [Build].
  *
  * @see Build
  */
-class BuildListAdapter : ListAdapter<Build, BuildViewHolder>(BuildDiffCallback) {
+class BuildListAdapter : ListAdapter<Build, BuildViewHolder>(DiffCallback<String, Build>()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuildViewHolder {
         val binding = ItemBuildBinding.inflate(
             LayoutInflater.from(parent.context),

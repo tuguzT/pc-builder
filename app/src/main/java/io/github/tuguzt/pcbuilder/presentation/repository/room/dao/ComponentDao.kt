@@ -11,18 +11,9 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
  * @see Component
  */
 @Dao
-interface ComponentDao {
+interface ComponentDao : IDao<ComponentDto> {
     @Query("SELECT * FROM component WHERE name LIKE :name")
     fun findByName(name: String): LiveData<List<ComponentDto>>
-
-    @Insert
-    suspend fun insert(component: ComponentDto)
-
-    @Update
-    suspend fun update(component: ComponentDto)
-
-    @Delete
-    suspend fun delete(component: ComponentDto)
 
     @Query("SELECT * FROM component")
     fun getAll(): LiveData<List<ComponentDto>>

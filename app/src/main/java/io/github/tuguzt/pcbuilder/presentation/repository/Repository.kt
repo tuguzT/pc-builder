@@ -12,13 +12,13 @@ import kotlinx.coroutines.CoroutineDispatcher
  *
  * @see MutableRepository
  */
-interface Repository<I : Comparable<I>, out T : Identifiable<I>> {
+interface Repository<out T> {
     val defaultDispatcher: CoroutineDispatcher
 
     val allData: LiveData<out List<T>>
 }
 
-fun <I : Comparable<I>, T : Identifiable<I>> Repository<I, T>.findById(
+fun <I : Comparable<I>, T : Identifiable<I>> Repository<T>.findById(
     id: String,
     owner: LifecycleOwner,
 ): LiveData<T> = MutableLiveData<T>().apply {
