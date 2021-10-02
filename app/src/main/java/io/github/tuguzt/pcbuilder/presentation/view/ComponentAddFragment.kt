@@ -1,5 +1,3 @@
-@file:Suppress("NAME_SHADOWING")
-
 package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.os.Bundle
@@ -14,8 +12,6 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.ComponentAddViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.MainActivityState
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.MainActivityViewModel
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
@@ -27,7 +23,6 @@ import io.nacular.measured.units.times
  */
 class ComponentAddFragment : Fragment() {
     private val viewModel: ComponentAddViewModel by activityViewModels()
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     private var _binding: FragmentComponentAddBinding? = null
 
@@ -40,8 +35,6 @@ class ComponentAddFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentComponentAddBinding.inflate(inflater, container, false)
-
-        activityViewModel.setActivityState(MainActivityState.FabVisibility(visible = false))
 
         val buttonAdd = binding.buttonAdd
         buttonAdd.setOnClickListener {
@@ -56,6 +49,7 @@ class ComponentAddFragment : Fragment() {
                 && length.isNotBlank() && width.isNotBlank() && height.isNotBlank()
             ) {
                 try {
+                    @Suppress("NAME_SHADOWING")
                     val weight = weight.toDouble() * grams
                     val size = Size(
                         length.toDouble() * meters,
@@ -68,8 +62,6 @@ class ComponentAddFragment : Fragment() {
                     val navHostFragment =
                         fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
                     navHostFragment.navController.popBackStack()
-
-                    activityViewModel.setActivityState(MainActivityState.FabVisibility(visible = true))
 
                     snackbarShort { "Component was successfully added" }.show()
                 } catch (e: NumberFormatException) {
