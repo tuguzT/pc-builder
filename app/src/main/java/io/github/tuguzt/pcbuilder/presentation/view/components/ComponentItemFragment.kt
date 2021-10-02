@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.view
+package io.github.tuguzt.pcbuilder.presentation.view.components
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import io.github.tuguzt.pcbuilder.R
-import io.github.tuguzt.pcbuilder.databinding.FragmentComponentBinding
+import io.github.tuguzt.pcbuilder.databinding.FragmentComponentItemBinding
 
-class ComponentFragment : Fragment() {
-    private val args: ComponentFragmentArgs by navArgs()
+class ComponentItemFragment : Fragment() {
+    private val args: ComponentItemFragmentArgs by navArgs()
 
-    private var _binding: FragmentComponentBinding? = null
+    private var _binding: FragmentComponentItemBinding? = null
 
     // This helper property is only valid between
     // `onCreateView` and `onDestroyView`.
@@ -23,7 +23,7 @@ class ComponentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentComponentBinding.inflate(inflater, container, false)
+        _binding = FragmentComponentItemBinding.inflate(inflater, container, false)
 
         val component = args.component
         binding.run {

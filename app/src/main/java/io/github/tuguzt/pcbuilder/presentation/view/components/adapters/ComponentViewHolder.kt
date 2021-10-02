@@ -1,11 +1,11 @@
-package io.github.tuguzt.pcbuilder.presentation.view.adapters
+package io.github.tuguzt.pcbuilder.presentation.view.components.adapters
 
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ComponentItemBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.view.ComponentListFragmentDirections
+import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragmentDirections
 
 class ComponentViewHolder(private val binding: ComponentItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -16,7 +16,7 @@ class ComponentViewHolder(private val binding: ComponentItemBinding) :
     init {
         binding.root.setOnClickListener {
             val component = ComponentData(component)
-            val action = ComponentListFragmentDirections.actionComponentFragment(component)
+            val action = ComponentListFragmentDirections.actionComponentItemFragment(component)
             it.findNavController().navigate(action)
         }
     }

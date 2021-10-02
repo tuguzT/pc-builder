@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/components_nav_graph">
+
+    <include app:graph="@navigation/components_nav_graph" />
+
+    <fragment
+        android:id="@+id/builds_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.builds.BuildsFragment"
+        android:label="builds_fragment"
+        tools:layout="@layout/builds_fragment" />
+
+    <fragment
+        android:id="@+id/account_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.account.AccountFragment"
+        android:label="account_fragment"
+        tools:layout="@layout/account_fragment" />
+
+</navigation>

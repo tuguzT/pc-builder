@@ -3,38 +3,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/component_list_fragment">
+    android:id="@+id/components_nav_graph"
+    app:startDestination="@id/component_container_fragment">
 
     <fragment
-        android:id="@+id/component_list_fragment"
-        android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentListFragment"
+        android:id="@+id/component_container_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragment"
         android:label="fragment_component_list"
         tools:layout="@layout/fragment_component_list">
         <action
             android:id="@+id/action_component_add_fragment"
             app:destination="@id/component_add_fragment" />
         <action
-            android:id="@+id/action_component_fragment"
+            android:id="@+id/action_component_item_fragment"
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
-            app:destination="@id/component_fragment">
+            app:destination="@id/component_item_fragment">
         </action>
     </fragment>
 
     <fragment
         android:id="@+id/component_add_fragment"
-        android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentAddFragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentAddFragment"
         android:label="fragment_component_add"
         tools:layout="@layout/fragment_component_add" />
 
     <fragment
-        android:id="@+id/component_fragment"
-        android:name="io.github.tuguzt.pcbuilder.presentation.view.ComponentFragment"
+        android:id="@+id/component_item_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentItemFragment"
         android:label="fragment_component"
-        tools:layout="@layout/fragment_component">
+        tools:layout="@layout/fragment_component_item">
 
         <argument
             android:name="component"

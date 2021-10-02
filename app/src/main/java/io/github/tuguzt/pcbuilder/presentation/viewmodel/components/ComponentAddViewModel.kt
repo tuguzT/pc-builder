@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.viewmodel
+package io.github.tuguzt.pcbuilder.presentation.viewmodel.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

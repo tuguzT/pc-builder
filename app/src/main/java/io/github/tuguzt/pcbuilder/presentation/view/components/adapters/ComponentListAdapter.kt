@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.view.adapters
+package io.github.tuguzt.pcbuilder.presentation.view.components.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

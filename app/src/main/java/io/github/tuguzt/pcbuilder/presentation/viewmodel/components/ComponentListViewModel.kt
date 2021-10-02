@@ -1,10 +1,10 @@
-package io.github.tuguzt.pcbuilder.presentation.viewmodel
+package io.github.tuguzt.pcbuilder.presentation.viewmodel.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
-import io.github.tuguzt.pcbuilder.presentation.view.ComponentAddFragment
+import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentAddFragment
 import kotlinx.coroutines.launch
 
 /**

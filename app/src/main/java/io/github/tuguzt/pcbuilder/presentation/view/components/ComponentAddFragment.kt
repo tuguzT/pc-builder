@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.view
+package io.github.tuguzt.pcbuilder.presentation.view.components
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,8 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.ComponentAddViewModel
+import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentAddViewModel
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
@@ -60,7 +61,7 @@ class ComponentAddFragment : Fragment() {
 
                     val fragmentManager = requireActivity().supportFragmentManager
                     val navHostFragment =
-                        fragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                        fragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
                     navHostFragment.navController.popBackStack()
 
                     snackbarShort { "Component was successfully added" }.show()
