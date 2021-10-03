@@ -27,26 +27,28 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
     fun bind(component: ComponentData) {
         _component = component
         binding.run {
-            val imageUri = component.imageUri
-            if (imageUri != null) {
-                try {
-                    val uri = Uri.parse(imageUri)
-                    val contentResolver = binding.root.context.contentResolver
-                    imageView.setImageBitmap(
-                        BitmapFactory.decodeFileDescriptor(
-                            contentResolver.openFileDescriptor(uri, "r")?.fileDescriptor
-                        )
-                    )
-                } catch (e: FileNotFoundException) {
-                    Log.e(this@ComponentViewHolder::class.simpleName, "File not found: $e")
-                } catch (e: NullPointerException) {
-                    Log.e(this@ComponentViewHolder::class.simpleName, "WTF...: $e")
-                }
-            } else {
-                imageView.visibility = View.GONE
-            }
             name.text = component.name
             description.text = component.description
+
+            val imageUri = component.imageUri
+            if (imageUri == null) {
+                imageView.visibility = View.GONE
+                return@run
+            }
+            imageView.visibility = View.VISIBLE
+            try {
+                val uri = Uri.parse(imageUri)
+                val contentResolver = binding.root.context.contentResolver
+                imageView.setImageBitmap(
+                    BitmapFactory.decodeFileDescriptor(
+                        contentResolver.openFileDescriptor(uri, "r")?.fileDescriptor
+                    )
+                )
+            } catch (e: FileNotFoundException) {
+                Log.e(this@ComponentViewHolder::class.simpleName, "File not found: $e")
+            } catch (e: NullPointerException) {
+                Log.e(this@ComponentViewHolder::class.simpleName, "WTF...: $e")
+            }
         }
     }
 }
