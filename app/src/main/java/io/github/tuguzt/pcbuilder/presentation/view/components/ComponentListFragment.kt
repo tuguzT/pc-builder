@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +16,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentListViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsViewModel
 
 /**
  * A [Fragment] subclass which represents list of [components][Component].
@@ -24,7 +24,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentLis
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private val viewModel: ComponentListViewModel by activityViewModels()
+    private val viewModel: ComponentsViewModel by viewModels()
 
     private var _binding: FragmentComponentListBinding? = null
 

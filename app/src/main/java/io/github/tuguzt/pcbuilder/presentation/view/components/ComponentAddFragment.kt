@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentAddViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsViewModel
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
@@ -23,7 +23,9 @@ import io.nacular.measured.units.times
  * @see Component
  */
 class ComponentAddFragment : Fragment() {
-    private val viewModel: ComponentAddViewModel by activityViewModels()
+    private val viewModel: ComponentsViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
     private var _binding: FragmentComponentAddBinding? = null
 
@@ -57,7 +59,7 @@ class ComponentAddFragment : Fragment() {
                         width.toDouble() * meters,
                         height.toDouble() * meters,
                     )
-                    viewModel.addComponent(name, description, weight, size)
+                    viewModel.addComponent(name.trim(), description.trim(), weight, size)
 
                     val fragmentManager = requireActivity().supportFragmentManager
                     val navHostFragment =

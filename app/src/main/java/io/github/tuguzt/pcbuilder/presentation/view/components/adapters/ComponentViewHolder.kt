@@ -3,6 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.components.adapters
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
@@ -18,7 +19,6 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
 
     init {
         binding.root.setOnClickListener {
-            val component = ComponentData(component)
             val action = ComponentListFragmentDirections.actionComponentItemFragment(component)
             it.findNavController().navigate(action)
         }
@@ -27,10 +27,10 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
     fun bind(component: ComponentData) {
         _component = component
         binding.run {
-            Log.e(this::class.simpleName, component.imageUri.toString())
-            component.imageUri?.let {
+            val imageUri = component.imageUri
+            if (imageUri != null) {
                 try {
-                    val uri = Uri.parse(it)
+                    val uri = Uri.parse(imageUri)
                     val contentResolver = binding.root.context.contentResolver
                     imageView.setImageBitmap(
                         BitmapFactory.decodeFileDescriptor(
@@ -38,10 +38,12 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
                         )
                     )
                 } catch (e: FileNotFoundException) {
-                    Log.e(this::class.simpleName, "File not found: $e")
+                    Log.e(this@ComponentViewHolder::class.simpleName, "File not found: $e")
                 } catch (e: NullPointerException) {
-                    Log.e(this::class.simpleName, "WTF...: $e")
+                    Log.e(this@ComponentViewHolder::class.simpleName, "WTF...: $e")
                 }
+            } else {
+                imageView.visibility = View.GONE
             }
             name.text = component.name
             description.text = component.description

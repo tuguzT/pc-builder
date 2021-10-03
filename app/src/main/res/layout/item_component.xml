@@ -16,7 +16,8 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
             android:background="?attr/colorButtonNormal" />
 
         <androidx.appcompat.widget.LinearLayoutCompat

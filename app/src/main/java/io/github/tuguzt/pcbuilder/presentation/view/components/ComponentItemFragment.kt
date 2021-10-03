@@ -13,11 +13,13 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentComponentItemBinding
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentListViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsViewModel
 
 class ComponentItemFragment : Fragment() {
     private val args: ComponentItemFragmentArgs by navArgs()
-    private val viewModel: ComponentListViewModel by viewModels()
+    private val viewModel: ComponentsViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
     private var _binding: FragmentComponentItemBinding? = null
 
@@ -67,23 +69,26 @@ class ComponentItemFragment : Fragment() {
         R.id.component_item_image -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 val activity = requireActivity()
-                activity.activityResultRegistry
-                    .register("key", ActivityResultContracts.OpenDocument()) { uri ->
+                activity.activityResultRegistry.register(
+                    "key",
+                    ActivityResultContracts.OpenDocument(),
+                ) {
+                    it?.let { uri ->
                         activity.applicationContext.contentResolver.takePersistableUriPermission(
                             uri,
                             Intent.FLAG_GRANT_READ_URI_PERMISSION,
                         )
-                        val component = args.component
-                        viewModel.updateComponent(ComponentData(
-                            component.id,
-                            component.name,
-                            component.description,
-                            component.weight,
-                            component.size,
+                        val component = ComponentData(
+                            args.component.id,
+                            args.component.name,
+                            args.component.description,
+                            args.component.weight,
+                            args.component.size,
                             uri.toString(),
-                        ))
+                        )
+                        viewModel.updateComponent(component)
                     }
-                    .launch(arrayOf("image/*"))
+                }.launch(arrayOf("image/*"))
                 true
             } else {
                 snackbarShort { "This is supported only on Android devices above 4.4 KitKat" }.show()
