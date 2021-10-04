@@ -41,29 +41,28 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun handleIntent() {
-        intent?.data?.let { data ->
-            val path = data.toString()
-            if (path.contains("components")) {
-                val id = path.split("/").last()
-                val liveData = RepositoryAccess.localRepository.findById(id, this)
-                liveData.observe(this) {
-                    if (it != null) {
-                        val component = when (it) {
-                            is ComponentData -> it
-                            else -> ComponentData(it)
-                        }
-                        val action = ComponentListFragmentDirections.actionComponentItemFragment(component)
-                        navController.navigate(action)
-                    } else {
-                        snackbarShort(binding.root) { "Such component does not exist!" }.show()
+        val parts = intent?.data?.toString()?.split("/") ?: return
+        if ("components" in parts) {
+            val id = parts.last()
+            val liveData = RepositoryAccess.localRepository.findById(id, this)
+            liveData.observe(this) {
+                if (it != null) {
+                    val component = when (it) {
+                        is ComponentData -> it
+                        else -> ComponentData(it)
                     }
-                    liveData.removeObservers(this)
+                    val action = ComponentListFragmentDirections.actionComponentItemFragment(component)
+                    navController.navigate(action)
+                } else {
+                    snackbarShort(binding.root) { "Such component does not exist!" }.show()
                 }
-                return
+                liveData.removeObservers(this)
             }
-            if (path.contains("builds")) {
-                TODO("PC builds are not ready neither in Presentation, nor in Domain")
-            }
+            return
         }
+        if ("builds" in parts) {
+            TODO("PC builds are not ready neither in Presentation, nor in Domain")
+        }
+        snackbarShort(binding.root) { "Provided deep link is invalid!" }.show()
     }
 }
