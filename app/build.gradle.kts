@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.tuguzt.pcbuilder"
-        minSdk = 16
+        minSdk = 19
         targetSdk = 30
         versionCode = 1
         versionName = "1.0"
