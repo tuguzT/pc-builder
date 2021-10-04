@@ -22,16 +22,4 @@ data class MonitorComponents(
     override val description = component.description
     override val weight = component.weight
     override val size = component.size
-    override val screenSize = monitor.screenSize
-    override val resolution = monitor.resolution
-    override val refreshRate = monitor.refreshRate
-    override val responseTime = monitor.responseTime
-    override val aspectRatio = monitor.aspectRatio
-    override val panelType = monitor.panelType
-    override val luminance = monitor.luminance
-    override val screenType = monitor.screenType
-    override val contrastRatio = monitor.contrastRatio
-    override val monitorInterface = monitor.monitorInterface
-    override val pwmType = monitor.pwmType
-    override val frameSyncType = monitor.frameSyncType
 }
