@@ -6,17 +6,25 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentItemBinding
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
+import io.github.tuguzt.pcbuilder.presentation.view.toastShort
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentItemViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentItemViewModelFactory
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsViewModel
 
 class ComponentItemFragment : Fragment() {
     private val args: ComponentItemFragmentArgs by navArgs()
-    private val viewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
+
+    private val sharedViewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val viewModel: ComponentItemViewModel by viewModels { ComponentItemViewModelFactory(args.id) }
 
     private var _binding: FragmentComponentItemBinding? = null
 
@@ -36,15 +44,16 @@ class ComponentItemFragment : Fragment() {
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION,
                 )
-                val component = ComponentData(
-                    args.component.id,
-                    args.component.name,
-                    args.component.description,
-                    args.component.weight,
-                    args.component.size,
+                val component = viewModel.component.value!!
+                val updatedComponent = ComponentData(
+                    component.id,
+                    component.name,
+                    component.description,
+                    component.weight,
+                    component.size,
                     uri.toString(),
                 )
-                viewModel.updateComponent(component)
+                sharedViewModel.updateComponent(updatedComponent)
             }
         }
     }
@@ -57,14 +66,20 @@ class ComponentItemFragment : Fragment() {
         _binding = FragmentComponentItemBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
 
-        val component = args.component
-        binding.run {
-            name.text = getString(R.string.component_name, component.name)
-            description.text = getString(R.string.component_description, component.description)
-            weight.text = getString(R.string.component_weight, component.weight)
-            length.text = getString(R.string.component_length, component.size.length)
-            width.text = getString(R.string.component_width, component.size.width)
-            height.text = getString(R.string.component_height, component.size.height)
+        viewModel.component.observe(viewLifecycleOwner) { component: Component? ->
+            if (component == null) {
+                toastShort { "Component retrieved from deep link does not exist!" }.show()
+                findNavController().navigate(R.id.component_list_fragment)
+                return@observe
+            }
+            binding.run {
+                name.text = getString(R.string.component_name, component.name)
+                description.text = getString(R.string.component_description, component.description)
+                weight.text = getString(R.string.component_weight, component.weight)
+                length.text = getString(R.string.component_length, component.size.length)
+                width.text = getString(R.string.component_width, component.size.width)
+                height.text = getString(R.string.component_height, component.size.height)
+            }
         }
 
         return binding.root
@@ -76,10 +91,9 @@ class ComponentItemFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.component_item_share -> {
-            val component = args.component
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
-                val link = "https://android.pcbuilder/components/${component.id}"
+                val link = "https://tuguzt.github.io/pcbuilder/components/${args.id}"
                 putExtra(Intent.EXTRA_TEXT, link)
                 type = "text/plain"
             }

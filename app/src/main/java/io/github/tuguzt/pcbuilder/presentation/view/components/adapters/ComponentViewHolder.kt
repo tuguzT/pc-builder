@@ -19,7 +19,7 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
 
     init {
         binding.root.setOnClickListener {
-            val action = ComponentListFragmentDirections.actionComponentItemFragment(component)
+            val action = ComponentListFragmentDirections.actionComponentItemFragment(component.id)
             it.findNavController().navigate(action)
         }
     }
