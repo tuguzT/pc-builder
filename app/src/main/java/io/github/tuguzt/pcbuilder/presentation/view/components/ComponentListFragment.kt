@@ -16,7 +16,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
 /**
  * A [Fragment] subclass which represents list of [components][Component].
@@ -24,7 +24,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsVi
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private val viewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
 
@@ -67,7 +67,7 @@ class ComponentListFragment : Fragment() {
                         addCallback(object : Snackbar.Callback() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                                 if (event != DISMISS_EVENT_ACTION) {
-                                    viewModel.deleteComponent(item)
+                                    sharedViewModel.deleteComponent(item)
                                 }
                             }
                         })
@@ -81,7 +81,7 @@ class ComponentListFragment : Fragment() {
             findNavController().navigate(R.id.action_component_add_fragment)
         }
 
-        viewModel.allComponents.observe(viewLifecycleOwner) {
+        sharedViewModel.allComponents.observe(viewLifecycleOwner) {
             it?.let { adapter.submitList(it) }
         }
 

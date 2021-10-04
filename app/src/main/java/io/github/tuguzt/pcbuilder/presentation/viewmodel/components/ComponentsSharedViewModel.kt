@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 /**
  * [ViewModel] subclass for [ComponentAddFragment].
  */
-class ComponentsViewModel : ViewModel() {
+class ComponentsSharedViewModel : ViewModel() {
     val allComponents = RepositoryAccess.localRepository.allData
 
     fun addComponent(name: String, description: String, weight: Measure<Mass>, size: Size) {

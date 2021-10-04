@@ -20,7 +20,7 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
-            app:destination="@id/component_item_fragment">
+            app:destination="@id/component_fragment">
         </action>
     </fragment>
 
@@ -31,10 +31,10 @@
         tools:layout="@layout/fragment_component_add" />
 
     <fragment
-        android:id="@+id/component_item_fragment"
-        android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentItemFragment"
+        android:id="@+id/component_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentFragment"
         android:label="fragment_component"
-        tools:layout="@layout/fragment_component_item">
+        tools:layout="@layout/fragment_component">
 
         <argument
             android:name="id"

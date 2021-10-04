@@ -7,26 +7,26 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
-import io.github.tuguzt.pcbuilder.databinding.FragmentComponentItemBinding
+import io.github.tuguzt.pcbuilder.databinding.FragmentComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
+import io.github.tuguzt.pcbuilder.presentation.view.popBackStackRoot
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentItemViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentItemViewModelFactory
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModelFactory
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
-class ComponentItemFragment : Fragment() {
-    private val args: ComponentItemFragmentArgs by navArgs()
+class ComponentFragment : Fragment() {
+    private val args: ComponentFragmentArgs by navArgs()
 
-    private val sharedViewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
-    private val viewModel: ComponentItemViewModel by viewModels { ComponentItemViewModelFactory(args.id) }
+    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val viewModel: ComponentViewModel by viewModels { ComponentViewModelFactory(args.id) }
 
-    private var _binding: FragmentComponentItemBinding? = null
+    private var _binding: FragmentComponentBinding? = null
 
     // This helper property is only valid between
     // `onCreateView` and `onDestroyView`.
@@ -63,13 +63,13 @@ class ComponentItemFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentComponentItemBinding.inflate(inflater, container, false)
+        _binding = FragmentComponentBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
 
         viewModel.component.observe(viewLifecycleOwner) { component: Component? ->
             if (component == null) {
-                toastShort { "Component retrieved from deep link does not exist!" }.show()
-                findNavController().navigate(R.id.component_list_fragment)
+                toastShort { "Component does not exist!" }.show()
+                popBackStackRoot()
                 return@observe
             }
             binding.run {
