@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
@@ -23,9 +23,7 @@ import io.nacular.measured.units.times
  * @see Component
  */
 class ComponentAddFragment : Fragment() {
-    private val viewModel: ComponentsViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
+    private val viewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentComponentAddBinding? = null
 

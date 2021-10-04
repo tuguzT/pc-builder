@@ -6,8 +6,8 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentItemBinding
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
@@ -16,9 +16,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsVi
 
 class ComponentItemFragment : Fragment() {
     private val args: ComponentItemFragmentArgs by navArgs()
-    private val viewModel: ComponentsViewModel by viewModels(
-        ownerProducer = { requireParentFragment() }
-    )
+    private val viewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentComponentItemBinding? = null
 

@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -24,7 +24,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsVi
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private val viewModel: ComponentsViewModel by viewModels()
+    private val viewModel: ComponentsViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
 
