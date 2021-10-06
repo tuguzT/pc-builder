@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import io.github.tuguzt.pcbuilder.domain.model.Identifiable
 
-class DiffCallback<out I, T : Identifiable<out I>> : DiffUtil.ItemCallback<T>() {
+class DiffCallback<out I, T : Identifiable<I>> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem.id == newItem.id
 
     @SuppressLint("DiffUtilEquals")

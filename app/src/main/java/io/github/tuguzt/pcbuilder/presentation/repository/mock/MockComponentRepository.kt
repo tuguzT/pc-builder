@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
  *
  * @see ComponentData
  */
-object MockComponentRepository : MutableRepository<ComponentData> {
+object MockComponentRepository : MutableRepository<String, ComponentData> {
     private var list = List(20) { index ->
         ComponentData(
             id = NanoIdUtils.randomNanoId(),
@@ -37,6 +37,13 @@ object MockComponentRepository : MutableRepository<ComponentData> {
     override val defaultDispatcher = Dispatchers.Main
 
     override val allData: LiveData<out List<ComponentData>> get() = data
+
+    override fun findById(id: String): LiveData<out ComponentData> =
+        MutableLiveData<ComponentData>().apply {
+            allData.observeForever { components ->
+                value = components.find { it.id == id }
+            }
+        }
 
     override suspend fun add(item: ComponentData) {
         list = list + item

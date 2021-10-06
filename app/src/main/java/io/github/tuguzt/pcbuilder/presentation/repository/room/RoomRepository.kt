@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,7 @@ import kotlinx.coroutines.withContext
  * @see ComponentDto
  */
 class RoomRepository internal constructor(application: Application) :
-    MutableRepository<ComponentDto> {
+    MutableRepository<String, ComponentDto> {
 
     private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao
@@ -21,6 +22,8 @@ class RoomRepository internal constructor(application: Application) :
     override val defaultDispatcher = Dispatchers.IO
 
     override val allData = componentsDao.getAll()
+
+    override fun findById(id: String): LiveData<out ComponentDto> = componentsDao.findById(id)
 
     override suspend fun add(item: ComponentDto) = withContext(defaultDispatcher) {
         componentsDao.insert(item)

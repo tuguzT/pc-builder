@@ -14,6 +14,10 @@ import java.io.FileNotFoundException
 class ComponentViewHolder(private val binding: ItemComponentBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
+    companion object {
+        private val LOG_TAG = ComponentViewHolder::class.simpleName
+    }
+
     private lateinit var _component: ComponentData
     val component get() = _component
 
@@ -45,9 +49,9 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
                     )
                 )
             } catch (e: FileNotFoundException) {
-                Log.e(this@ComponentViewHolder::class.simpleName, "File not found: $e")
+                Log.e(LOG_TAG, "File not found: $e")
             } catch (e: NullPointerException) {
-                Log.e(this@ComponentViewHolder::class.simpleName, "WTF...: $e")
+                Log.e(LOG_TAG, "WTF...: $e")
             }
         }
     }

@@ -12,6 +12,9 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
  */
 @Dao
 interface ComponentDao : IDao<ComponentDto> {
+    @Query("SELECT * FROM component WHERE id = :id")
+    fun findById(id: String): LiveData<ComponentDto>
+
     @Query("SELECT * FROM component WHERE name LIKE :name")
     fun findByName(name: String): LiveData<List<ComponentDto>>
 
