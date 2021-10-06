@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository
 import android.app.Application
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.mock.MockComponentRepository
-import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomComponentRepository
+import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomRepository
 
 /**
  * Object for access to all repository types used in the application.
@@ -20,8 +20,8 @@ object RepositoryAccess {
         }
 
     @JvmStatic
-    fun initRoom(application: Application): RoomComponentRepository {
-        val roomRepository = RoomComponentRepository(application)
+    fun initRoom(application: Application): RoomRepository {
+        val roomRepository = RoomRepository(application)
         pLocalRepository = roomRepository as MutableRepository<Component>
         return roomRepository
     }

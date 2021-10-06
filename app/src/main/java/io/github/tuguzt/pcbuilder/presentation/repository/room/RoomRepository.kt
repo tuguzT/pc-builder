@@ -9,13 +9,13 @@ import kotlinx.coroutines.withContext
 /**
  * Safe wrapper around Room database.
  *
- * @see RoomComponentDatabase
+ * @see RoomDatabase
  * @see ComponentDto
  */
-class RoomComponentRepository internal constructor(application: Application) :
+class RoomRepository internal constructor(application: Application) :
     MutableRepository<ComponentDto> {
 
-    private val roomDatabase = RoomComponentDatabase.getInstance(application)
+    private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao
 
     override val defaultDispatcher = Dispatchers.IO

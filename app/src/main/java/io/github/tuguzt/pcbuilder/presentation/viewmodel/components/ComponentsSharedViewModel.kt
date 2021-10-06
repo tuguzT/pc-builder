@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  * [ViewModel] subclass for [ComponentAddFragment].
  */
 class ComponentsSharedViewModel : ViewModel() {
-    val allComponents = RepositoryAccess.localRepository.allData
+    val allComponents get() = RepositoryAccess.localRepository.allData
 
     fun addComponent(name: String, description: String, weight: Measure<Mass>, size: Size) {
         val id = NanoIdUtils.randomNanoId()

@@ -17,9 +17,9 @@ data class MonitorComponents(
     @Embedded private val monitor: MonitorDto,
     @Relation(parentColumn = "id", entityColumn = "id") private val component: ComponentDto,
 ) : Monitor {
-    override val id = component.id
-    override val name = component.name
-    override val description = component.description
-    override val weight = component.weight
-    override val size = component.size
+    override val id get() = component.id
+    override val name get() = component.name
+    override val description get() = component.description
+    override val weight get() = component.weight
+    override val size get() = component.size
 }

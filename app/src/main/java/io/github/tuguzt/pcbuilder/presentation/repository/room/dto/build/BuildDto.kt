@@ -19,7 +19,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
         entity = ComponentDto::class,
         parentColumns = ["id"],
         childColumns = ["id"],
-        onDelete = ForeignKey.CASCADE,
+        onDelete = ForeignKey.RESTRICT,
     )]
 )
 data class BuildDto(
