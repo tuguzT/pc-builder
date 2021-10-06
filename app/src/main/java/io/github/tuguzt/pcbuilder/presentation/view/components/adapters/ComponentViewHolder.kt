@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragmentDirections
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import java.io.FileNotFoundException
 
-class ComponentViewHolder(private val binding: ItemComponentBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class ComponentViewHolder(
+    private val binding: ItemComponentBinding,
+    private val sharedViewModel: ComponentsSharedViewModel,
+) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
         private val LOG_TAG = ComponentViewHolder::class.simpleName
@@ -48,10 +51,18 @@ class ComponentViewHolder(private val binding: ItemComponentBinding) :
                         contentResolver.openFileDescriptor(uri, "r")?.fileDescriptor
                     )
                 )
+            } catch (e: SecurityException) {
+                Log.e(LOG_TAG, "Cannot obtain an image due to security error", e)
+                sharedViewModel.updateComponent(ComponentData(component))
+                imageView.visibility = View.GONE
             } catch (e: FileNotFoundException) {
-                Log.e(LOG_TAG, "File not found: $e")
+                Log.e(LOG_TAG, "Image not found", e)
+                sharedViewModel.updateComponent(ComponentData(component))
+                imageView.visibility = View.GONE
             } catch (e: NullPointerException) {
-                Log.e(LOG_TAG, "WTF...: $e")
+                Log.e(LOG_TAG, "Content provider recently crashed", e)
+                sharedViewModel.updateComponent(ComponentData(component))
+                imageView.visibility = View.GONE
             }
         }
     }

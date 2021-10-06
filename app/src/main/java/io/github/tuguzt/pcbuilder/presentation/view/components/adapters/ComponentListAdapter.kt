@@ -9,13 +9,14 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
 import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
 /**
  * [RecyclerView.Adapter] that can display a [Component].
  *
  * @see Component
  */
-class ComponentListAdapter :
+class ComponentListAdapter(private val sharedViewModel: ComponentsSharedViewModel) :
     ListAdapter<Component, ComponentViewHolder>(DiffCallback<String, Component>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
@@ -24,7 +25,7 @@ class ComponentListAdapter :
             parent,
             false,
         )
-        return ComponentViewHolder(binding)
+        return ComponentViewHolder(binding, sharedViewModel)
     }
 
     override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {

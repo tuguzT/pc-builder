@@ -39,7 +39,7 @@ class ComponentListFragment : Fragment() {
     ): View {
         _binding = FragmentComponentListBinding.inflate(inflater, container, false)
 
-        val adapter = ComponentListAdapter()
+        val adapter = ComponentListAdapter(sharedViewModel)
         binding.list.adapter = adapter
 
         val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
