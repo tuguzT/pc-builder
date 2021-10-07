@@ -21,7 +21,7 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
     version = 1,
     exportSchema = false,
 )
-internal abstract class RoomDatabase internal constructor() : BaseRoomDatabase() {
+internal abstract class RoomDatabase : BaseRoomDatabase() {
     abstract val componentsDao: ComponentDao
     abstract val monitorDao: MonitorDao
 

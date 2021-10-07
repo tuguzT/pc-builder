@@ -13,9 +13,7 @@ import kotlinx.coroutines.withContext
  * @see RoomDatabase
  * @see ComponentDto
  */
-class RoomRepository internal constructor(application: Application) :
-    MutableRepository<String, ComponentDto> {
-
+internal class RoomRepository(application: Application) : MutableRepository<String, ComponentDto> {
     private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao
     private val monitorDao get() = roomDatabase.monitorDao

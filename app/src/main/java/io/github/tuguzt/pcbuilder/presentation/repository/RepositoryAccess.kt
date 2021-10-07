@@ -12,18 +12,14 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomRepository
 object RepositoryAccess {
     @JvmStatic
     val localRepository: MutableRepository<String, Component>
-        get() {
-            if (pLocalRepository == null) {
-                pLocalRepository = MockComponentRepository as MutableRepository<String, Component>
-            }
-            return pLocalRepository!!
-        }
+        get() = pLocalRepository
+            ?: (MockComponentRepository as MutableRepository<String, Component>)
+                .also { pLocalRepository = it }
 
     @JvmStatic
-    fun initRoom(application: Application): RoomRepository {
+    fun initRoom(application: Application) {
         val roomRepository = RoomRepository(application)
         pLocalRepository = roomRepository as MutableRepository<String, Component>
-        return roomRepository
     }
 
     private var pLocalRepository: MutableRepository<String, Component>? = null
