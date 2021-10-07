@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room
 import android.app.Application
 import androidx.lifecycle.LiveData
 import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -18,6 +18,7 @@ class RoomRepository internal constructor(application: Application) :
 
     private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentsDao get() = roomDatabase.componentsDao
+    private val monitorDao get() = roomDatabase.monitorDao
 
     override val defaultDispatcher = Dispatchers.IO
 

@@ -5,7 +5,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.model.parceler.MassParceler
 import io.github.tuguzt.pcbuilder.presentation.model.parceler.SizeParceler
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.Measure
 import kotlinx.parcelize.Parcelize

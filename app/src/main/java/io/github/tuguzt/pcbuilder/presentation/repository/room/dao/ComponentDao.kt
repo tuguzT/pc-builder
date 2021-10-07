@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 
 /**
  * Data Access Object for [Component].

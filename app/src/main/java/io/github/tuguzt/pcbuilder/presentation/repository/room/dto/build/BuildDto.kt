@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import io.github.tuguzt.pcbuilder.domain.model.Identifiable
 import io.github.tuguzt.pcbuilder.domain.model.build.Build
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 
 /**
  * Data Transfer Object for [Build].

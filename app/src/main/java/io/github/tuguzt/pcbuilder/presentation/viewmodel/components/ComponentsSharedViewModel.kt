@@ -9,7 +9,7 @@ import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.repository.mock.MockComponentRepository
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentAddFragment
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.Measure

@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.repository.room.dto
+package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component
 
 import androidx.room.*
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
