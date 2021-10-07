@@ -7,6 +7,10 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.MonitorDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cases.CaseDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cooler.CoolerDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cpu.CentralProcessingUnitDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.gpu.GraphicsProcessingUnitDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor.MonitorDto
 
 private typealias BaseRoomDatabase = androidx.room.RoomDatabase
@@ -17,7 +21,14 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
  * @see Component
  */
 @Database(
-    entities = [ComponentDto::class, MonitorDto::class],
+    entities = [
+        ComponentDto::class,
+        CaseDto::class,
+        CoolerDto::class,
+        CentralProcessingUnitDto::class,
+        GraphicsProcessingUnitDto::class,
+        MonitorDto::class,
+    ],
     version = 1,
     exportSchema = false,
 )

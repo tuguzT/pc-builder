@@ -1,20 +1,20 @@
-package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor
+package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cases
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import io.github.tuguzt.pcbuilder.domain.model.component.monitor.*
+import io.github.tuguzt.pcbuilder.domain.model.component.cases.Case
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentChild
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 
 /**
- * Data Transfer Object for [Monitor].
+ * Data Transfer Object for [Case].
  *
- * @see Monitor
+ * @see Case
  */
 @Entity(
-    tableName = "monitor",
+    tableName = "case",
     foreignKeys = [ForeignKey(
         entity = ComponentDto::class,
         parentColumns = ["id"],
@@ -22,8 +22,8 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
         onDelete = ForeignKey.RESTRICT,
     )],
 )
-data class MonitorDto(
+data class CaseDto(
     @PrimaryKey
     @ColumnInfo(name = "component_id")
     override val id: String,
-) : Monitor, ComponentChild
+) : Case, ComponentChild

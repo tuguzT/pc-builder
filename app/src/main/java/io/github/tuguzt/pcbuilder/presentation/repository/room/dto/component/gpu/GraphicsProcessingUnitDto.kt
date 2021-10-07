@@ -1,20 +1,20 @@
-package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor
+package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.gpu
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import io.github.tuguzt.pcbuilder.domain.model.component.monitor.*
+import io.github.tuguzt.pcbuilder.domain.model.component.gpu.GraphicsProcessingUnit
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentChild
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 
 /**
- * Data Transfer Object for [Monitor].
+ * Data Transfer Object for [GraphicsProcessingUnit].
  *
- * @see Monitor
+ * @see GraphicsProcessingUnit
  */
 @Entity(
-    tableName = "monitor",
+    tableName = "gpu",
     foreignKeys = [ForeignKey(
         entity = ComponentDto::class,
         parentColumns = ["id"],
@@ -22,8 +22,15 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
         onDelete = ForeignKey.RESTRICT,
     )],
 )
-data class MonitorDto(
+data class GraphicsProcessingUnitDto(
     @PrimaryKey
     @ColumnInfo(name = "component_id")
     override val id: String,
-) : Monitor, ComponentChild
+) : GraphicsProcessingUnit, ComponentChild
+
+/**
+ * Shorthand for graphics processing unit.
+ *
+ * @see GraphicsProcessingUnitDto
+ */
+typealias GPUDto = GraphicsProcessingUnitDto
