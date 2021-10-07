@@ -6,6 +6,7 @@ import androidx.room.Room
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.MonitorDao
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.build.BuildDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cases.CaseDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cooler.CoolerDto
@@ -20,7 +21,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.sto
 private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 
 /**
- * Room database which contains all the components locally saved by user.
+ * Room database which contains all the data locally saved by user.
  *
  * @see Component
  */
@@ -36,12 +37,13 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
         MotherboardDto::class,
         PowerSupplyUnitDto::class,
         StorageDto::class,
+        BuildDto::class,
     ],
     version = 1,
     exportSchema = false,
 )
 internal abstract class RoomDatabase : BaseRoomDatabase() {
-    abstract val componentsDao: ComponentDao
+    abstract val componentDao: ComponentDao
     abstract val monitorDao: MonitorDao
 
     companion object {

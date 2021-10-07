@@ -15,28 +15,28 @@ import kotlinx.coroutines.withContext
  */
 internal class RoomRepository(application: Application) : MutableRepository<String, ComponentDto> {
     private val roomDatabase = RoomDatabase.getInstance(application)
-    private val componentsDao get() = roomDatabase.componentsDao
+    private val componentDao get() = roomDatabase.componentDao
     private val monitorDao get() = roomDatabase.monitorDao
 
     override val defaultDispatcher = Dispatchers.IO
 
-    override val allData = componentsDao.getAll()
+    override val allData = componentDao.getAll()
 
-    override fun findById(id: String): LiveData<out ComponentDto> = componentsDao.findById(id)
+    override fun findById(id: String): LiveData<out ComponentDto> = componentDao.findById(id)
 
     override suspend fun add(item: ComponentDto) = withContext(defaultDispatcher) {
-        componentsDao.insert(item)
+        componentDao.insert(item)
     }
 
     override suspend fun update(item: ComponentDto) = withContext(defaultDispatcher) {
-        componentsDao.update(item)
+        componentDao.update(item)
     }
 
     override suspend fun remove(item: ComponentDto) = withContext(defaultDispatcher) {
-        componentsDao.delete(item)
+        componentDao.delete(item)
     }
 
     override suspend fun clear() = withContext(defaultDispatcher) {
-        componentsDao.deleteAll()
+        componentDao.deleteAll()
     }
 }
