@@ -11,7 +11,11 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cas
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cooler.CoolerDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cpu.CentralProcessingUnitDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.gpu.GraphicsProcessingUnitDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.memory.MemoryDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor.MonitorDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.motherboard.MotherboardDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.psu.PowerSupplyUnitDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.storage.StorageDto
 
 private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 
@@ -27,7 +31,11 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
         CoolerDto::class,
         CentralProcessingUnitDto::class,
         GraphicsProcessingUnitDto::class,
+        MemoryDto::class,
         MonitorDto::class,
+        MotherboardDto::class,
+        PowerSupplyUnitDto::class,
+        StorageDto::class,
     ],
     version = 1,
     exportSchema = false,
