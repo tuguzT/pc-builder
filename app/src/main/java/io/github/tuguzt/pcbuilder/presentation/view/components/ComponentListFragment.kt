@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
@@ -57,22 +56,10 @@ class ComponentListFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
-                val item = adapter.removeAt(position)
+                val item = adapter.currentList[position]
 
-                snackbarShort { "Component was successfully deleted" }
-                    .apply {
-                        setAction("Undo") {
-                            adapter.add(position, item)
-                        }
-                        addCallback(object : Snackbar.Callback() {
-                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                if (event != DISMISS_EVENT_ACTION) {
-                                    sharedViewModel.deleteComponent(item)
-                                }
-                            }
-                        })
-                    }
-                    .show()
+                sharedViewModel.deleteComponent(item)
+                snackbarShort { "Component was successfully deleted" }.show()
             }
         })
         itemTouchHelper.attachToRecyclerView(binding.list)
