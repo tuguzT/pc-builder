@@ -12,7 +12,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.mon
  * @see Monitor
  */
 @Dao
-interface MonitorDao : IDao<MonitorDto> {
+internal interface MonitorDao : IDao<MonitorDto> {
     @Transaction
     @Query("SELECT * FROM component")
     fun getAll(): LiveData<List<MonitorComponent>>

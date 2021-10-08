@@ -7,7 +7,7 @@ import androidx.room.Update
 /**
  * Base DAO for the application.
  */
-interface IDao<T> {
+internal interface IDao<T> {
     @Insert
     suspend fun insert(item: T)
 

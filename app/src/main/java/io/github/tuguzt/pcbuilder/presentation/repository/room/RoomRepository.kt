@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
 internal class RoomRepository(application: Application) : Repository<String, Component> {
     private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentDao get() = roomDatabase.componentDao
-    private val monitorDao get() = roomDatabase.monitorDao
 
     override val defaultDispatcher = Dispatchers.IO
 

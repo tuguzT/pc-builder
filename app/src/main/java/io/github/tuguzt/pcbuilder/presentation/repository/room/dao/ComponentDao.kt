@@ -11,7 +11,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
  * @see Component
  */
 @Dao
-interface ComponentDao : IDao<ComponentDto> {
+internal interface ComponentDao : IDao<ComponentDto> {
     @Query("SELECT * FROM component WHERE id = :id")
     fun findById(id: String): LiveData<ComponentDto>
 
