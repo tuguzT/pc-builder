@@ -26,4 +26,5 @@ data class MonitorComponent(
     override val description get() = component.description
     override val weight get() = component.weight
     override val size get() = component.size
+    val imageUri get() = component.imageUri
 }

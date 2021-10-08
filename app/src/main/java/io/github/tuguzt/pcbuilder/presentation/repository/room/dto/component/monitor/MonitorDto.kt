@@ -19,7 +19,8 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
         entity = ComponentDto::class,
         parentColumns = ["id"],
         childColumns = ["component_id"],
-        onDelete = ForeignKey.RESTRICT,
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.RESTRICT,
     )],
 )
 data class MonitorDto(
