@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
+import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.nacular.measured.units.Length.Companion.centimeters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
  *
  * @see ComponentData
  */
-object MockComponentRepository : MutableRepository<String, ComponentData> {
+object MockComponentRepository : Repository<String, ComponentData> {
     private var list = List(20) { index ->
         ComponentData(
             id = NanoIdUtils.randomNanoId(),

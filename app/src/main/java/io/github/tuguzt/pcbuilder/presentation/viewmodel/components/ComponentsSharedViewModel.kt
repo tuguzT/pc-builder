@@ -6,7 +6,7 @@ import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
+import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.repository.mock.MockComponentRepository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
@@ -24,7 +24,7 @@ class ComponentsSharedViewModel : ViewModel() {
     fun addComponent(name: String, description: String, weight: Measure<Mass>, size: Size) {
         val id = NanoIdUtils.randomNanoId()
         val repository = RepositoryAccess.localRepository
-        val component = when (repository as MutableRepository<String, out Component>) {
+        val component = when (repository as Repository<String, out Component>) {
             MockComponentRepository -> ComponentData(id, name, description, weight, size, null)
             else -> ComponentDto(id, name, description, weight, size, null)
         }
@@ -35,7 +35,7 @@ class ComponentsSharedViewModel : ViewModel() {
 
     fun updateComponent(item: ComponentData) {
         val repository = RepositoryAccess.localRepository
-        val component = when (repository as MutableRepository<String, out Component>) {
+        val component = when (repository as Repository<String, out Component>) {
             MockComponentRepository -> item
             else -> ComponentDto(item)
         }

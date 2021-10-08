@@ -2,7 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import io.github.tuguzt.pcbuilder.presentation.repository.MutableRepository
+import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
  * @see RoomDatabase
  * @see ComponentDto
  */
-internal class RoomRepository(application: Application) : MutableRepository<String, ComponentDto> {
+internal class RoomRepository(application: Application) : Repository<String, ComponentDto> {
     private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentDao get() = roomDatabase.componentDao
     private val monitorDao get() = roomDatabase.monitorDao
