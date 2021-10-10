@@ -10,6 +10,7 @@ import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragmentDirections
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
+import kotlinx.coroutines.*
 import java.io.FileNotFoundException
 
 class ComponentViewHolder(
@@ -43,26 +44,26 @@ class ComponentViewHolder(
                 return@run
             }
             imageView.visibility = View.VISIBLE
-            try {
-                val uri = Uri.parse(imageUri)
-                val contentResolver = binding.root.context.contentResolver
-                imageView.setImageBitmap(
-                    BitmapFactory.decodeFileDescriptor(
-                        contentResolver.openFileDescriptor(uri, "r")?.fileDescriptor
-                    )
-                )
-            } catch (e: SecurityException) {
-                Log.e(LOG_TAG, "Cannot obtain an image due to security error", e)
+            val uri = Uri.parse(imageUri)
+            val contentResolver = binding.root.context.contentResolver
+
+            val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+                val message = when (throwable) {
+                    is SecurityException -> "Cannot obtain an image due to security error"
+                    is FileNotFoundException -> "Image not found"
+                    is NullPointerException -> "Content provider recently crashed"
+                    else -> "Unknown error"
+                }
+                Log.e(LOG_TAG, message, throwable)
                 sharedViewModel.updateComponent(ComponentData(component))
                 imageView.visibility = View.GONE
-            } catch (e: FileNotFoundException) {
-                Log.e(LOG_TAG, "Image not found", e)
-                sharedViewModel.updateComponent(ComponentData(component))
-                imageView.visibility = View.GONE
-            } catch (e: NullPointerException) {
-                Log.e(LOG_TAG, "Content provider recently crashed", e)
-                sharedViewModel.updateComponent(ComponentData(component))
-                imageView.visibility = View.GONE
+            }
+            CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
+                val fileDescriptor = contentResolver?.openFileDescriptor(uri, "r")?.fileDescriptor
+                val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+                withContext(Dispatchers.Main) {
+                    imageView.setImageBitmap(bitmap)
+                }
             }
         }
     }

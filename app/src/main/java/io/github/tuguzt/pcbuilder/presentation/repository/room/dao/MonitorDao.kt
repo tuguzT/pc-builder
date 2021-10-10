@@ -14,11 +14,11 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.mon
 @Dao
 internal interface MonitorDao : IDao<MonitorDto> {
     @Transaction
-    @Query("SELECT * FROM monitor WHERE component_id = :id")
+    @Query("SELECT * FROM component WHERE id = :id")
     fun findById(id: String): LiveData<MonitorComponent>
 
     @Transaction
-    @Query("SELECT * FROM monitor")
+    @Query("SELECT * FROM component")
     fun getAll(): LiveData<List<MonitorComponent>>
 
     @Query("DELETE FROM monitor")
