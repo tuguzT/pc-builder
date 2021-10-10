@@ -1,7 +1,8 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 

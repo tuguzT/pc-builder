@@ -5,6 +5,11 @@ import io.github.tuguzt.pcbuilder.domain.model.component.monitor.Monitor
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * Room repository for [monitors][Monitor].
+ *
+ * @see Monitor
+ */
 internal class RoomMonitorRepository(private val roomDatabase: RoomDatabase) :
     Repository<String, Monitor> {
 

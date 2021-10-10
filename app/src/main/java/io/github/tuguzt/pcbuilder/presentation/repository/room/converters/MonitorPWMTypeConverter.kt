@@ -7,6 +7,9 @@ import io.github.tuguzt.pcbuilder.domain.model.component.monitor.MonitorPWMType
 import io.github.tuguzt.pcbuilder.domain.model.units.hertz
 import io.nacular.measured.units.times
 
+/**
+ * Converts [monitor PWM type][MonitorPWMType] to [hertz] (represented by [Double]) and vice-versa.
+ */
 object MonitorPWMTypeConverter {
     @JvmStatic
     @TypeConverter

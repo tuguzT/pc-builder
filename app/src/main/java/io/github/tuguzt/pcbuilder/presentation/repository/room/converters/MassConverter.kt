@@ -6,6 +6,9 @@ import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 
+/**
+ * Converts [mass][Mass] to [grams] (represented by [Double]) and vice-versa.
+ */
 object MassConverter {
     @JvmStatic
     @TypeConverter

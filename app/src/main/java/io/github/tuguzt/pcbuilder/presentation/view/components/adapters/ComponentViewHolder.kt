@@ -7,12 +7,18 @@ import android.view.View
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragmentDirections
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import kotlinx.coroutines.*
 import java.io.FileNotFoundException
 
+/**
+ * [RecyclerView.ViewHolder] subclass for [component][Component].
+ *
+ * @see Component
+ */
 class ComponentViewHolder(
     private val binding: ItemComponentBinding,
     private val sharedViewModel: ComponentsSharedViewModel,

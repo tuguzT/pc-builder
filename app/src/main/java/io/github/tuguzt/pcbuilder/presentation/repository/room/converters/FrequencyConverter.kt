@@ -8,6 +8,9 @@ import io.github.tuguzt.pcbuilder.domain.model.units.hertz
 import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 
+/**
+ * Converts [frequency][Frequency] to [hertz] (represented by [Double]) and vice-versa.
+ */
 object FrequencyConverter {
     @JvmStatic
     @TypeConverter

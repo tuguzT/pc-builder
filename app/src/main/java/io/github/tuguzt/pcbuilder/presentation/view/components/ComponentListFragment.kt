@@ -26,9 +26,7 @@ class ComponentListFragment : Fragment() {
     private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
-
-    // This helper property is only valid between
-    // `onCreateView` and `onDestroyView`.
+    // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private val binding get() = _binding!!
 
     override fun onCreateView(

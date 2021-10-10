@@ -8,6 +8,9 @@ import io.nacular.measured.units.Time
 import io.nacular.measured.units.Time.Companion.milliseconds
 import io.nacular.measured.units.times
 
+/**
+ * Converts [time][Time] to [milliseconds] (represented by [Double]) and vice-versa.
+ */
 object TimeConverter {
     @JvmStatic
     @TypeConverter

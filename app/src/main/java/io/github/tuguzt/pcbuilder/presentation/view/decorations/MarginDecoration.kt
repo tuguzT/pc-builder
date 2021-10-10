@@ -4,6 +4,12 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Decoration for items inside of [RecyclerView].
+ * Adds specified [margin][spaceSize] in pixels between items.
+ *
+ * @see RecyclerView.ItemDecoration
+ */
 class MarginDecoration(private val spaceSize: Int) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,

@@ -1,7 +1,9 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
 import io.github.tuguzt.pcbuilder.domain.model.component.monitor.Monitor
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor.MonitorComponent
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor.MonitorDto

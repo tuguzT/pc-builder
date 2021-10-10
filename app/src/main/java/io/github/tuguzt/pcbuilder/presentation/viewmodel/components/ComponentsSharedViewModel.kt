@@ -13,7 +13,7 @@ import io.nacular.measured.units.Measure
 import kotlinx.coroutines.launch
 
 /**
- * [ViewModel] subclass for [ComponentAddFragment].
+ * View model for [ComponentAddFragment].
  */
 class ComponentsSharedViewModel : ViewModel() {
     val allComponents get() = RepositoryAccess.localRepository.allData

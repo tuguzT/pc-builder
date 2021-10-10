@@ -6,6 +6,10 @@ import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.times
 import kotlinx.parcelize.Parceler
 
+/**
+ * Custom [Parceler] which converts [physical size][Size]
+ * to its components in [meters] (represented by [Double]) and vice-versa.
+ */
 object SizeParceler : Parceler<Size> {
     override fun create(parcel: Parcel) = parcel.run {
         val length = readDouble() * meters

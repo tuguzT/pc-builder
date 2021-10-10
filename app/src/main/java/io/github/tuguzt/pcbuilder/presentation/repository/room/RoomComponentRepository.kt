@@ -8,6 +8,11 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Room repository of [components][Component].
+ *
+ * @see Component
+ */
 internal class RoomComponentRepository(private val roomDatabase: RoomDatabase) :
     Repository<String, Component> {
 

@@ -6,6 +6,9 @@ import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 
+/**
+ * Converts [distance][Distance] to [meters] (represented by [Double]) and vice-versa.
+ */
 object DistanceConverter {
     @JvmStatic
     @TypeConverter

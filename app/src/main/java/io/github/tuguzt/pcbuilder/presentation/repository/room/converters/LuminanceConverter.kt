@@ -8,6 +8,9 @@ import io.github.tuguzt.pcbuilder.domain.model.units.nit
 import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 
+/**
+ * Converts [luminance][Luminance] to [nit] (represented by [Double]) and vice-versa.
+ */
 object LuminanceConverter {
     @JvmStatic
     @TypeConverter

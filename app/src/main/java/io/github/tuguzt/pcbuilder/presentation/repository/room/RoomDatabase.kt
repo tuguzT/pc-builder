@@ -3,7 +3,6 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
-import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.MonitorDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.build.BuildDto
@@ -22,8 +21,6 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 
 /**
  * Room database which contains all the data locally saved by user.
- *
- * @see Component
  */
 @Database(
     entities = [

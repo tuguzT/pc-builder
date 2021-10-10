@@ -11,6 +11,11 @@ import io.nacular.measured.units.Measure
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
 
+/**
+ * Data class for monitor data used in application.
+ *
+ * @see Monitor
+ */
 @Parcelize
 data class MonitorData(
     override val id: String,

@@ -11,6 +11,11 @@ import io.nacular.measured.units.Measure
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
 
+/**
+ * Data class for component data used in application.
+ *
+ * @see Component
+ */
 @Parcelize
 data class ComponentData(
     override val id: String,

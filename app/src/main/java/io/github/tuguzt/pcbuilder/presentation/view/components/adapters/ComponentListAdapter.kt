@@ -12,7 +12,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
 /**
- * [RecyclerView.Adapter] that can display a [Component].
+ * [RecyclerView.Adapter] subclass that can display a [Component].
  *
  * @see Component
  */

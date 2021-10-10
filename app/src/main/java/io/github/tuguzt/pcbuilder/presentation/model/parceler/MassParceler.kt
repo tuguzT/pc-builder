@@ -7,6 +7,10 @@ import io.nacular.measured.units.Measure
 import io.nacular.measured.units.times
 import kotlinx.parcelize.Parceler
 
+/**
+ * Custom [Parceler] which converts [mass][Mass]
+ * to [grams] (represented by [Double]) and vice-versa.
+ */
 object MassParceler : Parceler<Measure<Mass>> {
     override fun create(parcel: Parcel) = parcel.readDouble() * grams
 

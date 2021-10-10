@@ -20,6 +20,11 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentVie
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModelFactory
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
+/**
+ * A [Fragment] subclass which represents specs of PC [component][Component].
+ *
+ * @see Component
+ */
 class ComponentFragment : Fragment() {
     private val args: ComponentFragmentArgs by navArgs()
 
@@ -27,9 +32,7 @@ class ComponentFragment : Fragment() {
     private val viewModel: ComponentViewModel by viewModels { ComponentViewModelFactory(args.id) }
 
     private var _binding: FragmentComponentBinding? = null
-
-    // This helper property is only valid between
-    // `onCreateView` and `onDestroyView`.
+    // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private val binding get() = _binding!!
 
     private lateinit var _getImageUri: ActivityResultLauncher<Array<String>>
