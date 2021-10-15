@@ -17,7 +17,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
  * @see Component
  */
 class ComponentListAdapter(private val sharedViewModel: ComponentsSharedViewModel) :
-    ListAdapter<Component, ComponentViewHolder>(DiffCallback<String, Component>()) {
+    ListAdapter<Component, ComponentViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
         val binding = ItemComponentBinding.inflate(

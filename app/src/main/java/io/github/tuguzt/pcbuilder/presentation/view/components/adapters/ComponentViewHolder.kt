@@ -44,11 +44,7 @@ class ComponentViewHolder(
             name.text = component.name
             description.text = component.description
 
-            val imageUri = component.imageUri
-            if (imageUri == null) {
-                imageView.visibility = View.GONE
-                return@run
-            }
+            val imageUri = component.imageUri ?: return@run
             imageView.visibility = View.VISIBLE
             val uri = Uri.parse(imageUri)
             val contentResolver = binding.root.context.contentResolver
