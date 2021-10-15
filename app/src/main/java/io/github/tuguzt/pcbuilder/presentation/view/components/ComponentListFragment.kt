@@ -1,9 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.view.components
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -14,6 +12,7 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
+import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
@@ -35,6 +34,7 @@ class ComponentListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentComponentListBinding.inflate(inflater, container, false)
+        hasOptionsMenu = true
 
         val adapter = ComponentListAdapter(sharedViewModel)
         binding.list.adapter = adapter
@@ -71,6 +71,18 @@ class ComponentListFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_components_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.toolbar_components_search -> {
+            snackbarShort { "Searching for components..." }.show()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

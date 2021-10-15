@@ -6,6 +6,7 @@
     <string name="item_component_share_title">Share your component</string>
     <string name="component_image">Component image</string>
     <string name="item_component_choose_image">Choose custom image for component</string>
+    <string name="search_for_components">Search for components</string>
 
     <string name="add_new_build">Add new build</string>
     <string name="create_build">Create build</string>
