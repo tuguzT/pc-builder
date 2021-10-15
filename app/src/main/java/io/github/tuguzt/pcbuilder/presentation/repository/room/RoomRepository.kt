@@ -15,17 +15,15 @@ internal class RoomRepository(application: Application) : Repository<String, Com
     private val roomDatabase = RoomDatabase.getInstance(application)
     private val componentRepository = RoomComponentRepository(roomDatabase)
 
-    override val defaultDispatcher = componentRepository.defaultDispatcher
-
     override val allData = componentRepository.allData
 
     override fun findById(id: String): LiveData<out Component> = componentRepository.findById(id)
 
-    override suspend fun add(item: Component) = componentRepository.add(item)
+    override fun add(item: Component) = componentRepository.add(item)
 
-    override suspend fun update(item: Component) = componentRepository.update(item)
+    override fun update(item: Component) = componentRepository.update(item)
 
-    override suspend fun remove(item: Component) = componentRepository.remove(item)
+    override fun remove(item: Component) = componentRepository.remove(item)
 
-    override suspend fun clear() = componentRepository.clear()
+    override fun clear() = componentRepository.clear()
 }

@@ -11,8 +11,9 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
 import io.nacular.measured.units.Length.Companion.centimeters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
 /**
  * Mock repository of [components][Component].
@@ -35,8 +36,7 @@ object MockComponentRepository : Repository<String, Component> {
         )
     }
     private val data = MutableLiveData(list)
-
-    override val defaultDispatcher = Dispatchers.Main
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override val allData: LiveData<out List<Component>> get() = data
 
@@ -47,7 +47,7 @@ object MockComponentRepository : Repository<String, Component> {
             }
         }
 
-    override suspend fun add(item: Component) {
+    override fun add(item: Component) {
         val component = when (item) {
             is ComponentData -> item
             is ComponentDto -> ComponentData(item)
@@ -56,12 +56,12 @@ object MockComponentRepository : Repository<String, Component> {
             )
         }
         list = list + component
-        withContext(defaultDispatcher) {
+        coroutineScope.launch {
             data.value = list
         }
     }
 
-    override suspend fun update(item: Component) {
+    override fun update(item: Component) {
         val component = when (item) {
             is ComponentData -> item
             is ComponentDto -> ComponentData(item)
@@ -73,12 +73,12 @@ object MockComponentRepository : Repository<String, Component> {
         require(index > -1) { "No such item in repository: item is $component" }
 
         list = list.toMutableList().apply { set(index, component) }
-        withContext(defaultDispatcher) {
+        coroutineScope.launch {
             data.value = list
         }
     }
 
-    override suspend fun remove(item: Component) {
+    override fun remove(item: Component) {
         val component = when (item) {
             is ComponentData -> item
             is ComponentDto -> ComponentData(item)
@@ -87,14 +87,14 @@ object MockComponentRepository : Repository<String, Component> {
             )
         }
         list = list - component
-        withContext(defaultDispatcher) {
+        coroutineScope.launch {
             data.value = list
         }
     }
 
-    override suspend fun clear() {
+    override fun clear() {
         list = listOf()
-        withContext(defaultDispatcher) {
+        coroutineScope.launch {
             data.value = list
         }
     }

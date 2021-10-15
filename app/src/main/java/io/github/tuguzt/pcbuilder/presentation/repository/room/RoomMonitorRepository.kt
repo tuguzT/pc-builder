@@ -3,6 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room
 import androidx.lifecycle.LiveData
 import io.github.tuguzt.pcbuilder.domain.model.component.monitor.Monitor
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 /**
@@ -15,25 +16,25 @@ internal class RoomMonitorRepository(private val roomDatabase: RoomDatabase) :
 
     private val monitorDao get() = roomDatabase.monitorDao
 
-    override val defaultDispatcher = Dispatchers.IO
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override val allData: LiveData<out List<Monitor>> = monitorDao.getAll()
 
     override fun findById(id: String): LiveData<out Monitor> = monitorDao.findById(id)
 
-    override suspend fun add(item: Monitor) {
+    override fun add(item: Monitor) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun update(item: Monitor) {
+    override fun update(item: Monitor) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun remove(item: Monitor) {
+    override fun remove(item: Monitor) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun clear() {
+    override fun clear() {
         TODO("Not yet implemented")
     }
 }
