@@ -63,7 +63,8 @@ class ComponentListFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.list)
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_component_add_fragment)
+            val action = ComponentListFragmentDirections.actionComponentAddFragment()
+            findNavController().navigate(action)
         }
 
         sharedViewModel.allComponents.observe(viewLifecycleOwner) {
@@ -79,7 +80,8 @@ class ComponentListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.toolbar_components_search -> {
-            snackbarShort { "Searching for components..." }.show()
+            val action = ComponentListFragmentDirections.actionComponentSearchNetFragment()
+            findNavController().navigate(action)
             true
         }
         else -> super.onOptionsItemSelected(item)

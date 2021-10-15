@@ -20,8 +20,10 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out"
-            app:destination="@id/component_fragment">
-        </action>
+            app:destination="@id/component_fragment" />
+        <action
+            android:id="@+id/action_component_search_net_fragment"
+            app:destination="@id/component_search_net_fragment" />
     </fragment>
 
     <fragment
@@ -44,5 +46,11 @@
             app:uri="https://tuguzt.github.io/pcbuilder/components/{id}" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/component_search_net_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentSearchNetFragment"
+        android:label="fragment_component_search_net"
+        tools:layout="@layout/fragment_component_search_net" />
 
 </navigation>
