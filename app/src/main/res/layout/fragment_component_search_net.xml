@@ -7,11 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".presentation.view.components.ComponentSearchNetFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_height="match_parent"
+    <RelativeLayout
         android:layout_width="match_parent"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/item_component" />
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/top_margin"
+            android:layout_marginEnd="@dimen/search_margin" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_component"
+            android:layout_below="@id/search_view" />
+
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

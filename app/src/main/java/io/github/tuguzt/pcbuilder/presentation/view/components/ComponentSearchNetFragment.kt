@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentSearchNetBinding
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.paging.SearchNetListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
+import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentSearchNetViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
@@ -38,8 +40,24 @@ class ComponentSearchNetFragment : Fragment() {
         val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
         binding.list.addItemDecoration(MarginDecoration(spaceSize))
 
-        viewModel.searchComponents("", 5).observe(viewLifecycleOwner) {
-            pagingAdapter.submitData(lifecycle, it)
+        binding.searchView.run {
+            isSubmitButtonEnabled = true
+            setIconifiedByDefault(false)
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String?) = true
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query.isNullOrBlank()) {
+                        toastShort { "Query cannot be empty!" }.show()
+                        return true
+                    }
+                    viewModel.searchComponents(query.trim(), 3).observe(viewLifecycleOwner) {
+                        pagingAdapter.submitData(lifecycle, it)
+                    }
+                    return true
+                }
+            })
         }
 
         return binding.root
