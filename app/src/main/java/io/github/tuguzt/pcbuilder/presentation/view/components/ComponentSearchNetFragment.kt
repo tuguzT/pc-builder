@@ -32,13 +32,13 @@ class ComponentSearchNetFragment : Fragment() {
     ): View {
         _binding = FragmentComponentSearchNetBinding.inflate(inflater, container, false)
 
-        val pagingAdapter = SearchNetListAdapter()
+        val pagingAdapter = SearchNetListAdapter(sharedViewModel)
         binding.list.adapter = pagingAdapter
 
         val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
         binding.list.addItemDecoration(MarginDecoration(spaceSize))
 
-        viewModel.searchComponents("", 1).observe(viewLifecycleOwner) {
+        viewModel.searchComponents("", 5).observe(viewLifecycleOwner) {
             pagingAdapter.submitData(lifecycle, it)
         }
 

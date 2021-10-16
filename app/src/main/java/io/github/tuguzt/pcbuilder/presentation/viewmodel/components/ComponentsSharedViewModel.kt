@@ -16,9 +16,15 @@ import io.nacular.measured.units.Measure
 class ComponentsSharedViewModel : ViewModel() {
     val allComponents get() = RepositoryAccess.localRepository.allData
 
-    fun addComponent(name: String, description: String, weight: Measure<Mass>, size: Size) {
+    fun addComponent(
+        name: String,
+        description: String,
+        weight: Measure<Mass>,
+        size: Size,
+        imageUri: String? = null,
+    ) {
         val id = NanoIdUtils.randomNanoId()
-        val component = ComponentData(id, name, description, weight, size, null)
+        val component = ComponentData(id, name, description, weight, size, imageUri)
         RepositoryAccess.localRepository.add(component)
     }
 

@@ -17,6 +17,7 @@
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/build_list_fragment.xml" value="0.22644927536231885" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/builds_fragment.xml" value="0.22644927536231885" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/component_item.xml" value="0.1" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/dialog_add_search_net_component.xml" value="0.19655797101449277" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/fragment_account.xml" value="0.12613981762917933" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/fragment_build_list.xml" value="0.12613981762917933" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/fragment_component.xml" value="0.1" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/item_build.xml" value="0.1" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/item_component.xml" value="0.264" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/item_component_search_result.xml" value="0.20742753623188406" />
+        <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/layout/item_search_net_component.xml" value="0.2" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.2553846153846154" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/menu/component_item_menu.xml" value="0.259375" />
         <entry key="..\:/Users/timur/Documents/Android Studio/PC Builder/app/src/main/res/menu/toolbar_components_menu.xml" value="0.259375" />

@@ -44,7 +44,7 @@ class ComponentViewHolder(
             name.text = component.name
             description.text = component.description
 
-            val imageUri = component.imageUri ?: return@run
+            val imageUri = component.imageUri ?: return
             imageView.visibility = View.VISIBLE
             val uri = Uri.parse(imageUri)
             val contentResolver = binding.root.context.contentResolver
@@ -58,7 +58,9 @@ class ComponentViewHolder(
                 }
                 Log.e(LOG_TAG, message, throwable)
                 sharedViewModel.updateComponent(ComponentData(component))
-                imageView.visibility = View.GONE
+                CoroutineScope(Dispatchers.Main).launch {
+                    imageView.visibility = View.GONE
+                }
             }
             CoroutineScope(Dispatchers.IO).launch(exceptionHandler) {
                 val fileDescriptor = contentResolver?.openFileDescriptor(uri, "r")?.fileDescriptor

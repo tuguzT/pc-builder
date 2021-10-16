@@ -14,6 +14,19 @@
         <!-- Customize your theme here. -->
         <item name="colorError">@color/errorColor</item>
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="alertDialogTheme">@style/Theme.PCBuilder.AlertDialog</item>
+    </style>
+
+    <!-- App theme for alert dialog. -->
+    <style name="Theme.PCBuilder.AlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarButtonStyle">@style/Theme.PCBuilder.AlertDialog.ButtonStyle</item>
+    </style>
+
+    <!-- App theme for alert dialog button. -->
+    <style name="Theme.PCBuilder.AlertDialog.ButtonStyle"
+        parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="rippleColor">?attr/colorButtonNormal</item>
     </style>
 
     <!-- Light application theme. -->
