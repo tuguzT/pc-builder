@@ -3,13 +3,15 @@ package io.github.tuguzt.pcbuilder.presentation.repository.net.octopart
 import android.util.Log
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.model.SearchResponse
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.ExperimentalSerializationApi
 import okhttp3.MediaType
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
@@ -42,7 +44,7 @@ internal object OctopartSearcher {
                         if (response.isSuccessful) {
                             val searchResponse = requireNotNull(response.body())
                             val data = searchResponse.results.map { SearchResult(it) }
-                            continuation.resume(data, null)
+                            continuation.resume(data)
                             return
                         }
                         val exception = IllegalStateException(response.errorBody()?.string())
@@ -51,6 +53,10 @@ internal object OctopartSearcher {
                     }
 
                     override fun onFailure(call: Call<SearchResponse>, exception: Throwable) {
+                        if (call.isCanceled) {
+                            continuation.cancel()
+                            return
+                        }
                         Log.e(LOG_TAG, "Retrofit failure!", exception)
                         continuation.resumeWithException(exception)
                     }
