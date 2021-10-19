@@ -20,7 +20,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
  * A [Fragment] subclass to search components by REST API.
  */
 class ComponentSearchNetFragment : Fragment() {
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
     private val viewModel: ComponentSearchNetViewModel by viewModels()
 
     private var _binding: FragmentComponentSearchNetBinding? = null

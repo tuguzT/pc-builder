@@ -28,7 +28,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
 class ComponentFragment : Fragment() {
     private val args: ComponentFragmentArgs by navArgs()
 
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
     private val viewModel: ComponentViewModel by viewModels { ComponentViewModelFactory(args.id) }
 
     private var _binding: FragmentComponentBinding? = null

@@ -6,5 +6,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PC Builder"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+rootProject.name = "PC_Builder"
 include(":app")
+include(":domain")

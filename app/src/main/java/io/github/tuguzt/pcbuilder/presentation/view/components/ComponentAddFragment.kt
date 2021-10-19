@@ -23,7 +23,7 @@ import io.nacular.measured.units.times
  * @see Component
  */
 class ComponentAddFragment : Fragment() {
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentAddBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.

@@ -22,7 +22,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
