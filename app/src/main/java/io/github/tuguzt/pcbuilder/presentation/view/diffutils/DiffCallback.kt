@@ -9,7 +9,7 @@ import io.github.tuguzt.pcbuilder.domain.model.Identifiable
  *
  * @see DiffUtil.ItemCallback
  */
-class DiffCallback<out I, T : Identifiable<I>> : DiffUtil.ItemCallback<T>() {
+class DiffCallback<out I : Any, T : Identifiable<I>> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem.id == newItem.id
 
     @SuppressLint("DiffUtilEquals")

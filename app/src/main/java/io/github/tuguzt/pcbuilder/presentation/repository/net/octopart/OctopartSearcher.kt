@@ -35,7 +35,7 @@ internal object OctopartSearcher {
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun searchComponentsSuspend(query: String, start: Int, limit: Int): List<SearchResult> {
         return suspendCancellableCoroutine { continuation ->
-            octopartAPI.searchQuery(query, apiKey = "TOP-SECRET", start, limit)
+            octopartAPI.searchQuery(query, "8f0447c8-f2c0-483b-bedd-144fed83bcce", start, limit)
                 .enqueue(object : Callback<SearchResponse> {
                     override fun onResponse(
                         call: Call<SearchResponse>,

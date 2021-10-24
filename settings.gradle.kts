@@ -7,6 +7,6 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "PC_Builder"
+rootProject.name = "PCBuilder"
 include(":app")
 include(":domain")
