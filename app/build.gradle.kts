@@ -43,7 +43,7 @@ android {
 
 dependencies {
     // Domain layer
-    api(projects.domain)
+    implementation("com.github.tuguzT:pc_builder_domain:main-SNAPSHOT")
 
     // Android
     implementation("androidx.core:core-ktx:1.6.0")
