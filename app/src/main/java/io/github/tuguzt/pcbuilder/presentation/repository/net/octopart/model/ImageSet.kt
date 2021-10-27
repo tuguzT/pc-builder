@@ -4,10 +4,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Represents an item from the list of [image sets][PartResult.Item.imageSet].
+ * Represents an item from the list of [image sets][PartResult.Item.imageSets].
  */
 @Serializable
-internal data class ImageSet(
+data class ImageSet(
     @SerialName("swatch_image") val swatchImage: Asset? = null,
     @SerialName("small_image") val smallImage: Asset? = null,
     @SerialName("medium_image") val mediumImage: Asset? = null,

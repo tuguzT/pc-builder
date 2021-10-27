@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-internal object MockOctopartAPI : OctopartAPI {
+object MockOctopartAPI : OctopartAPI {
     override fun searchQuery(
         query: String,
         apiKey: String,

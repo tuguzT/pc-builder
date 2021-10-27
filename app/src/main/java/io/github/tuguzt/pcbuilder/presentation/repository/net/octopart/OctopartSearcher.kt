@@ -17,7 +17,7 @@ import kotlin.coroutines.resumeWithException
 /**
  * Client of the Octopart REST API defined by [OctopartAPI].
  */
-internal object OctopartSearcher {
+object OctopartSearcher {
     @JvmStatic
     private val LOG_TAG = OctopartSearcher::class.simpleName
 
@@ -35,7 +35,7 @@ internal object OctopartSearcher {
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun searchComponentsSuspend(query: String, start: Int, limit: Int): List<SearchResult> {
         return suspendCancellableCoroutine { continuation ->
-            octopartAPI.searchQuery(query, "8f0447c8-f2c0-483b-bedd-144fed83bcce", start, limit)
+            octopartAPI.searchQuery(query, "TOP-SECRET", start, limit)
                 .enqueue(object : Callback<SearchResponse> {
                     override fun onResponse(
                         call: Call<SearchResponse>,

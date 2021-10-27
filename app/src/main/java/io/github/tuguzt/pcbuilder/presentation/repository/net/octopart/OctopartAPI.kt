@@ -9,7 +9,7 @@ import retrofit2.http.Query
 /**
  * Definition of the [Octopart REST API](https://octopart.com/api).
  */
-internal interface OctopartAPI {
+interface OctopartAPI {
     /**
      * Search for the components by [query].
      * Use [start] and [limit] arguments for paging.
@@ -28,4 +28,4 @@ internal interface OctopartAPI {
     ): Call<SearchResponse>
 }
 
-internal val json = Json { ignoreUnknownKeys = true }
+val json = Json { ignoreUnknownKeys = true }

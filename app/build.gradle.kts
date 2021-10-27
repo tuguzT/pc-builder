@@ -63,6 +63,7 @@ dependencies {
     // Kotlin Extensions
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     // Room
     implementation("androidx.room:room-runtime:2.3.0")
@@ -73,6 +74,9 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+
+    // Google
+    implementation("com.google.android.gms:play-services-auth:19.2.0")
 
     // Third-Party
     implementation("io.nacular.measured:measured:0.3.0")

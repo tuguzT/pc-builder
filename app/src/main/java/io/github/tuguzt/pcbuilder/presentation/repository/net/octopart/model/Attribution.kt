@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
  * Represents an attribution from the [ImageSet.attribution].
  */
 @Serializable
-internal data class Attribution(
+data class Attribution(
     val sources: List<Source>,
     @SerialName("first_acquired") val firstAcquired: String? = null,
 )
