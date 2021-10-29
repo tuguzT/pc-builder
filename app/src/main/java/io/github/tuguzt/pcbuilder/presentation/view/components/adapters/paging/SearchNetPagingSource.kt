@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.view.components.adapters.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartSearcher
@@ -16,10 +17,11 @@ internal class SearchNetPagingSource(
         val position = params.key ?: 0
         val offset = if (params.key != null) (position * pageSize) else 0
         return try {
-            val data = OctopartSearcher.searchComponentsSuspend(query, offset, pageSize)
+            val data = OctopartSearcher.searchComponents(query, offset, pageSize)
             val nextKey = if (data.isEmpty()) null else position + 1
             LoadResult.Page(data, prevKey = null, nextKey)
         } catch (exception: Exception) {
+            Log.e("MY_APP", "ERROR", exception)
             LoadResult.Error(exception)
         }
     }

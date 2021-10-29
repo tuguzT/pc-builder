@@ -6,7 +6,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.model.Sea
 
 /**
  * Represents the [result][SearchResponse] of searching query
- * by [OctopartSearcher.searchComponentsSuspend].
+ * by [OctopartSearcher.searchComponents].
  */
 data class SearchResult(private val partResult: PartResult) : Identifiable<String> {
     override val id get() = partResult.item.uid

@@ -1,7 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.net.octopart
 
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.model.SearchResponse
-import kotlinx.serialization.json.Json
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -27,5 +26,3 @@ interface OctopartAPI {
         @Query("limit") limit: Int,
     ): Call<SearchResponse>
 }
-
-val json = Json { ignoreUnknownKeys = true }

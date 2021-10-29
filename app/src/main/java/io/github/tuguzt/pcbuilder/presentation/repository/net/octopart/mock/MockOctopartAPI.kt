@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.mock
 
+import io.github.tuguzt.pcbuilder.presentation.repository.net.json
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.json
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.model.SearchResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +13,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Mock object of the [OctopartAPI].
+ */
 object MockOctopartAPI : OctopartAPI {
     override fun searchQuery(
         query: String,
@@ -30,6 +33,7 @@ object MockOctopartAPI : OctopartAPI {
         override fun enqueue(callback: Callback<SearchResponse>) {
             val call = this
             CoroutineScope(Dispatchers.IO).launch {
+                @Suppress("BlockingMethodInNonBlockingContext")
                 val searchResponse = execute()
                 callback.onResponse(call, searchResponse)
             }
