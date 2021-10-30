@@ -34,6 +34,8 @@
     <string name="height">Height</string>
     <string name="component_height">Height: %1$s</string>
 
+    <string name="display_role">Role: %1$s</string>
+
     <string name="add">Add</string>
     <string name="builds">Builds</string>
     <string name="components">Components</string>

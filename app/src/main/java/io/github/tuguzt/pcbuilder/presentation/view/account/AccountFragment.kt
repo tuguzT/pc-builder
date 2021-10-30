@@ -15,6 +15,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
+import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
+import io.github.tuguzt.pcbuilder.presentation.model.user.role
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
@@ -68,9 +70,16 @@ class AccountFragment : Fragment() {
     private fun bindAccount() {
         binding.run {
             val account = viewModel.account
-            username.text = account.displayName
+
+            username.text = account.username
             email.text = account.email
-            Picasso.get().load(account.photoUrl).into(imageView)
+            Picasso.get().load(account.imageUri).into(imageView)
+
+            role.visibility = View.GONE
+            if (account !is UserOrdinal) {
+                role.visibility = View.VISIBLE
+                role.text = requireContext().getString(R.string.display_role, account.role)
+            }
         }
     }
 

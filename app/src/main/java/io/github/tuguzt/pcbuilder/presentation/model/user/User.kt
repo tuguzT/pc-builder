@@ -14,3 +14,9 @@ sealed interface User : Identifiable<String> {
 
     override val id get() = username
 }
+
+inline val User.role get() = when (this) {
+    Admin -> "admin"
+    is Moderator -> "moderator"
+    is UserOrdinal -> "ordinal"
+}

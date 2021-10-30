@@ -8,7 +8,7 @@ import android.net.Uri
  * @see User
  */
 object Admin : User {
-    override val username = "admin"
+    override val username = "Тимур Тугушев"
     override val email = "timurka.tugushev@gmail.com"
     override val password = "admin"
     override var imageUri: Uri? = null
