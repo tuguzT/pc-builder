@@ -3,18 +3,30 @@ package io.github.tuguzt.pcbuilder.presentation.view.account
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
+import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
+import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.toastShort
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /**
  * Activity for user login.
  */
 class LoginActivity : AppCompatActivity() {
+    companion object {
+        @JvmStatic
+        private val LOG_TAG = LoginActivity::class.simpleName
+    }
+
     private lateinit var _binding: ActivityLoginBinding
     private inline val binding get() = _binding
 
@@ -30,15 +42,27 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
-        _googleSignInClient = GoogleSignIn.getClient(this, gso)
+        _googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
 
         val contract = ActivityResultContracts.StartActivityForResult()
         _googleSignInLauncher = registerForActivityResult(contract) {
-            setResult(RESULT_OK, it.data)
-            finish()
+            if (it.resultCode != RESULT_OK) {
+                toastShort(applicationContext) { "User was not signed in!" }.show()
+                return@registerForActivityResult
+            }
+            lifecycleScope.launch {
+                try {
+                    val data = it.data
+                    val account = GoogleSignIn.getSignedInAccountFromIntent(data).await()
+                    Log.i(LOG_TAG, "name=${account.displayName} email=${account.email}")
+                    setResult(RESULT_OK, data)
+                    finish()
+                } catch (exception: ApiException) {
+                    val message = "Google authorization failed"
+                    Log.e(LOG_TAG, message, exception)
+                    snackbarShort(binding.root) { message }.show()
+                }
+            }
         }
 
         binding.googleButton.setOnClickListener(this::signInGoogle)

@@ -29,6 +29,11 @@
         <item name="rippleColor">?attr/colorButtonNormal</item>
     </style>
 
+    <!-- App theme for rounded ImageView. -->
+    <style name="Theme.PCBuilder.RoundImageView">
+        <item name="cornerSize">50%</item>
+    </style>
+
     <!-- Light application theme. -->
     <style name="Theme.PCBuilder" parent="Theme.PCBuilder.Base" />
 </resources>

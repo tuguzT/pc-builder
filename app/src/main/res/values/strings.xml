@@ -13,6 +13,8 @@
     <string name="create_build">Create build</string>
     <string name="item_build_share_title">Share your build</string>
 
+    <string name="sign_out">Sign out</string>
+
     <string name="name">Name</string>
     <string name="component_name">Name: %1$s</string>
 

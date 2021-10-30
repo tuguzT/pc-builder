@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -30,3 +31,18 @@ fun Fragment.popBackStackRoot() {
     graph.startDestination = R.id.components_nav_graph
     navController.graph = graph
 }
+
+/**
+ * Returns root view of the parent activity
+ * or null if the fragment is associated with a Context instead.
+ *
+ * @see requireRootView
+ */
+val Fragment.rootView: View? get() = activity?.window?.decorView?.findViewById(android.R.id.content)
+
+/**
+ * Returns root view of the parent activity.
+ *
+ * @see rootView
+ */
+val Fragment.requireRootView get() = rootView!!
