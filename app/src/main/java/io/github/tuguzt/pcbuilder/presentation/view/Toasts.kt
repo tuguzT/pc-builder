@@ -20,7 +20,5 @@ internal inline fun toastShort(context: Context, text: () -> CharSequence): Toas
  * @see Toast.LENGTH_SHORT
  */
 @CheckResult
-internal inline fun Fragment.toastShort(
-    context: Context = requireContext(),
-    text: () -> CharSequence,
-): Toast = io.github.tuguzt.pcbuilder.presentation.view.toastShort(context, text)
+internal inline fun Fragment.toastShort(text: () -> CharSequence) =
+    toastShort(context = requireContext(), text)

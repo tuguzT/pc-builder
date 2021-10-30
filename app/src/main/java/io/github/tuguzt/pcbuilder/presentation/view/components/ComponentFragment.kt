@@ -33,10 +33,10 @@ class ComponentFragment : Fragment() {
 
     private var _binding: FragmentComponentBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
-    private val binding get() = _binding!!
+    private inline val binding get() = _binding!!
 
     private lateinit var _getImageUri: ActivityResultLauncher<Array<String>>
-    private val getImageUri get() = _getImageUri
+    private inline val getImageUri get() = _getImageUri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

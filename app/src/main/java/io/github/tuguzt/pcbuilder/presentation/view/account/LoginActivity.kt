@@ -16,13 +16,13 @@ import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
  */
 class LoginActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityLoginBinding
-    private val binding get() = _binding
+    private inline val binding get() = _binding
 
     private lateinit var _googleSignInClient: GoogleSignInClient
     private inline val googleSignInClient get() = _googleSignInClient
 
     private lateinit var _googleSignInLauncher: ActivityResultLauncher<Intent>
-    private val googleSignInLauncher get() = _googleSignInLauncher
+    private inline val googleSignInLauncher get() = _googleSignInLauncher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

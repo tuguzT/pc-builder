@@ -12,9 +12,8 @@ class BuildListFragment : Fragment() {
 
     private var _binding: FragmentBuildListBinding? = null
 
-    // This helper property is only valid between
-    // `onCreateView` and `onDestroyView`.
-    private val binding get() = _binding!!
+    // This helper property is only valid between `onCreateView` and `onDestroyView`.
+    private inline val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,

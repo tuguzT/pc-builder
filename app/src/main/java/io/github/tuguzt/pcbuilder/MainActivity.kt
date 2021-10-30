@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var _binding: ActivityMainBinding
-    private val binding get() = _binding
+    private inline val binding get() = _binding
 
     private val navController: NavController
         get() {

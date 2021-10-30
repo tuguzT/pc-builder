@@ -33,7 +33,7 @@ internal class SearchResultViewHolder(
     private var imageBitmap: Bitmap? = null
 
     private lateinit var _searchResult: SearchResult
-    val searchResult get() = _searchResult
+    private inline val searchResult get() = _searchResult
 
     init {
         binding.saveLocalStorage.setOnClickListener {

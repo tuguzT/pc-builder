@@ -29,7 +29,7 @@ class ComponentViewHolder(
     }
 
     private lateinit var _component: ComponentData
-    val component get() = _component
+    private inline val component get() = _component
 
     init {
         binding.root.setOnClickListener {
