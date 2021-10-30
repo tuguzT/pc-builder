@@ -16,6 +16,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.mon
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.motherboard.MotherboardDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.psu.PowerSupplyUnitDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.storage.StorageDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.user.UserDto
 
 private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 
@@ -24,6 +25,7 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
  */
 @Database(
     entities = [
+        UserDto::class,
         ComponentDto::class,
         CaseDto::class,
         CoolerDto::class,

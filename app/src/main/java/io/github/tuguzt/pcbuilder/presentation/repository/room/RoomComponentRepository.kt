@@ -2,7 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import androidx.lifecycle.LiveData
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
+import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import kotlinx.coroutines.CoroutineScope

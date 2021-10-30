@@ -1,10 +1,10 @@
-package io.github.tuguzt.pcbuilder.presentation.model
+package io.github.tuguzt.pcbuilder.presentation.model.component
 
 import android.os.Parcelable
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.domain.model.component.monitor.Monitor
-import io.github.tuguzt.pcbuilder.presentation.model.parceler.MassParceler
-import io.github.tuguzt.pcbuilder.presentation.model.parceler.SizeParceler
+import io.github.tuguzt.pcbuilder.presentation.model.component.parceler.MassParceler
+import io.github.tuguzt.pcbuilder.presentation.model.component.parceler.SizeParceler
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.monitor.MonitorComponent
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.Measure

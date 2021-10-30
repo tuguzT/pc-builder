@@ -12,7 +12,7 @@ import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
+import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.popBackStackRoot
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort

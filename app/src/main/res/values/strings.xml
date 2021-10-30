@@ -13,6 +13,7 @@
     <string name="create_build">Create build</string>
     <string name="item_build_share_title">Share your build</string>
 
+    <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
 
     <string name="name">Name</string>
@@ -38,4 +39,7 @@
     <string name="components">Components</string>
     <string name="account">Account</string>
     <string name="share">Share</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
+import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import io.nacular.measured.units.Length.Companion.centimeters

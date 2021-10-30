@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.model.parceler
+package io.github.tuguzt.pcbuilder.presentation.model.component.parceler
 
 import android.os.Parcel
 import io.nacular.measured.units.Mass

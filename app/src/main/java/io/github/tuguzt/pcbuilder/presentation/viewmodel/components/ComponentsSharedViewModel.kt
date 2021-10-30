@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.presentation.model.ComponentData
+import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentAddFragment
 import io.nacular.measured.units.Mass

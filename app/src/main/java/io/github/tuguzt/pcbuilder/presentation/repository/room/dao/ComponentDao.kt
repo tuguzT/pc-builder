@@ -12,7 +12,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.Com
  * @see Component
  */
 @Dao
-internal interface ComponentDao : IDao<ComponentDto> {
+interface ComponentDao : IDao<ComponentDto> {
     @Query("SELECT * FROM component WHERE id = :id")
     fun findById(id: String): LiveData<ComponentDto>
 
