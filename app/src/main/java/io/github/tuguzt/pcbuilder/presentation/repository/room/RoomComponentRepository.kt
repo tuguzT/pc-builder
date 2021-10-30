@@ -19,7 +19,7 @@ internal class RoomComponentRepository(private val roomDatabase: RoomDatabase) :
 
     private val componentDao get() = roomDatabase.componentDao
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override val allData = componentDao.getAll()
 

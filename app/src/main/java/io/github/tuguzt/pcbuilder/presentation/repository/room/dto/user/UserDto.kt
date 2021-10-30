@@ -22,4 +22,6 @@ data class UserDto(
 ) : UserOrdinal(username, email, password, imageUriString?.let { Uri.parse(it) }) {
     @Ignore
     override var imageUri = super.imageUri
+
+    constructor(u: User) : this(u.username, u.email, u.password, u.imageUri?.toString())
 }
