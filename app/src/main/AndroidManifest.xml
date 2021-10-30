@@ -27,6 +27,10 @@
             </intent-filter>
             <nav-graph android:value="@navigation/main_nav_graph" />
         </activity>
+        <activity
+            android:name="io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

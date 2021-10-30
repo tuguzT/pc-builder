@@ -20,7 +20,5 @@ internal inline fun snackbarShort(view: View, text: () -> CharSequence): Snackba
  * @see Snackbar.LENGTH_SHORT
  */
 @CheckResult
-internal inline fun Fragment.snackbarShort(
-    view: View = requireView(),
-    text: () -> CharSequence,
-): Snackbar = io.github.tuguzt.pcbuilder.presentation.view.snackbarShort(view, text)
+internal inline fun Fragment.snackbarShort(text: () -> CharSequence) =
+    snackbarShort(view = requireView(), text)
