@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -14,6 +15,7 @@ import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -46,7 +48,12 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val data = it.data
-                    val user = GoogleSignIn.getSignedInAccountFromIntent(data).await().toUser()
+                    val googleAccount = GoogleSignIn.getSignedInAccountFromIntent(data).await()
+                    userSharedPreferences.edit {
+                        putString("google-token", googleAccount.idToken)
+                    }
+
+                    val user = googleAccount.toUser()
                     resultUser(user)
                 } catch (exception: ApiException) {
                     val message = "Google authorization failed"
