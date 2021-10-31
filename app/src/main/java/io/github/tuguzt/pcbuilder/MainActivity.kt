@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
+import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         RepositoryAccess.initRoom(application)
 
-        val account = GoogleSignIn.getLastSignedInAccount(this)
+        val account = GoogleSignIn.getLastSignedInAccount(this)?.toUser()
         if (account == null) {
             val loginIntent = Intent(this, LoginActivity::class.java)
             val contract = ActivityResultContracts.StartActivityForResult()
@@ -42,6 +43,8 @@ class MainActivity : AppCompatActivity() {
                     return@registerForActivityResult
                 }
             }.launch(loginIntent)
+        } else {
+            RepositoryAccess.currentUsername = account.username
         }
 
         setContentView(binding.root)

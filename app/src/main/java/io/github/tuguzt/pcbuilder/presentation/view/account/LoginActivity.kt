@@ -1,13 +1,15 @@
 package io.github.tuguzt.pcbuilder.presentation.view.account
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
+import io.github.tuguzt.pcbuilder.presentation.model.user.User
+import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
@@ -44,9 +46,8 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val data = it.data
-                    GoogleSignIn.getSignedInAccountFromIntent(data).await()
-                    setResult(RESULT_OK, data)
-                    finish()
+                    val user = GoogleSignIn.getSignedInAccountFromIntent(data).await().toUser()
+                    resultUser(user)
                 } catch (exception: ApiException) {
                     val message = "Google authorization failed"
                     Log.e(LOG_TAG, message, exception)
@@ -67,19 +68,25 @@ class LoginActivity : AppCompatActivity() {
                 val password = password.text.toString()
                 if (username.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
                     val user = user(username.trim(), email.trim(), password.trim(), null)
-                    TODO("Sign in with username, email and password")
-                    val repository = RepositoryAccess.localUserRepository
-                    repository.findById(user.id).observe(this@LoginActivity) {
-                        if (it == null) {
-                            repository.add(user)
-                        } else {
-                            repository.update(user)
-                        }
-                    }
+                    resultUser(user)
                 } else {
                     snackbarShort(root) { "Incorrect input!" }.show()
                 }
             }
+        }
+    }
+
+    private fun resultUser(user: User) {
+        val repository = RepositoryAccess.localUserRepository
+        repository.findById(user.id).observe(this@LoginActivity) {
+            if (it == null) {
+                repository.add(user)
+            } else {
+                repository.update(user)
+            }
+            RepositoryAccess.currentUsername = user.username
+            setResult(RESULT_OK)
+            finish()
         }
     }
 

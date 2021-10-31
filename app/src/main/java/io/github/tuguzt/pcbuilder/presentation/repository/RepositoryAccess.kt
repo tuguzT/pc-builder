@@ -18,7 +18,11 @@ object RepositoryAccess {
             ?: MockComponentRepository.also { pLocalComponentRepository = it }
 
     @JvmStatic
-    val localUserRepository: Repository<String, User> get() = pLocalUserRepository!!
+    val localUserRepository: Repository<String, User>
+        get() = pLocalUserRepository!!
+
+    @JvmStatic
+    var currentUsername: String? = null
 
     @JvmStatic
     fun initRoom(application: Application) {

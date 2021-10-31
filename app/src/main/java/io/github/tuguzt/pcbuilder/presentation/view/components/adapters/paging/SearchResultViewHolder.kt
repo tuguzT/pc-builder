@@ -19,7 +19,6 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
-import java.lang.Exception
 
 internal class SearchResultViewHolder(
     private val binding: ItemSearchNetComponentBinding,

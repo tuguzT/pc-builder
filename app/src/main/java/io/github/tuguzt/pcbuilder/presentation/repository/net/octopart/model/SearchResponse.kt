@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.model
 
-import kotlinx.serialization.Serializable
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
+import kotlinx.serialization.Serializable
 
 /**
  * Response from the [OctopartAPI.searchQuery].

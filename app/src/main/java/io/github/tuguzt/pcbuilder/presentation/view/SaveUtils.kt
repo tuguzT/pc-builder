@@ -34,7 +34,8 @@ fun saveImage(bitmap: Bitmap, context: Context): Uri? {
         return uri
     }
 
-    val directory = File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
+    val directory =
+        File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
     if (!directory.exists()) {
         directory.mkdirs()
     }
@@ -50,7 +51,7 @@ fun saveImage(bitmap: Bitmap, context: Context): Uri? {
     return file.toUri()
 }
 
-private fun contentValues() : ContentValues {
+private fun contentValues(): ContentValues {
     val values = ContentValues()
     values.put(MediaStore.Images.Media.MIME_TYPE, "image/png")
     values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)

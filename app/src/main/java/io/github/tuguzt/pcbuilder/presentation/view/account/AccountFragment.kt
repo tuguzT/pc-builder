@@ -17,7 +17,9 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.model.user.role
+import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
+import io.github.tuguzt.pcbuilder.presentation.view.observeOnce
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
@@ -50,10 +52,10 @@ class AccountFragment : Fragment() {
                 activity.finish()
                 return@registerForActivityResult
             }
-            bindAccount()
+            bindUser()
         }
 
-        bindAccount()
+        bindUser()
         binding.signOut.setOnClickListener {
             val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
             lifecycleScope.launch {
@@ -67,18 +69,28 @@ class AccountFragment : Fragment() {
         return binding.root
     }
 
-    private fun bindAccount() {
+    private fun bindUser() {
         binding.run {
-            val account = viewModel.account
+            viewModel.user!!.observeOnce(viewLifecycleOwner) {
+                it?.let {
+                    val user = user(it.username, it.email, it.password, it.imageUri)
 
-            username.text = account.username
-            email.text = account.email
-            Picasso.get().load(account.imageUri).into(imageView)
+                    username.text = user.username
+                    email.text = user.email
 
-            role.visibility = View.GONE
-            if (account !is UserOrdinal) {
-                role.visibility = View.VISIBLE
-                role.text = requireContext().getString(R.string.display_role, account.role)
+                    val uri = user.imageUri
+                    if (uri != null) {
+                        Picasso.get().load(uri).into(imageView)
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_baseline_person_24)
+                    }
+
+                    role.visibility = View.GONE
+                    if (user !is UserOrdinal) {
+                        role.visibility = View.VISIBLE
+                        role.text = requireContext().getString(R.string.display_role, user.role)
+                    }
+                }
             }
         }
     }
