@@ -7,7 +7,7 @@ import android.net.Uri
  *
  * @see User
  */
-class Moderator(
+class Moderator internal constructor(
     override val username: String,
     override val email: String,
     override val password: String,

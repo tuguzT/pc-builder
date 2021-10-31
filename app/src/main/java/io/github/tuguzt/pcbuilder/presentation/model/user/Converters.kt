@@ -15,8 +15,6 @@ fun GoogleSignInAccount.toUser() = user(displayName!!, email!!, "no-password", p
  */
 fun user(username: String, email: String, password: String, imageUri: Uri?): User = when {
     email == Admin.email -> Admin.also { it.imageUri = imageUri }
-    email.endsWith("@pc_builder.com") -> {
-        Moderator(username, email, password, imageUri)
-    }
+    email.endsWith("@pc_builder.com") -> Moderator(username, email, password, imageUri)
     else -> UserOrdinal(username, email, password, imageUri)
 }

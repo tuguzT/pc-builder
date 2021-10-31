@@ -11,7 +11,6 @@ class BuildListFragment : Fragment() {
 //    private val viewModel: BuildListViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentBuildListBinding? = null
-
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

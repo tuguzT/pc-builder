@@ -7,7 +7,7 @@ import android.net.Uri
  *
  * @see User
  */
-open class UserOrdinal(
+open class UserOrdinal internal constructor(
     override val username: String,
     override val email: String,
     override val password: String,

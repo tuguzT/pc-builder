@@ -2,9 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -15,10 +13,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
+import io.github.tuguzt.pcbuilder.presentation.model.user.Admin
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.model.user.role
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
+import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.observeOnce
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
@@ -29,7 +29,7 @@ import kotlinx.coroutines.tasks.await
  * A [Fragment] subclass which represents information about user account.
  */
 class AccountFragment : Fragment() {
-    private val viewModel: AccountViewModel by navGraphViewModels(R.id.account_nav_graph)
+    private val viewModel: AccountViewModel by navGraphViewModels(R.id.main_nav_graph)
 
     private var _binding: FragmentAccountBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
@@ -44,6 +44,7 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAccountBinding.inflate(inflater, container, false)
+        hasOptionsMenu = true
 
         val activity = requireActivity()
         val contract = ActivityResultContracts.StartActivityForResult()
@@ -52,6 +53,7 @@ class AccountFragment : Fragment() {
                 activity.finish()
                 return@registerForActivityResult
             }
+            activity.invalidateOptionsMenu()
             bindUser()
         }
 
@@ -67,6 +69,17 @@ class AccountFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.account_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        viewModel.currentUser.observeOnce(viewLifecycleOwner) {
+            val moderators = menu.findItem(R.id.moderators)!!
+            moderators.isVisible = it is Admin
+        }
     }
 
     private fun bindUser() {
