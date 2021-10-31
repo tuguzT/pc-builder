@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -45,13 +46,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleUser() {
-        val userFromGoogle = GoogleSignIn.getLastSignedInAccount(this)?.toUser()
+        val sharedPreferences = userSharedPreferences
+
+        val googleAccount = GoogleSignIn.getLastSignedInAccount(this)
+        val userFromGoogle = googleAccount?.toUser()
         if (userFromGoogle != null) {
+            sharedPreferences.edit {
+                putString("google-token", googleAccount.idToken)
+            }
             RepositoryAccess.setUser(userFromGoogle, this)
             return
         }
 
-        val sharedPreferences = userSharedPreferences
         val username = sharedPreferences.getString("username", null)
         if (username != null) {
             val email = sharedPreferences.getString("email", null)!!
