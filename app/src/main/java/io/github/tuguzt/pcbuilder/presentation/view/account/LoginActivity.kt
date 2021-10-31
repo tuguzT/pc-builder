@@ -8,9 +8,10 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
+import io.github.tuguzt.pcbuilder.presentation.model.user.user
+import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
-import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -37,14 +38,13 @@ class LoginActivity : AppCompatActivity() {
         val contract = ActivityResultContracts.StartActivityForResult()
         val googleSignInLauncher = registerForActivityResult(contract) {
             if (it.resultCode != RESULT_OK) {
-                toastShort(applicationContext) { "User was not signed in!" }.show()
+                snackbarShort(binding.root) { "User was not signed in!" }.show()
                 return@registerForActivityResult
             }
             lifecycleScope.launch {
                 try {
                     val data = it.data
-                    val account = GoogleSignIn.getSignedInAccountFromIntent(data).await()
-                    Log.i(LOG_TAG, "name=${account.displayName} email=${account.email}")
+                    GoogleSignIn.getSignedInAccountFromIntent(data).await()
                     setResult(RESULT_OK, data)
                     finish()
                 } catch (exception: ApiException) {
@@ -55,9 +55,31 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.googleButton.setOnClickListener {
-            val signInIntent = googleSignInClient.signInIntent
-            googleSignInLauncher.launch(signInIntent)
+        binding.run {
+            googleButton.setOnClickListener {
+                val signInIntent = googleSignInClient.signInIntent
+                googleSignInLauncher.launch(signInIntent)
+            }
+
+            signIn.setOnClickListener {
+                val username = username.text.toString()
+                val email = email.text.toString()
+                val password = password.text.toString()
+                if (username.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
+                    val user = user(username.trim(), email.trim(), password.trim(), null)
+                    TODO("Sign in with username, email and password")
+                    val repository = RepositoryAccess.localUserRepository
+                    repository.findById(user.id).observe(this@LoginActivity) {
+                        if (it == null) {
+                            repository.add(user)
+                        } else {
+                            repository.update(user)
+                        }
+                    }
+                } else {
+                    snackbarShort(root) { "Incorrect input!" }.show()
+                }
+            }
         }
     }
 

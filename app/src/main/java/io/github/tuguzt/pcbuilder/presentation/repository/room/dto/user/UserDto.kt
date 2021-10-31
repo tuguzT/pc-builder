@@ -23,5 +23,10 @@ data class UserDto(
     @Ignore
     override var imageUri = super.imageUri
 
+    /**
+     * Constructs [UserDto] from the [User].
+     *
+     * @see User
+     */
     constructor(u: User) : this(u.username, u.email, u.password, u.imageUri?.toString())
 }
