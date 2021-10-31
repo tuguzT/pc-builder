@@ -77,17 +77,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun resultUser(user: User) {
-        val repository = RepositoryAccess.localUserRepository
-        repository.findById(user.id).observe(this@LoginActivity) {
-            if (it == null) {
-                repository.add(user)
-            } else {
-                repository.update(user)
-            }
-            RepositoryAccess.currentUsername = user.username
-            setResult(RESULT_OK)
-            finish()
-        }
+        RepositoryAccess.setUser(user)
+        setResult(RESULT_OK)
+        finish()
     }
 
     override fun onBackPressed() {

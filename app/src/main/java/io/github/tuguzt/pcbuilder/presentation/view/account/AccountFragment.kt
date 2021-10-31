@@ -71,7 +71,7 @@ class AccountFragment : Fragment() {
 
     private fun bindUser() {
         binding.run {
-            viewModel.user!!.observeOnce(viewLifecycleOwner) {
+            viewModel.currentUser.observeOnce(viewLifecycleOwner) {
                 it?.let {
                     val user = user(it.username, it.email, it.password, it.imageUri)
 

@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         RepositoryAccess.initRoom(application)
 
-        val account = GoogleSignIn.getLastSignedInAccount(this)?.toUser()
-        if (account == null) {
+        val user = GoogleSignIn.getLastSignedInAccount(this)?.toUser()
+        if (user == null) {
             val loginIntent = Intent(this, LoginActivity::class.java)
             val contract = ActivityResultContracts.StartActivityForResult()
             registerForActivityResult(contract) {
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }.launch(loginIntent)
         } else {
-            RepositoryAccess.currentUsername = account.username
+            RepositoryAccess.setUser(user)
         }
 
         setContentView(binding.root)

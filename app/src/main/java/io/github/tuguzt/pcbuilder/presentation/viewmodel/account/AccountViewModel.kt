@@ -8,8 +8,5 @@ import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
  * View model of 'Account' page.
  */
 class AccountViewModel(application: Application) : AndroidViewModel(application) {
-    val user
-        get() = RepositoryAccess.currentUsername?.let {
-            RepositoryAccess.localUserRepository.findById(it)
-        }
+    val currentUser get() = RepositoryAccess.currentUser
 }
