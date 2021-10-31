@@ -6,6 +6,7 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
@@ -17,9 +18,7 @@ import io.github.tuguzt.pcbuilder.presentation.model.user.Admin
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.model.user.role
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
-import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
-import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
-import io.github.tuguzt.pcbuilder.presentation.view.observeOnce
+import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
@@ -60,6 +59,7 @@ class AccountFragment : Fragment() {
         bindUser()
         binding.signOut.setOnClickListener {
             val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
+            activity.userSharedPreferences.edit { clear() }
             lifecycleScope.launch {
                 googleSignInClient.signOut().await()
                 toastShort { "Signed out successfully" }.show()

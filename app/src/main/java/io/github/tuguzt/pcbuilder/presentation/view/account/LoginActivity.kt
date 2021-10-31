@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun resultUser(user: User) {
-        RepositoryAccess.setUser(user)
+        RepositoryAccess.setUser(user, this)
         setResult(RESULT_OK)
         finish()
     }

@@ -1,6 +1,8 @@
 package io.github.tuguzt.pcbuilder.presentation.repository
 
+import android.app.Activity
 import android.app.Application
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
@@ -10,6 +12,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomComponentRepo
 import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomDatabase
 import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomUserRepository
 import io.github.tuguzt.pcbuilder.presentation.view.observeOnce
+import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 
 /**
  * Object for access to all repository types used in the application.
@@ -39,12 +42,18 @@ object RepositoryAccess {
     }
 
     @JvmStatic
-    fun setUser(user: User) {
+    fun setUser(user: User, activity: Activity) {
         localUserRepository.findById(user.username).observeOnce {
             if (it == null) {
                 localUserRepository.add(user)
             } else {
                 localUserRepository.update(user)
+            }
+            activity.userSharedPreferences.edit {
+                putString("username", user.username)
+                putString("email", user.email)
+                putString("password", user.password)
+                putString("imageUri", user.imageUri?.toString())
             }
             pCurrentUser.value = user
         }
