@@ -72,12 +72,12 @@ class AccountFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.account_menu, menu)
+        inflater.inflate(R.menu.toolbar_account_menu, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         viewModel.currentUser.observeOnce(viewLifecycleOwner) {
-            val moderators = menu.findItem(R.id.moderators)!!
+            val moderators = menu.findItem(R.id.toolbar_account_moderators)!!
             moderators.isVisible = it is Admin
         }
     }

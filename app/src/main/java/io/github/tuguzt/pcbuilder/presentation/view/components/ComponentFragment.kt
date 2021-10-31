@@ -89,11 +89,11 @@ class ComponentFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.component_item_menu, menu)
+        inflater.inflate(R.menu.toolbar_component_item_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.component_item_share -> {
+        R.id.toolbar_component_item_share -> {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 val link = "https://tuguzt.github.io/pcbuilder/components/${args.id}"
@@ -105,7 +105,7 @@ class ComponentFragment : Fragment() {
             startActivity(shareIntent)
             true
         }
-        R.id.component_item_image -> {
+        R.id.toolbar_component_item_image -> {
             getImageUri.launch(arrayOf("image/*"))
             true
         }

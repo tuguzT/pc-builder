@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
+import io.github.tuguzt.pcbuilder.presentation.view.observeOnce
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
 /**
@@ -22,6 +25,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
  * @see Component
  */
 class ComponentListFragment : Fragment() {
+    private val accountViewModel: AccountViewModel by navGraphViewModels(R.id.main_nav_graph)
     private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
@@ -76,6 +80,13 @@ class ComponentListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.toolbar_components_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        accountViewModel.currentUser.observeOnce(viewLifecycleOwner) {
+            val task = menu.findItem(R.id.toolbar_components_task)!!
+            task.isVisible = it !is UserOrdinal
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
