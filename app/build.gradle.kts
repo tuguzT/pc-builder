@@ -58,6 +58,10 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+}
+
 dependencies {
     // Domain layer
     implementation("com.github.tuguzT:pc_builder_domain:main-SNAPSHOT")
@@ -96,7 +100,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:19.2.0")
 
     // Third-Party
-    implementation("io.nacular.measured:measured:0.3.0")
     implementation("com.aventrix.jnanoid:jnanoid:2.0.0")
     implementation("com.squareup.picasso:picasso:2.71828")
 

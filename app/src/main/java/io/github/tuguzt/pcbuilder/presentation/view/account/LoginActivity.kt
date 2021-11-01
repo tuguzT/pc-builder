@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
-import io.github.tuguzt.pcbuilder.presentation.model.user.User
+import io.github.tuguzt.pcbuilder.presentation.model.user.UserSealed
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun resultUser(user: User) {
+    private fun resultUser(user: UserSealed) {
         RepositoryAccess.setUser(user, this)
         setResult(RESULT_OK)
         finish()
