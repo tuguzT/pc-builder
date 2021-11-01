@@ -14,7 +14,6 @@ import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
-import io.github.tuguzt.pcbuilder.presentation.view.observeOnce
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
@@ -83,10 +82,9 @@ class ComponentListFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        accountViewModel.currentUser.observeOnce(viewLifecycleOwner) {
-            val task = menu.findItem(R.id.toolbar_components_task)!!
-            task.isVisible = it !is UserOrdinal
-        }
+        val user = accountViewModel.currentUser
+        val task = menu.findItem(R.id.toolbar_components_task)!!
+        task.isVisible = user !is UserOrdinal
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

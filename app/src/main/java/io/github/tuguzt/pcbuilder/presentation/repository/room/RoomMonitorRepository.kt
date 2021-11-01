@@ -16,7 +16,7 @@ internal class RoomMonitorRepository(private val roomDatabase: RoomDatabase) :
 
     private val monitorDao get() = roomDatabase.monitorDao
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override val allData: LiveData<out List<Monitor>> = monitorDao.getAll()
 

@@ -17,7 +17,6 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.presentation.model.user.Admin
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.model.user.role
-import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
@@ -76,34 +75,29 @@ class AccountFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        viewModel.currentUser.observeOnce(viewLifecycleOwner) {
-            val moderators = menu.findItem(R.id.toolbar_account_moderators)!!
-            moderators.isVisible = it is Admin
-        }
+        val user = viewModel.currentUser
+        val moderators = menu.findItem(R.id.toolbar_account_moderators)!!
+        moderators.isVisible = user is Admin
     }
 
     private fun bindUser() {
+        val user = viewModel.currentUser!!
+
         binding.run {
-            viewModel.currentUser.observeOnce(viewLifecycleOwner) {
-                it?.let {
-                    val user = user(it.username, it.email, it.password, it.imageUri)
+            username.text = user.username
+            email.text = user.email
 
-                    username.text = user.username
-                    email.text = user.email
+            val uri = user.imageUri
+            if (uri != null) {
+                Picasso.get().load(uri).into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.ic_baseline_person_24)
+            }
 
-                    val uri = user.imageUri
-                    if (uri != null) {
-                        Picasso.get().load(uri).into(imageView)
-                    } else {
-                        imageView.setImageResource(R.drawable.ic_baseline_person_24)
-                    }
-
-                    role.visibility = View.GONE
-                    if (user !is UserOrdinal) {
-                        role.visibility = View.VISIBLE
-                        role.text = requireContext().getString(R.string.display_role, user.role)
-                    }
-                }
+            role.visibility = View.GONE
+            if (user !is UserOrdinal) {
+                role.visibility = View.VISIBLE
+                role.text = requireContext().getString(R.string.display_role, user.role)
             }
         }
     }

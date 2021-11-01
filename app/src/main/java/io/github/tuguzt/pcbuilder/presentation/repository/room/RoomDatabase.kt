@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.MonitorDao
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.UserDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.build.BuildDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.cases.CaseDto
@@ -17,7 +16,6 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.mon
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.motherboard.MotherboardDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.psu.PowerSupplyUnitDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.storage.StorageDto
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.user.UserDto
 
 private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 
@@ -26,7 +24,6 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
  */
 @Database(
     entities = [
-        UserDto::class,
         ComponentDto::class,
         CaseDto::class,
         CoolerDto::class,
@@ -45,7 +42,6 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 internal abstract class RoomDatabase : BaseRoomDatabase() {
     abstract val componentDao: ComponentDao
     abstract val monitorDao: MonitorDao
-    abstract val userDao: UserDao
 
     companion object {
         private const val DATABASE_NAME = "pc_builder"
