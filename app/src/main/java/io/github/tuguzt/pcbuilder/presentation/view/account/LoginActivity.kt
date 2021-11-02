@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
+import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
+import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserSealed
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
@@ -69,16 +71,22 @@ class LoginActivity : AppCompatActivity() {
                 googleSignInLauncher.launch(signInIntent)
             }
 
+            @Suppress("NAME_SHADOWING")
             signIn.setOnClickListener {
                 val username = username.text.toString()
-                val email = email.text.toString()
                 val password = password.text.toString()
-                if (username.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
-                    val user = user(username.trim(), email.trim(), password.trim(), null)
-                    resultUser(user)
-                } else {
-                    snackbarShort(root) { "Incorrect input!" }.show()
+                if (username.isNotBlank() && password.isNotBlank()) {
+                    val username = username.trim()
+                    val password = password.trim()
+                    if (checkUsername(username) && checkPassword(password)) {
+                        val user = user(username, "null@null.null", password, null)
+                        resultUser(user)
+                        return@setOnClickListener
+                    }
+                    snackbarShort(root) { "Incorrect input for username/password!" }.show()
+                    return@setOnClickListener
                 }
+                snackbarShort(root) { "Username/password are empty!" }.show()
             }
         }
     }

@@ -1,6 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
-import io.github.tuguzt.pcbuilder.domain.model.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.randomNanoId
 
 /**
  * Moderator of the application.

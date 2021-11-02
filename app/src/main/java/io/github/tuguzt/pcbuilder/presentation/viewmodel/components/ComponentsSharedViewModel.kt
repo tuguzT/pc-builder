@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.viewmodel.components
 import androidx.lifecycle.ViewModel
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.domain.model.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.randomNanoId
 import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentAddFragment
