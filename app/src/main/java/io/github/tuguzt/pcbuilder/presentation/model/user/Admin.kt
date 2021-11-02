@@ -1,6 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils
+import io.github.tuguzt.pcbuilder.domain.model.randomNanoId
 
 /**
  * Administrator of the application.
@@ -8,7 +8,7 @@ import com.aventrix.jnanoid.jnanoid.NanoIdUtils
  * @see UserSealed
  */
 object Admin : UserSealed {
-    override val id: String = NanoIdUtils.randomNanoId()
+    override val id = randomNanoId()
     override val username = "Тимур Тугушев"
     override val email = "timurka.tugushev@gmail.com"
     override val password = "admin"

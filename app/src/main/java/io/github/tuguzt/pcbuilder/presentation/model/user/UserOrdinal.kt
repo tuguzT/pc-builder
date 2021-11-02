@@ -1,14 +1,14 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils
+import io.github.tuguzt.pcbuilder.domain.model.randomNanoId
 
 /**
  * Ordinal user of the application.
  *
  * @see UserSealed
  */
-open class UserOrdinal internal constructor(
-    override val id: String = NanoIdUtils.randomNanoId(),
+class UserOrdinal internal constructor(
+    override val id: String = randomNanoId(),
     override val username: String,
     override val email: String,
     override val password: String,

@@ -1,6 +1,5 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import io.github.tuguzt.pcbuilder.domain.model.user.User
 
 /**

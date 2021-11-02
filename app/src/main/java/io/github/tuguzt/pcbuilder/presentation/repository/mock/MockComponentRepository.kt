@@ -2,9 +2,9 @@ package io.github.tuguzt.pcbuilder.presentation.repository.mock
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
+import io.github.tuguzt.pcbuilder.domain.model.randomNanoId
 import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 object MockComponentRepository : Repository<String, Component> {
     private var list = List(20) { index ->
         ComponentData(
-            id = NanoIdUtils.randomNanoId(),
+            id = randomNanoId(),
             name = "name $index",
             description = "description $index",
             weight = index * grams,
