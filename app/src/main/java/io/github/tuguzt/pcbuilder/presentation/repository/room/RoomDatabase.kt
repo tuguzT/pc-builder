@@ -1,8 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.MonitorDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.build.BuildDto
@@ -16,8 +14,6 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.mon
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.motherboard.MotherboardDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.psu.PowerSupplyUnitDto
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.storage.StorageDto
-
-private typealias BaseRoomDatabase = androidx.room.RoomDatabase
 
 /**
  * Room database which contains all the data locally saved by user.
@@ -39,27 +35,7 @@ private typealias BaseRoomDatabase = androidx.room.RoomDatabase
     version = 1,
     exportSchema = false,
 )
-internal abstract class RoomDatabase : BaseRoomDatabase() {
+internal abstract class RoomDatabase : androidx.room.RoomDatabase() {
     abstract val componentDao: ComponentDao
     abstract val monitorDao: MonitorDao
-
-    companion object {
-        private const val DATABASE_NAME = "pc_builder"
-
-        @Volatile
-        private var INSTANCE: RoomDatabase? = null
-
-        /**
-         * Get unique instance of the Room database.
-         * @return unique instance of the Room database
-         */
-        @JvmStatic
-        fun getInstance(context: Context): RoomDatabase = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: Room.databaseBuilder(
-                context.applicationContext,
-                RoomDatabase::class.java,
-                DATABASE_NAME,
-            ).build().also { INSTANCE = it }
-        }
-    }
 }

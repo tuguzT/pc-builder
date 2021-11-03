@@ -11,10 +11,7 @@ import com.google.android.gms.common.api.ApiException
 import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
 import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
-import io.github.tuguzt.pcbuilder.presentation.model.user.UserSealed
-import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
-import io.github.tuguzt.pcbuilder.presentation.model.user.user
-import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
+import io.github.tuguzt.pcbuilder.presentation.model.user.*
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
@@ -79,7 +76,12 @@ class LoginActivity : AppCompatActivity() {
                     val username = username.trim()
                     val password = password.trim()
                     if (checkUsername(username) && checkPassword(password)) {
-                        val user = user(username, "null@null.null", password, null)
+                        val user = user(
+                            username = username,
+                            email = "null@null.null",
+                            password = password,
+                            imageUri = null,
+                        )
                         resultUser(user)
                         return@setOnClickListener
                     }
@@ -92,8 +94,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun resultUser(user: UserSealed) {
-        RepositoryAccess.setUser(user, this)
-        setResult(RESULT_OK)
+        setResult(RESULT_OK, user.toIntent())
         finish()
     }
 

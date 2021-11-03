@@ -13,14 +13,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
-import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
 import io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Entry point of the application.
  */
 class MainActivity : AppCompatActivity() {
+    private val accountViewModel: AccountViewModel by viewModel()
+
     private lateinit var _binding: ActivityMainBinding
     private inline val binding get() = _binding
 
@@ -34,8 +37,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
-
-        RepositoryAccess.initRoom(application)
 
         handleUser()
 
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             sharedPreferences.edit {
                 putString("google-token", googleAccount.idToken)
             }
-            RepositoryAccess.setUser(userFromGoogle, this)
+            accountViewModel.currentUser = userFromGoogle
             return
         }
 
@@ -63,8 +64,13 @@ class MainActivity : AppCompatActivity() {
             val email = sharedPreferences.getString("email", null)!!
             val password = sharedPreferences.getString("password", null)!!
             val imageUri = sharedPreferences.getString("imageUri", null)
-            val user = user(username, email, password, imageUri?.let { Uri.parse(it) })
-            RepositoryAccess.setUser(user, this)
+            val user = user(
+                username = username,
+                email = email,
+                password = password,
+                imageUri = imageUri?.let { Uri.parse(it) }
+            )
+            accountViewModel.currentUser = user
             return
         }
 
@@ -75,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 return@registerForActivityResult
             }
+            val user = it.data?.extras?.toUser()
+            accountViewModel.currentUser = user
         }.launch(loginIntent)
     }
 }

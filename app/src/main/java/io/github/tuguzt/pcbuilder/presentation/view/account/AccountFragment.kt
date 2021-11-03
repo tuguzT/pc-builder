@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navGraphViewModels
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
@@ -17,17 +16,19 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.presentation.model.user.Admin
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.model.user.role
+import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
  * A [Fragment] subclass which represents information about user account.
  */
 class AccountFragment : Fragment() {
-    private val viewModel: AccountViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val accountViewModel: AccountViewModel by sharedViewModel()
 
     private var _binding: FragmentAccountBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
@@ -54,6 +55,7 @@ class AccountFragment : Fragment() {
                 activity.finish()
                 return@registerForActivityResult
             }
+            accountViewModel.currentUser = it.data?.extras?.toUser()
             activity.invalidateOptionsMenu()
             bindUser()
         }
@@ -76,30 +78,28 @@ class AccountFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        val user = viewModel.currentUser
+        val user = accountViewModel.currentUser
         val moderators = menu.findItem(R.id.toolbar_account_moderators)!!
         moderators.isVisible = user is Admin
     }
 
-    private fun bindUser() {
-        val user = viewModel.currentUser!!
+    private fun bindUser(): Unit = binding.run {
+        val user = accountViewModel.currentUser
 
-        binding.run {
-            username.text = user.username
-            email.text = user.email
+        username.text = user?.username
+        email.text = user?.email
 
-            val uri = user.imageUri
-            if (uri != null) {
-                Picasso.get().load(uri).into(imageView)
-            } else {
-                imageView.setImageResource(R.drawable.ic_baseline_person_24)
-            }
+        val uri = user?.imageUri
+        if (uri != null) {
+            Picasso.get().load(uri).into(imageView)
+        } else {
+            imageView.setImageResource(R.drawable.ic_baseline_person_24)
+        }
 
-            role.visibility = View.GONE
-            if (user !is UserOrdinal) {
-                role.visibility = View.VISIBLE
-                role.text = requireContext().getString(R.string.display_role, user.role)
-            }
+        role.visibility = View.GONE
+        if (user !is UserOrdinal) {
+            role.visibility = View.VISIBLE
+            role.text = requireContext().getString(R.string.display_role, user?.role)
         }
     }
 

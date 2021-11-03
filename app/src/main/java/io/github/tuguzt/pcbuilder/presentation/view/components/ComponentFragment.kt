@@ -13,12 +13,14 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
+import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.popBackStackRoot
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModelFactory
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
+import org.koin.android.ext.android.inject
 
 /**
  * A [Fragment] subclass which represents specs of PC [component][Component].
@@ -28,8 +30,12 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
 class ComponentFragment : Fragment() {
     private val args: ComponentFragmentArgs by navArgs()
 
+    private val localComponentRepository: Repository<String, Component> by inject()
+
     private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
-    private val viewModel: ComponentViewModel by viewModels { ComponentViewModelFactory(args.id) }
+    private val viewModel: ComponentViewModel by viewModels {
+        ComponentViewModelFactory(args.id, localComponentRepository)
+    }
 
     private var _binding: FragmentComponentBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.

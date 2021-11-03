@@ -1,12 +1,11 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.account
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import io.github.tuguzt.pcbuilder.presentation.repository.RepositoryAccess
+import androidx.lifecycle.ViewModel
+import io.github.tuguzt.pcbuilder.presentation.model.user.UserSealed
 
 /**
  * View model of 'Account' page.
  */
-class AccountViewModel(application: Application) : AndroidViewModel(application) {
-    val currentUser get() = RepositoryAccess.currentUser
+class AccountViewModel : ViewModel() {
+    var currentUser: UserSealed? = null
 }

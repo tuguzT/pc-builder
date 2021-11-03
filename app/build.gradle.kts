@@ -1,9 +1,9 @@
 plugins {
     id("com.android.application")
-    id("kotlin-parcelize")
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.serialization")
+    id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -101,6 +101,8 @@ dependencies {
 
     // Third-Party
     implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("io.insert-koin:koin-core:3.1.3")
+    implementation("io.insert-koin:koin-android:3.1.3")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
