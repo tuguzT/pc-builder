@@ -33,8 +33,8 @@ fun Fragment.popBackStackRoot() {
 }
 
 /**
- * Returns root view of the parent activity
- * or null if the fragment is associated with a Context instead.
+ * Returns root view of the parent activity or null
+ * if the fragment is associated with a Context instead or activity is not visual.
  *
  * @see requireRootView
  */
@@ -45,4 +45,4 @@ val Fragment.rootView: View? get() = activity?.window?.decorView?.findViewById(a
  *
  * @see rootView
  */
-val Fragment.requireRootView get() = rootView!!
+val Fragment.requireRootView get() = requireNotNull(rootView)

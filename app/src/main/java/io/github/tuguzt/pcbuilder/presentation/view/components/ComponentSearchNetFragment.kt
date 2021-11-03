@@ -31,9 +31,10 @@ class ComponentSearchNetFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentComponentSearchNetBinding.inflate(inflater, container, false)
+    ) = FragmentComponentSearchNetBinding.inflate(inflater, container, false)
+        .also { _binding = it }.root
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val pagingAdapter = SearchNetListAdapter(sharedViewModel)
         binding.list.adapter = pagingAdapter
 
@@ -59,8 +60,6 @@ class ComponentSearchNetFragment : Fragment() {
                 }
             })
         }
-
-        return binding.root
     }
 
     override fun onDestroyView() {

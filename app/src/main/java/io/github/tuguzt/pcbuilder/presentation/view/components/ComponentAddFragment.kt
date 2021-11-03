@@ -33,9 +33,10 @@ class ComponentAddFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentComponentAddBinding.inflate(inflater, container, false)
+    ) = FragmentComponentAddBinding.inflate(inflater, container, false)
+        .also { _binding = it }.root
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val buttonAdd = binding.buttonAdd
         buttonAdd.setOnClickListener {
             val name = binding.name.text.toString()
@@ -71,8 +72,6 @@ class ComponentAddFragment : Fragment() {
                 snackbarShort { "Some fields are empty!" }.show()
             }
         }
-
-        return binding.root
     }
 
     override fun onDestroyView() {

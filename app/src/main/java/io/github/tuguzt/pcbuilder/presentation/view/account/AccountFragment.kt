@@ -41,9 +41,12 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentAccountBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
+        return FragmentAccountBinding.inflate(inflater, container, false)
+            .also { _binding = it }.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val activity = requireActivity()
         val contract = ActivityResultContracts.StartActivityForResult()
         _loginLauncher = registerForActivityResult(contract) {
@@ -66,8 +69,6 @@ class AccountFragment : Fragment() {
                 loginLauncher.launch(loginIntent)
             }
         }
-
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

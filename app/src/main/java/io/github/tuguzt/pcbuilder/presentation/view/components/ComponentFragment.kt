@@ -66,9 +66,12 @@ class ComponentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentComponentBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
+        return FragmentComponentBinding.inflate(inflater, container, false)
+            .also { _binding = it }.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.component.observe(viewLifecycleOwner) { component: Component? ->
             if (component == null) {
                 toastShort { "Component does not exist!" }.show()
@@ -84,8 +87,6 @@ class ComponentFragment : Fragment() {
                 height.text = getString(R.string.component_height, component.size.height)
             }
         }
-
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

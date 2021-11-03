@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
  * @see Toast.LENGTH_SHORT
  */
 @CheckResult
-internal inline fun toastShort(context: Context, text: () -> CharSequence): Toast =
+inline fun toastShort(context: Context, text: () -> CharSequence): Toast =
     Toast.makeText(context, text(), Toast.LENGTH_SHORT)
 
 /**
@@ -20,5 +20,5 @@ internal inline fun toastShort(context: Context, text: () -> CharSequence): Toas
  * @see Toast.LENGTH_SHORT
  */
 @CheckResult
-internal inline fun Fragment.toastShort(text: () -> CharSequence) =
+inline fun Fragment.toastShort(text: () -> CharSequence) =
     toastShort(context = requireContext(), text)

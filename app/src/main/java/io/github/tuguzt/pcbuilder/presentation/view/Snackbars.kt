@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
  * @see Snackbar.LENGTH_SHORT
  */
 @CheckResult
-internal inline fun snackbarShort(view: View, text: () -> CharSequence): Snackbar =
+inline fun snackbarShort(view: View, text: () -> CharSequence): Snackbar =
     Snackbar.make(view, text(), Snackbar.LENGTH_SHORT)
 
 /**
@@ -20,5 +20,5 @@ internal inline fun snackbarShort(view: View, text: () -> CharSequence): Snackba
  * @see Snackbar.LENGTH_SHORT
  */
 @CheckResult
-internal inline fun Fragment.snackbarShort(text: () -> CharSequence) =
+inline fun Fragment.snackbarShort(text: () -> CharSequence) =
     snackbarShort(view = requireView(), text)
