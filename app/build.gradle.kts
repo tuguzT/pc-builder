@@ -103,6 +103,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("io.insert-koin:koin-core:3.1.3")
     implementation("io.insert-koin:koin-android:3.1.3")
+    implementation("io.insert-koin:koin-androidx-navigation:3.1.3")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

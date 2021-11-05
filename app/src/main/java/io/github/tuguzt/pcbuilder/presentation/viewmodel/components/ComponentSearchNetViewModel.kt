@@ -8,8 +8,8 @@ import androidx.paging.cachedIn
 import androidx.paging.liveData
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendAPI
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
-import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.paging.SearchNetPagingSource
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentSearchNetFragment
+import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.paging.SearchNetPagingSource
 
 /**
  * View model for [ComponentSearchNetFragment].

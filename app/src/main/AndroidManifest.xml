@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PCBuilder">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.view.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:exported="true">
             <intent-filter>
@@ -29,7 +29,7 @@
             <nav-graph android:value="@navigation/main_nav_graph" />
         </activity>
         <activity
-            android:name="io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity"
+            android:name=".presentation.view.account.LoginActivity"
             android:exported="false">
         </activity>
     </application>

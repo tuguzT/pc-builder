@@ -11,15 +11,13 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
-import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModelFactory
-import org.koin.android.ext.android.inject
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
 /**
  * A [Fragment] subclass which represents list of [components][Component].
@@ -27,12 +25,8 @@ import org.koin.android.ext.android.inject
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private val localComponentRepository: Repository<String, Component> by inject()
-
     private val accountViewModel: AccountViewModel by navGraphViewModels(R.id.main_nav_graph)
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph) {
-        ComponentsSharedViewModelFactory(localComponentRepository)
-    }
+    private val sharedViewModel: ComponentsSharedViewModel by koinNavGraphViewModel(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.

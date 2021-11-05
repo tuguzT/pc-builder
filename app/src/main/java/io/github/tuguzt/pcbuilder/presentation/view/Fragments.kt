@@ -45,4 +45,4 @@ val Fragment.rootView: View? get() = activity?.window?.decorView?.findViewById(a
  *
  * @see rootView
  */
-val Fragment.requireRootView get() = requireNotNull(rootView)
+inline val Fragment.requireRootView get() = requireNotNull(rootView)

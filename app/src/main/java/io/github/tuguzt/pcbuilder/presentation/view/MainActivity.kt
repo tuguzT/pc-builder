@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder
+package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.content.Intent
 import android.net.Uri
@@ -10,11 +10,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity
-import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

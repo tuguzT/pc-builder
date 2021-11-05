@@ -14,9 +14,9 @@ import io.nacular.measured.units.Measure
  * View model for [ComponentAddFragment].
  */
 class ComponentsSharedViewModel(
-    private val localComponentRepository: Repository<String, Component>,
+    private val componentRepository: Repository<String, Component>,
 ) : ViewModel() {
-    val allComponents get() = localComponentRepository.allData
+    val allComponents get() = componentRepository.allData
 
     fun addComponent(
         name: String,
@@ -27,18 +27,18 @@ class ComponentsSharedViewModel(
     ) {
         val id = randomNanoId()
         val component = ComponentData(id, name, description, weight, size, imageUri)
-        localComponentRepository.add(component)
+        componentRepository.add(component)
     }
 
     fun updateComponent(item: Component) {
-        localComponentRepository.update(item)
+        componentRepository.update(item)
     }
 
     fun deleteComponent(component: Component) {
-        localComponentRepository.remove(component)
+        componentRepository.remove(component)
     }
 
     fun deleteAllComponents() {
-        localComponentRepository.clear()
+        componentRepository.clear()
     }
 }

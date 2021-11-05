@@ -6,21 +6,19 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.repository.Repository
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.popBackStackRoot
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModelFactory
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.navigation.koinNavGraphViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * A [Fragment] subclass which represents specs of PC [component][Component].
@@ -30,12 +28,8 @@ import org.koin.android.ext.android.inject
 class ComponentFragment : Fragment() {
     private val args: ComponentFragmentArgs by navArgs()
 
-    private val localComponentRepository: Repository<String, Component> by inject()
-
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
-    private val viewModel: ComponentViewModel by viewModels {
-        ComponentViewModelFactory(args.id, localComponentRepository)
-    }
+    private val sharedViewModel: ComponentsSharedViewModel by koinNavGraphViewModel(R.id.components_nav_graph)
+    private val viewModel: ComponentViewModel by viewModel { parametersOf(args.id) }
 
     private var _binding: FragmentComponentBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.

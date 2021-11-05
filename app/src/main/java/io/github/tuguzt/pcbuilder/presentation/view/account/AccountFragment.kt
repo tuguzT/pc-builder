@@ -18,7 +18,6 @@ import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
 import io.github.tuguzt.pcbuilder.presentation.model.user.role
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.view.*
-import io.github.tuguzt.pcbuilder.presentation.view.toastShort
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -31,6 +30,7 @@ class AccountFragment : Fragment() {
     private val accountViewModel: AccountViewModel by sharedViewModel()
 
     private var _binding: FragmentAccountBinding? = null
+
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

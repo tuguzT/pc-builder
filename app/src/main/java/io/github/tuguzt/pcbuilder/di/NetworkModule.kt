@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.create
 
@@ -15,22 +16,29 @@ import retrofit2.create
  * Network module of the Koin DI.
  */
 val networkModule = module {
-    single(qualifier = named("retrofit-octopart")) {
-        retrofit("https://octopart.com/api/", get())
+    @OptIn(ExperimentalSerializationApi::class)
+    single(named("json-converter-factory")) {
+        val json: Json = get()
+        json.asConverterFactory(MediaType.get("application/json"))
     }
-    single { octopartAPI(get(qualifier = named("retrofit-octopart"))) }
 
-    single(qualifier = named("retrofit-backend")) {
-        retrofit("https://pc-builder-tuguzt.herokuapp.com", get())
+    single(named("retrofit-octopart")) {
+        retrofit("https://octopart.com/api/",
+            get(named("json-converter-factory")))
     }
-    single { backendAPI(get(qualifier = named("retrofit-backend"))) }
+    single { octopartAPI(get(named("retrofit-octopart"))) }
+
+    single(named("retrofit-backend")) {
+        retrofit("https://pc-builder-tuguzt.herokuapp.com",
+            get(named("json-converter-factory")))
+    }
+    single { backendAPI(get(named("retrofit-backend"))) }
 }
 
-@OptIn(ExperimentalSerializationApi::class)
-private fun retrofit(baseUrl: String, json: Json): Retrofit =
+private fun retrofit(baseUrl: String, converterFactory: Converter.Factory): Retrofit =
     Retrofit.Builder()
         .baseUrl(baseUrl)
-        .addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+        .addConverterFactory(converterFactory)
         .build()
 
 private fun octopartAPI(retrofit: Retrofit): OctopartAPI = retrofit.create()

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.navGraphViewModels
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
@@ -16,6 +15,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSh
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
 /**
  * A [Fragment] subclass for [Component] creation.
@@ -23,7 +23,7 @@ import io.nacular.measured.units.times
  * @see Component
  */
 class ComponentAddFragment : Fragment() {
-    private val sharedViewModel: ComponentsSharedViewModel by navGraphViewModels(R.id.components_nav_graph)
+    private val sharedViewModel: ComponentsSharedViewModel by koinNavGraphViewModel(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentAddBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
