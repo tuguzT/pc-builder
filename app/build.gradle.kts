@@ -7,23 +7,6 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
-// TODO remove after Kotlin 1.6.0 release
-kotlin {
-    kotlinDaemonJvmArgs = listOf(
-        "-Dfile.encoding=UTF-8",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
-        "--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
-    )
-}
-
 android {
     compileSdk = 31
 
@@ -72,7 +55,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
