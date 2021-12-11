@@ -51,9 +51,9 @@ dependencies {
 
     // Android
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
+    implementation("androidx.fragment:fragment-ktx:1.4.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -62,11 +62,11 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
-    implementation("androidx.paging:paging-runtime:3.0.1")
+    implementation("androidx.paging:paging-runtime:3.1.0")
 
     // Kotlin Extensions
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     // Room
@@ -84,9 +84,9 @@ dependencies {
 
     // Third-Party
     implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("io.insert-koin:koin-core:3.1.3")
-    implementation("io.insert-koin:koin-android:3.1.3")
-    implementation("io.insert-koin:koin-androidx-navigation:3.1.3")
+    implementation("io.insert-koin:koin-core:3.1.4")
+    implementation("io.insert-koin:koin-android:3.1.4")
+    implementation("io.insert-koin:koin-androidx-navigation:3.1.4")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
