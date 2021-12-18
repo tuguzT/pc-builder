@@ -15,7 +15,6 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.presentation.model.user.Admin
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
-import io.github.tuguzt.pcbuilder.presentation.model.user.role
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel

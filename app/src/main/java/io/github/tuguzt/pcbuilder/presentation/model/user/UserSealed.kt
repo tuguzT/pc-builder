@@ -1,18 +1,12 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
-import io.github.tuguzt.pcbuilder.domain.model.user.User
+import io.github.tuguzt.pcbuilder.domain.model.user.UserNamePassword
 
 /**
  * Base interface for users.
  */
-sealed interface UserSealed : User {
+sealed interface UserSealed : UserNamePassword {
     override val email: String
-    val password: String
+    override val password: String
     override var imageUri: String?
-}
-
-inline val UserSealed.role get() = when (this) {
-    Admin -> "admin"
-    is Moderator -> "moderator"
-    is UserOrdinal -> "ordinal"
 }

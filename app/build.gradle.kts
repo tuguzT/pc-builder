@@ -47,7 +47,9 @@ configurations.all {
 
 dependencies {
     // Domain layer
-    implementation("com.github.tuguzT:pc_builder_domain:main-SNAPSHOT")
+    implementation("com.github.tuguzT:pc_builder_domain:main-SNAPSHOT") {
+        isChanging = true
+    }
 
     // Android
     implementation("androidx.core:core-ktx:1.7.0")
@@ -70,17 +72,17 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     // Room
-    implementation("androidx.room:room-runtime:2.3.0")
-    implementation("androidx.room:room-ktx:2.3.0")
+    implementation("androidx.room:room-runtime:2.4.0")
+    implementation("androidx.room:room-ktx:2.4.0")
     // Room annotations with Kotlin annotation processing tool
-    kapt("androidx.room:room-compiler:2.3.0")
+    kapt("androidx.room:room-compiler:2.4.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
     // Google
-    implementation("com.google.android.gms:play-services-auth:19.2.0")
+    implementation("com.google.android.gms:play-services-auth:20.0.0")
 
     // Third-Party
     implementation("com.squareup.picasso:picasso:2.71828")

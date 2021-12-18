@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
+import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.domain.randomNanoId
 
 /**
@@ -13,4 +14,6 @@ class UserOrdinal internal constructor(
     override val email: String,
     override val password: String,
     override var imageUri: String?,
-) : UserSealed
+) : UserSealed {
+    override val role = UserRole.User
+}
