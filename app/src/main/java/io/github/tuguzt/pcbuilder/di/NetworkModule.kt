@@ -1,16 +1,25 @@
 package io.github.tuguzt.pcbuilder.di
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendAPI
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendOctopartAPI
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
+import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.create
+
+const val backendBaseUrl = "https://pc-builder-tuguzt.herokuapp.com"
+const val octopartBaseUrl = "https://octopart.com/api"
 
 /**
  * Network module of the Koin DI.
@@ -22,17 +31,31 @@ val networkModule = module {
         json.asConverterFactory(MediaType.get("application/json"))
     }
 
+    single { backendClient(androidContext()) }
+
+    // Octopart API todo move to the server
     single(named("retrofit-octopart")) {
-        retrofit("https://octopart.com/api/",
-            get(named("json-converter-factory")))
+        retrofit(octopartBaseUrl, get(named("json-converter-factory")))
     }
     single { octopartAPI(get(named("retrofit-octopart"))) }
 
-    single(named("retrofit-backend")) {
-        retrofit("https://pc-builder-tuguzt.herokuapp.com",
-            get(named("json-converter-factory")))
+    // Backend Octopart API (to replace previous Octopart API)
+    single(named("retrofit-backend-octopart")) {
+        retrofitAuth(get(), "$backendBaseUrl/octopart", get(named("json-converter-factory")))
     }
-    single { backendAPI(get(named("retrofit-backend"))) }
+    single { backendOctopartAPI(get(named("retrofit-backend-octopart"))) }
+
+    // Backend Authentication API
+    single(named("retrofit-backend-auth")) {
+        retrofit(backendBaseUrl, get(named("json-converter-factory")))
+    }
+    single { backendAuthAPI(get(named("retrofit-backend-auth"))) }
+
+    // Backend Users API
+    single(named("retrofit-backend-users")) {
+        retrofitAuth(get(), "$backendBaseUrl/users", get(named("json-converter-factory")))
+    }
+    single { backendUsersAPI(get(named("retrofit-backend-users"))) }
 }
 
 private fun retrofit(baseUrl: String, converterFactory: Converter.Factory): Retrofit =
@@ -41,6 +64,33 @@ private fun retrofit(baseUrl: String, converterFactory: Converter.Factory): Retr
         .addConverterFactory(converterFactory)
         .build()
 
+private fun backendClient(context: Context): OkHttpClient =
+    OkHttpClient.Builder()
+        .addInterceptor { chain ->
+            val preferences = context.userSharedPreferences
+            val token = preferences.getString("token", null).orEmpty()
+            val request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+            chain.proceed(request)
+        }
+        .build()
+
+private fun retrofitAuth(
+    client: OkHttpClient,
+    baseUrl: String,
+    converterFactory: Converter.Factory,
+): Retrofit =
+    Retrofit.Builder()
+        .client(client)
+        .baseUrl(baseUrl)
+        .addConverterFactory(converterFactory)
+        .build()
+
 private fun octopartAPI(retrofit: Retrofit): OctopartAPI = retrofit.create()
 
-private fun backendAPI(retrofit: Retrofit): BackendAPI = retrofit.create()
+private fun backendOctopartAPI(retrofit: Retrofit): BackendOctopartAPI = retrofit.create()
+
+private fun backendAuthAPI(retrofit: Retrofit): BackendAuthAPI = retrofit.create()
+
+private fun backendUsersAPI(retrofit: Retrofit): BackendUsersAPI = retrofit.create()

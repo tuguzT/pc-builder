@@ -7,10 +7,10 @@ import retrofit2.http.GET
 /**
  * Definition of the REST API for the remote `PC Builder` backend server.
  */
-interface BackendAPI {
+interface BackendOctopartAPI {
     /**
      * Retrieves the PAI token for the [OctopartAPI].
      */
-    @GET("octopart/token")
-    fun getOctopartToken(): Call<String>
+    @GET("token")
+    fun token(): Call<String>
 }
