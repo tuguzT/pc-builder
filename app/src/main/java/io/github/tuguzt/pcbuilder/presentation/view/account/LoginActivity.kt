@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -13,8 +14,11 @@ import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
 import io.github.tuguzt.pcbuilder.presentation.model.user.*
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountAuthViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Activity for user login.
@@ -24,6 +28,8 @@ class LoginActivity : AppCompatActivity() {
         @JvmStatic
         private val LOG_TAG = LoginActivity::class.simpleName
     }
+
+    private val accountAuthViewModel: AccountAuthViewModel by viewModel()
 
     private lateinit var _binding: ActivityLoginBinding
     private inline val binding get() = _binding
@@ -47,6 +53,11 @@ class LoginActivity : AppCompatActivity() {
                     val data = it.data
                     val googleAccount = GoogleSignIn.getSignedInAccountFromIntent(data).await()
 
+                    val sharedPreferences = application.userSharedPreferences
+                    sharedPreferences.edit {
+                        putString("google_token", googleAccount.idToken)
+                        putString("google_username", googleAccount.displayName)
+                    }
                     val user = googleAccount.toUser()
                     resultUser(user)
                 } catch (exception: ApiException) {
@@ -71,13 +82,11 @@ class LoginActivity : AppCompatActivity() {
                     val username = username.trim()
                     val password = password.trim()
                     if (checkUsername(username) && checkPassword(password)) {
-                        val user = user(
-                            username = username,
-                            email = "null@null.null",
-                            password = password,
-                            imageUri = null,
-                        )
-                        resultUser(user)
+                        val credentials = UserCredentialsData(username, password)
+                        lifecycleScope.launch {
+                            accountAuthViewModel.auth(application, credentials)
+                            resultUser(null)
+                        }
                         return@setOnClickListener
                     }
                     snackbarShort(root) { "Incorrect input for username/password!" }.show()
@@ -88,8 +97,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun resultUser(user: UserSealed) {
-        setResult(RESULT_OK, user.toIntent())
+    private fun resultUser(user: UserData?) {
+        setResult(RESULT_OK, user?.toIntent())
         finish()
     }
 

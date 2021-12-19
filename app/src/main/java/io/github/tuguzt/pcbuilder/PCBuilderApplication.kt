@@ -18,7 +18,7 @@ class PCBuilderApplication : Application() {
         super.onCreate()
         startKoin {
             // TODO Koin can't work properly on Kotlin 1.6.0
-            androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
+            androidLogger(Level.ERROR)
             androidContext(androidContext = this@PCBuilderApplication)
             modules(appModule, repositoryModule, networkModule)
         }

@@ -1,21 +1,18 @@
 package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
-import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
-import io.github.tuguzt.pcbuilder.presentation.model.user.user
 import io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -38,7 +35,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
-        handleUser()
+        lifecycleScope.launchWhenCreated {
+            handleUser()
+        }
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -46,43 +45,17 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
     }
 
-    private fun handleUser() {
-        val sharedPreferences = userSharedPreferences
-
-        val googleAccount = GoogleSignIn.getLastSignedInAccount(this)
-        val userFromGoogle = googleAccount?.toUser()
-        if (userFromGoogle != null) {
-            sharedPreferences.edit {
-                putString("google-token", googleAccount.idToken)
-            }
-            accountViewModel.currentUser = userFromGoogle
-            return
-        }
-
-        val username = sharedPreferences.getString("username", null)
-        if (username != null) {
-            val email = sharedPreferences.getString("email", null)!!
-            val password = sharedPreferences.getString("password", null)!!
-            val imageUri = sharedPreferences.getString("imageUri", null)
-            val user = user(
-                username = username,
-                email = email,
-                password = password,
-                imageUri = imageUri?.let { Uri.parse(it) }
-            )
-            accountViewModel.currentUser = user
-            return
-        }
+    private suspend fun handleUser() {
+        if (accountViewModel.findUser(application) != null) return
 
         val loginIntent = Intent(this, LoginActivity::class.java)
         val contract = ActivityResultContracts.StartActivityForResult()
         registerForActivityResult(contract) {
-            if (it.resultCode == RESULT_CANCELED) {
+            if (it.resultCode == RESULT_CANCELED) return@registerForActivityResult
+            lifecycleScope.launch {
+                accountViewModel.updateUserRemote(application)
                 finish()
-                return@registerForActivityResult
             }
-            val user = it.data?.extras?.toUser()
-            accountViewModel.currentUser = user
         }.launch(loginIntent)
     }
 }

@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
+import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
@@ -25,7 +24,7 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
  * @see Component
  */
 class ComponentListFragment : Fragment() {
-    private val accountViewModel: AccountViewModel by navGraphViewModels(R.id.main_nav_graph)
+    private val accountViewModel: AccountViewModel by koinNavGraphViewModel(R.id.main_nav_graph)
     private val sharedViewModel: ComponentsSharedViewModel by koinNavGraphViewModel(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
@@ -84,9 +83,9 @@ class ComponentListFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        val user = accountViewModel.currentUser
+        val user = accountViewModel.currentUser ?: return
         val task = menu.findItem(R.id.toolbar_components_task)!!
-        task.isVisible = user !is UserOrdinal
+        task.isVisible = user.role != UserRole.User
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

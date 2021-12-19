@@ -1,65 +1,43 @@
 package io.github.tuguzt.pcbuilder.presentation.model.user
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import io.github.tuguzt.pcbuilder.domain.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
+
+fun GoogleSignInAccount.toUser() = UserData(
+    email = email,
+    imageUri = photoUrl?.toString(),
+    role = UserRole.User,
+)
 
 /**
- * Converts Google user to [UserSealed].
+ * Converts [UserData] to [Bundle].
  */
-fun GoogleSignInAccount.toUser() =
-    user(username = displayName!!, email = email!!, password = "no-password", imageUri = photoUrl)
-
-/**
- * Converts [UserSealed] to [Bundle].
- */
-fun UserSealed.toBundle() = bundleOf(
+fun UserData.toBundle() = bundleOf(
     this::id.name to id,
-    this::username.name to username,
     this::email.name to email,
-    this::password.name to password,
     this::imageUri.name to imageUri,
+    this::role.name to role,
 )
 
 /**
- * Converts [UserSealed] to [Intent].
+ * Converts [UserData] to [Intent].
  */
-fun UserSealed.toIntent() = Intent().apply {
-    putExtra(UserSealed::id.name, id)
-    putExtra(UserSealed::username.name, username)
-    putExtra(UserSealed::email.name, email)
-    putExtra(UserSealed::password.name, password)
-    putExtra(UserSealed::imageUri.name, imageUri)
+fun UserData.toIntent() = Intent().apply {
+    putExtra(UserData::id.name, id)
+    putExtra(UserData::email.name, email)
+    putExtra(UserData::imageUri.name, imageUri)
+    putExtra(UserData::role.name, role)
 }
 
 /**
- * Converts [Bundle] to [UserSealed].
+ * Converts [Bundle] to [UserData].
  */
-fun Bundle.toUser() = user(
-    getString(UserSealed::id.name)!!,
-    getString(UserSealed::username.name)!!,
-    getString(UserSealed::email.name)!!,
-    getString(UserSealed::password.name)!!,
-    getString(UserSealed::imageUri.name)?.let { Uri.parse(it) },
+fun Bundle.toUser() = UserData(
+    requireNotNull(value = getString(UserData::id.name)),
+    getString(UserData::email.name),
+    getString(UserData::imageUri.name),
+    getString(UserData::role.name)?.let { UserRole.valueOf(it) } ?: UserRole.User,
 )
-
-/**
- * Creates [UserSealed] from the given [username], [email], [password] and [imageUri].
- *
- * @see UserSealed
- */
-fun user(
-    id: String = randomNanoId(),
-    username: String,
-    email: String,
-    password: String,
-    imageUri: Uri?,
-): UserSealed = when {
-    email == Admin.email -> Admin.also { it.imageUri = imageUri?.toString() }
-    email.endsWith("@pc_builder.com") ->
-        Moderator(id, username, email, password, imageUri?.toString())
-    else -> UserOrdinal(id, username, email, password, imageUri?.toString())
-}

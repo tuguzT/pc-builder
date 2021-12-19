@@ -18,8 +18,8 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.create
 
-const val backendBaseUrl = "https://pc-builder-tuguzt.herokuapp.com"
-const val octopartBaseUrl = "https://octopart.com/api"
+const val backendBaseUrl = "http://192.168.0.105:8080/" // "https://pc-builder-tuguzt.herokuapp.com/"
+const val octopartBaseUrl = "https://octopart.com/api/"
 
 /**
  * Network module of the Koin DI.
@@ -41,7 +41,7 @@ val networkModule = module {
 
     // Backend Octopart API (to replace previous Octopart API)
     single(named("retrofit-backend-octopart")) {
-        retrofitAuth(get(), "$backendBaseUrl/octopart", get(named("json-converter-factory")))
+        retrofitAuth(get(), "${backendBaseUrl}octopart/", get(named("json-converter-factory")))
     }
     single { backendOctopartAPI(get(named("retrofit-backend-octopart"))) }
 
@@ -53,7 +53,7 @@ val networkModule = module {
 
     // Backend Users API
     single(named("retrofit-backend-users")) {
-        retrofitAuth(get(), "$backendBaseUrl/users", get(named("json-converter-factory")))
+        retrofitAuth(get(), "${backendBaseUrl}users/", get(named("json-converter-factory")))
     }
     single { backendUsersAPI(get(named("retrofit-backend-users"))) }
 }
@@ -68,7 +68,7 @@ private fun backendClient(context: Context): OkHttpClient =
     OkHttpClient.Builder()
         .addInterceptor { chain ->
             val preferences = context.userSharedPreferences
-            val token = preferences.getString("token", null).orEmpty()
+            val token = preferences.getString("access_token", null).orEmpty()
             val request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $token")
                 .build()

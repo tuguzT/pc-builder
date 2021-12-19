@@ -13,8 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
-import io.github.tuguzt.pcbuilder.presentation.model.user.Admin
-import io.github.tuguzt.pcbuilder.presentation.model.user.UserOrdinal
+import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
@@ -77,28 +76,33 @@ class AccountFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        val user = accountViewModel.currentUser
+        val user = accountViewModel.currentUser ?: return
         val moderators = menu.findItem(R.id.toolbar_account_moderators)!!
-        moderators.isVisible = user is Admin
+        moderators.isVisible = user.role == UserRole.Administrator
     }
 
     private fun bindUser(): Unit = binding.run {
-        val user = accountViewModel.currentUser
+        lifecycleScope.launch {
+            accountViewModel.updateUserRemote(requireActivity().application)
+            val user = requireNotNull(accountViewModel.currentUser)
 
-        username.text = user?.username
-        email.text = user?.email
+            val sharedPreferences = requireActivity().application.userSharedPreferences
+            username.text = sharedPreferences.getString("username", null)
+                ?: requireNotNull(sharedPreferences.getString("google_username", null))
+            email.text = user.email ?: "Email not set"
 
-        val uri = user?.imageUri
-        if (uri != null) {
-            Picasso.get().load(uri).into(imageView)
-        } else {
-            imageView.setImageResource(R.drawable.ic_baseline_person_24)
-        }
+            val uri = user.imageUri
+            if (uri != null) {
+                Picasso.get().load(uri).into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.ic_baseline_person_24)
+            }
 
-        role.visibility = View.GONE
-        if (user !is UserOrdinal) {
-            role.visibility = View.VISIBLE
-            role.text = requireContext().getString(R.string.display_role, user?.role)
+            role.visibility = View.GONE
+            if (user.role != UserRole.User) {
+                role.visibility = View.VISIBLE
+                role.text = requireContext().getString(R.string.display_role, user.role)
+            }
         }
     }
 
