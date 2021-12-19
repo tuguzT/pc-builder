@@ -18,7 +18,7 @@ val appModule = module {
     viewModel { AuthViewModel(get()) }
     viewModel { ComponentsSharedViewModel(get()) }
     viewModel { (id: String) -> ComponentViewModel(id, get()) }
-    viewModel { ComponentSearchNetViewModel(get(), get()) }
+    viewModel { ComponentSearchNetViewModel(get()) }
 }
 
 private fun json() = Json { ignoreUnknownKeys = true }

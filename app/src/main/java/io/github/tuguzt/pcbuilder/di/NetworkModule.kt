@@ -1,3 +1,5 @@
+@file:Suppress("SameParameterValue")
+
 package io.github.tuguzt.pcbuilder.di
 
 import android.content.Context
@@ -5,7 +7,6 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendOctopartAPI
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendUsersAPI
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -19,7 +20,6 @@ import retrofit2.Retrofit
 import retrofit2.create
 
 const val backendBaseUrl = "http://192.168.0.105:8080/" // "https://pc-builder-tuguzt.herokuapp.com/"
-const val octopartBaseUrl = "https://octopart.com/api/"
 
 /**
  * Network module of the Koin DI.
@@ -32,12 +32,6 @@ val networkModule = module {
     }
 
     single { backendClient(androidContext()) }
-
-    // Octopart API todo move to the server
-    single(named("retrofit-octopart")) {
-        retrofit(octopartBaseUrl, get(named("json-converter-factory")))
-    }
-    single { octopartAPI(get(named("retrofit-octopart"))) }
 
     // Backend Octopart API (to replace previous Octopart API)
     single(named("retrofit-backend-octopart")) {
@@ -86,8 +80,6 @@ private fun retrofitAuth(
         .baseUrl(baseUrl)
         .addConverterFactory(converterFactory)
         .build()
-
-private fun octopartAPI(retrofit: Retrofit): OctopartAPI = retrofit.create()
 
 private fun backendOctopartAPI(retrofit: Retrofit): BackendOctopartAPI = retrofit.create()
 

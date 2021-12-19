@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.model
+package io.github.tuguzt.pcbuilder.presentation.repository.net.backend.model
 
 import kotlinx.serialization.Serializable
 

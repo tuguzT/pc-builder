@@ -13,7 +13,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.DialogAddSearchNetComponentBinding
 import io.github.tuguzt.pcbuilder.databinding.ItemSearchNetComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.SearchResult
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.model.SearchResult
 import io.github.tuguzt.pcbuilder.presentation.view.saveImage
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import io.nacular.measured.units.Length.Companion.meters

@@ -1,16 +1,18 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.net.backend
 
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.model.SearchResult
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * Definition of the REST API for the remote `PC Builder` backend server.
  */
 interface BackendOctopartAPI {
-    /**
-     * Retrieves the PAI token for the [OctopartAPI].
-     */
-    @GET("token")
-    fun token(): Call<String>
+    @GET("search")
+    fun search(
+        @Query("query") query: String,
+        @Query("start") start: Int,
+        @Query("limit") limit: Int,
+    ): Call<List<SearchResult>>
 }

@@ -4,16 +4,13 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendOctopartAPI
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.OctopartAPI
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.SearchResult
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.toResults
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.model.SearchResult
 import retrofit2.await
 
 internal class SearchNetPagingSource(
     private val query: String,
     private val pageSize: Int,
-    private val octopartAPI: OctopartAPI,
-    private val backendOctopartAPI: BackendOctopartAPI,
+    private val octopartAPI: BackendOctopartAPI,
 ) : PagingSource<Int, SearchResult>() {
 
     override fun getRefreshKey(state: PagingState<Int, SearchResult>): Int? = state.anchorPosition
@@ -22,8 +19,7 @@ internal class SearchNetPagingSource(
         val position = params.key ?: 0
         val offset = if (params.key != null) (position * pageSize) else 0
         return try {
-            val token = backendOctopartAPI.token().await()
-            val data = octopartAPI.searchQuery(query, token, offset, pageSize).await().toResults()
+            val data = octopartAPI.search(query, offset, pageSize).await()
             val nextKey = if (data.isEmpty()) null else position + 1
             LoadResult.Page(data, prevKey = null, nextKey)
         } catch (exception: Exception) {

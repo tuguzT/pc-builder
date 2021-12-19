@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import io.github.tuguzt.pcbuilder.databinding.ItemSearchNetComponentBinding
-import io.github.tuguzt.pcbuilder.presentation.repository.net.octopart.SearchResult
+import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.model.SearchResult
 import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
