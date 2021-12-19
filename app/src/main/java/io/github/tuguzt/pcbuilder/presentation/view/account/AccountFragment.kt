@@ -65,7 +65,7 @@ class AccountFragment : Fragment() {
             lifecycleScope.launch {
                 googleSignInClient.signOut().await()
                 toastShort { "Signed out successfully" }.show()
-                val loginIntent = Intent(activity, LoginActivity::class.java)
+                val loginIntent = Intent(activity, AuthActivity::class.java)
                 loginLauncher.launch(loginIntent)
             }
         }

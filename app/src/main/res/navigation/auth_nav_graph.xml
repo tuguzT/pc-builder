@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_account_auth_nav_graph"
+    app:startDestination="@id/login_fragment">
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.account.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_register_fragment"
+            app:destination="@id/register_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/register_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.account.RegisterFragment"
+        android:label="register_fragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+</navigation>

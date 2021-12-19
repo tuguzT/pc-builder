@@ -37,14 +37,12 @@
         android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentFragment"
         android:label="fragment_component"
         tools:layout="@layout/fragment_component">
-
         <argument
             android:name="id"
             app:argType="string" />
         <deepLink
             android:id="@+id/component_deep_link"
             app:uri="https://tuguzt.github.io/pcbuilder/components/{id}" />
-
     </fragment>
 
     <fragment

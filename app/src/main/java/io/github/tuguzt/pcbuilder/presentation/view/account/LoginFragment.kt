@@ -2,49 +2,56 @@ package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
-import io.github.tuguzt.pcbuilder.databinding.ActivityLoginBinding
+import io.github.tuguzt.pcbuilder.databinding.FragmentLoginBinding
 import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
-import io.github.tuguzt.pcbuilder.presentation.model.user.*
+import io.github.tuguzt.pcbuilder.presentation.model.user.UserCredentialsData
+import io.github.tuguzt.pcbuilder.presentation.model.user.toIntent
+import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountAuthViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-/**
- * Activity for user login.
- */
-class LoginActivity : AppCompatActivity() {
+class LoginFragment : Fragment() {
     companion object {
         @JvmStatic
-        private val LOG_TAG = LoginActivity::class.simpleName
+        private val LOG_TAG = AuthActivity::class.simpleName
     }
 
-    private val accountAuthViewModel: AccountAuthViewModel by viewModel()
+    private val authViewModel: AuthViewModel by sharedViewModel()
 
-    private lateinit var _binding: ActivityLoginBinding
-    private inline val binding get() = _binding
+    private var _binding: FragmentLoginBinding? = null
+    // This helper property is only valid between `onCreateView` and `onDestroyView`.
+    private inline val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivityLoginBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) = FragmentLoginBinding.inflate(inflater, container, false)
+        .also { _binding = it }.root
 
-        setContentView(binding.root)
-
-        val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
 
         val contract = ActivityResultContracts.StartActivityForResult()
         val googleSignInLauncher = registerForActivityResult(contract) {
-            if (it.resultCode != RESULT_OK) {
+            if (it.resultCode != AppCompatActivity.RESULT_OK) {
                 snackbarShort(binding.root) { "User was not signed in!" }.show()
                 return@registerForActivityResult
             }
@@ -53,13 +60,16 @@ class LoginActivity : AppCompatActivity() {
                     val data = it.data
                     val googleAccount = GoogleSignIn.getSignedInAccountFromIntent(data).await()
 
-                    val sharedPreferences = application.userSharedPreferences
+                    val sharedPreferences = requireActivity().application.userSharedPreferences
                     sharedPreferences.edit {
                         putString("google_token", googleAccount.idToken)
                         putString("google_username", googleAccount.displayName)
                     }
                     val user = googleAccount.toUser()
-                    resultUser(user)
+                    with(requireActivity()) {
+                        setResult(AppCompatActivity.RESULT_OK, user.toIntent())
+                        finish()
+                    }
                 } catch (exception: ApiException) {
                     val message = "Google authorization failed"
                     Log.e(LOG_TAG, message, exception)
@@ -74,6 +84,11 @@ class LoginActivity : AppCompatActivity() {
                 googleSignInLauncher.launch(signInIntent)
             }
 
+            register.setOnClickListener {
+                val action = LoginFragmentDirections.actionRegisterFragment()
+                findNavController().navigate(action)
+            }
+
             @Suppress("NAME_SHADOWING")
             signIn.setOnClickListener {
                 val username = username.text.toString()
@@ -84,8 +99,11 @@ class LoginActivity : AppCompatActivity() {
                     if (checkUsername(username) && checkPassword(password)) {
                         val credentials = UserCredentialsData(username, password)
                         lifecycleScope.launch {
-                            accountAuthViewModel.auth(application, credentials)
-                            resultUser(null)
+                            authViewModel.auth(requireActivity().application, credentials)
+                            with(requireActivity()) {
+                                setResult(AppCompatActivity.RESULT_OK)
+                                finish()
+                            }
                         }
                         return@setOnClickListener
                     }
@@ -97,13 +115,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun resultUser(user: UserData?) {
-        setResult(RESULT_OK, user?.toIntent())
-        finish()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        setResult(RESULT_CANCELED)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

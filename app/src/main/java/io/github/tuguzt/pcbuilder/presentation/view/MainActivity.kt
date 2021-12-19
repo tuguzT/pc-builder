@@ -10,7 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
-import io.github.tuguzt.pcbuilder.presentation.view.account.LoginActivity
+import io.github.tuguzt.pcbuilder.presentation.view.account.AuthActivity
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             handleUser()
         }
 
@@ -48,13 +48,15 @@ class MainActivity : AppCompatActivity() {
     private suspend fun handleUser() {
         if (accountViewModel.findUser(application) != null) return
 
-        val loginIntent = Intent(this, LoginActivity::class.java)
+        val loginIntent = Intent(this, AuthActivity::class.java)
         val contract = ActivityResultContracts.StartActivityForResult()
         registerForActivityResult(contract) {
-            if (it.resultCode == RESULT_CANCELED) return@registerForActivityResult
+            if (it.resultCode == RESULT_CANCELED) {
+                finish()
+                return@registerForActivityResult
+            }
             lifecycleScope.launch {
                 accountViewModel.updateUserRemote(application)
-                finish()
             }
         }.launch(loginIntent)
     }

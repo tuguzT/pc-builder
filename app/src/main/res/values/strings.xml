@@ -16,6 +16,10 @@
 
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
+    <string name="register">Register</string>
+
+    <string name="no_account_register">No account? Register</string>
+    <string name="have_account_sign_in">Have account? Sign in</string>
 
     <string name="name">Name</string>
     <string name="component_name">Name: %1$s</string>

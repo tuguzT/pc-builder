@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.github.tuguzt.pcbuilder">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/test_network_security_config"
-        android:theme="@style/Theme.PCBuilder">
+        android:theme="@style/Theme.PCBuilder"
+        tools:targetApi="n">
         <activity
             android:name=".presentation.view.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
@@ -30,7 +32,7 @@
             <nav-graph android:value="@navigation/main_nav_graph" />
         </activity>
         <activity
-            android:name=".presentation.view.account.LoginActivity"
+            android:name=".presentation.view.account.AuthActivity"
             android:exported="false">
         </activity>
     </application>
