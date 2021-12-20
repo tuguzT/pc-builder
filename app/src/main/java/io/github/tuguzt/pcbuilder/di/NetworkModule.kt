@@ -19,7 +19,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.create
 
-const val backendBaseUrl = "http://192.168.0.105:8080/" // "https://pc-builder-tuguzt.herokuapp.com/"
+const val backendBaseUrl = "https://pc-builder-tuguzt.herokuapp.com/"
 
 /**
  * Network module of the Koin DI.
