@@ -9,5 +9,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SearchResponse(
     val hits: Int? = null,
-    val results: List<PartResult>,
+    val results: List<PartResult> = listOf(),
 )
