@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface BackendUsersAPI {
-    @GET
+    @GET("all")
     fun getAll(): Call<List<UserData>>
 
     @GET("current")

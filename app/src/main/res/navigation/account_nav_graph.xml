@@ -10,6 +10,16 @@
         android:id="@+id/account_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.account.AccountFragment"
         android:label="account_fragment"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account">
+        <action
+            android:id="@+id/action_list_fragment"
+            app:destination="@id/account_list_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/account_list_fragment"
+        android:name="io.github.tuguzt.pcbuilder.presentation.view.account.AccountListFragment"
+        android:label="account_list_fragment"
+        tools:layout="@layout/fragment_account_list"/>
 
 </navigation>

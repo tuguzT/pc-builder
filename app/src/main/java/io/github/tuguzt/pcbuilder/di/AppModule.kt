@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.di
 
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountListViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentSearchNetViewModel
@@ -19,6 +20,7 @@ val appModule = module {
     viewModel { ComponentsSharedViewModel(get()) }
     viewModel { (id: String) -> ComponentViewModel(id, get()) }
     viewModel { ComponentSearchNetViewModel(get()) }
+    viewModel { AccountListViewModel(get()) }
 }
 
 private fun json() = Json { ignoreUnknownKeys = true }

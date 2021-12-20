@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
@@ -79,6 +80,15 @@ class AccountFragment : Fragment() {
         val user = accountViewModel.currentUser ?: return
         val moderators = menu.findItem(R.id.toolbar_account_moderators)!!
         moderators.isVisible = user.role == UserRole.Administrator
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.toolbar_account_moderators -> {
+            val action = AccountFragmentDirections.actionListFragment()
+            findNavController().navigate(action)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun bindUser(): Unit = binding.run {
