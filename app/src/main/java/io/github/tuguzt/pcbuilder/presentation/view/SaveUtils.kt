@@ -34,8 +34,10 @@ fun saveImage(bitmap: Bitmap, context: Context): Uri? {
         return uri
     }
 
-    val directory =
-        File(Environment.getExternalStorageDirectory().toString() + separator + folderName)
+    val directory = run {
+        val path = Environment.getExternalStorageDirectory().toString() + separator + folderName
+        File(path)
+    }
     if (!directory.exists()) {
         directory.mkdirs()
     }
@@ -44,8 +46,9 @@ fun saveImage(bitmap: Bitmap, context: Context): Uri? {
     val file = File(directory, fileName)
     saveImageToStream(bitmap, FileOutputStream(file))
 
-    val values = contentValues()
-    values.put(MediaStore.Images.Media.DATA, file.absolutePath)
+    val values = contentValues().apply {
+        put(MediaStore.Images.Media.DATA, file.absolutePath)
+    }
     context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
     return file.toUri()
