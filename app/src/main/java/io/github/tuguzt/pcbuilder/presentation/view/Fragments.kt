@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.view
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import io.github.tuguzt.pcbuilder.R
@@ -18,7 +18,7 @@ inline var Fragment.hasOptionsMenu
     set(value) = setHasOptionsMenu(value)
 
 /**
- * This function clears [back stack][NavController.mBackStack] completely and navigates to the root.
+ * This function clears back stack completely and navigates to the root.
  */
 fun Fragment.popBackStackRoot() {
     val activity = requireActivity()
@@ -27,8 +27,8 @@ fun Fragment.popBackStackRoot() {
         .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
 
     val inflater = navHostFragment.navController.navInflater
-    val graph = inflater.inflate(R.navigation.main_nav_graph)
-    graph.startDestination = R.id.components_nav_graph
+    val graph: NavGraph = inflater.inflate(R.navigation.main_nav_graph)
+    graph.setStartDestination(R.id.components_nav_graph)
     navController.graph = graph
 }
 
