@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <resources>
     <string name="app_name">PC Builder</string>
 
@@ -18,7 +19,10 @@
     <string name="sign_out">Sign out</string>
     <string name="register">Register</string>
 
+    <string name="no_account">No account?</string>
     <string name="no_account_register">No account? Register</string>
+
+    <string name="have_account">Already have account?</string>
     <string name="have_account_sign_in">Have account? Sign in</string>
 
     <string name="name">Name</string>

@@ -5,5 +5,5 @@
         android:id="@+id/toolbar_account_moderators"
         android:title="@string/moderators"
         android:icon="@drawable/ic_baseline_shield_24"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

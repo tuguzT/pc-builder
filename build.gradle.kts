@@ -12,3 +12,7 @@ buildscript {
         classpath(kotlin("serialization", version = "1.6.10"))
     }
 }
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.buildDir)
+}

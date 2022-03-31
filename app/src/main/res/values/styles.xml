@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Alert dialog button theme -->
+    <style name="Theme.PCBuilder.AlertDialog.ButtonStyle"
+        parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="rippleColor">?attr/colorButtonNormal</item>
+    </style>
+
+    <!-- App theme for rounded ImageView -->
+    <style name="Theme.PCBuilder.RoundImageView" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>

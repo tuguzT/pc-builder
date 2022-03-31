@@ -3,14 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/toolbar_component_item_image"
-        android:enabled="true"
         android:icon="@drawable/ic_baseline_image_24"
         android:title="@string/component_image"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/toolbar_component_item_share"
-        android:enabled="true"
         android:icon="@drawable/ic_baseline_share_24"
         android:title="@string/share"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

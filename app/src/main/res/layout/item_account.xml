@@ -19,7 +19,6 @@
             android:id="@+id/image_view"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:background="@color/primaryLightColor"
             android:layout_marginEnd="@dimen/text_margin"
             app:srcCompat="@drawable/ic_baseline_person_24"
             app:shapeAppearanceOverlay="@style/Theme.PCBuilder.RoundImageView" />
