@@ -3,7 +3,6 @@ package io.github.tuguzt.pcbuilder.di
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountListViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentSearchNetViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import kotlinx.serialization.json.Json
@@ -19,7 +18,6 @@ val appModule = module {
     viewModel { AuthViewModel(get()) }
     viewModel { ComponentsSharedViewModel(get()) }
     viewModel { (id: String) -> ComponentViewModel(id, get()) }
-    viewModel { ComponentSearchNetViewModel(get()) }
     viewModel { AccountListViewModel(get()) }
 }
 

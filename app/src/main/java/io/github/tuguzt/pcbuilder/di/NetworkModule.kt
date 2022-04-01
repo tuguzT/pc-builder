@@ -3,14 +3,14 @@
 package io.github.tuguzt.pcbuilder.di
 
 import android.content.Context
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendAuthAPI
-import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendOctopartAPI
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
@@ -28,16 +28,10 @@ val networkModule = module {
     @OptIn(ExperimentalSerializationApi::class)
     single(named("json-converter-factory")) {
         val json: Json = get()
-        json.asConverterFactory(MediaType.get("application/json"))
+        json.asConverterFactory("application/json".toMediaType())
     }
 
     single { backendClient(androidContext()) }
-
-    // Backend Octopart API (to replace previous Octopart API)
-    single(named("retrofit-backend-octopart")) {
-        retrofitAuth(get(), "${backendBaseUrl}octopart/", get(named("json-converter-factory")))
-    }
-    single { backendOctopartAPI(get(named("retrofit-backend-octopart"))) }
 
     // Backend Authentication API
     single(named("retrofit-backend-auth")) {
@@ -56,6 +50,7 @@ private fun retrofit(baseUrl: String, converterFactory: Converter.Factory): Retr
     Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(converterFactory)
+        .addCallAdapterFactory(NetworkResponseAdapterFactory())
         .build()
 
 private fun backendClient(context: Context): OkHttpClient =
@@ -79,9 +74,8 @@ private fun retrofitAuth(
         .client(client)
         .baseUrl(baseUrl)
         .addConverterFactory(converterFactory)
+        .addCallAdapterFactory(NetworkResponseAdapterFactory())
         .build()
-
-private fun backendOctopartAPI(retrofit: Retrofit): BackendOctopartAPI = retrofit.create()
 
 private fun backendAuthAPI(retrofit: Retrofit): BackendAuthAPI = retrofit.create()
 

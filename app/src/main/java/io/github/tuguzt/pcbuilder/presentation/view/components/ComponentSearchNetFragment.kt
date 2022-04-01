@@ -8,20 +8,16 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentSearchNetBinding
-import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.paging.SearchNetListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.toastShort
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentSearchNetViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A [Fragment] subclass to search components by REST API.
  */
 class ComponentSearchNetFragment : Fragment() {
     private val sharedViewModel: ComponentsSharedViewModel by koinNavGraphViewModel(R.id.components_nav_graph)
-    private val viewModel: ComponentSearchNetViewModel by viewModel()
 
     private var _binding: FragmentComponentSearchNetBinding? = null
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
@@ -35,9 +31,6 @@ class ComponentSearchNetFragment : Fragment() {
         .also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val pagingAdapter = SearchNetListAdapter(sharedViewModel)
-        binding.list.adapter = pagingAdapter
-
         val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
         binding.list.addItemDecoration(MarginDecoration(spaceSize))
 
@@ -51,10 +44,6 @@ class ComponentSearchNetFragment : Fragment() {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query.isNullOrBlank()) {
                         toastShort { "Query cannot be empty!" }.show()
-                        return true
-                    }
-                    viewModel.searchComponents(query.trim(), 3).observe(viewLifecycleOwner) {
-                        pagingAdapter.submitData(lifecycle, it)
                     }
                     return true
                 }

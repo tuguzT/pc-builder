@@ -1,16 +1,17 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.account
 
 import android.app.Application
+import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.haroldadmin.cnradapter.NetworkResponse
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserData
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.await
 
 /**
  * View model of 'Account' page.
@@ -25,15 +26,22 @@ class AccountViewModel(private val backendUsersAPI: BackendUsersAPI) : ViewModel
 
         token?.let {
             val user = withContext(Dispatchers.IO) {
-                backendUsersAPI.current().await()
+                backendUsersAPI.current()
             }
-            sharedPreferences.edit {
-                putString(UserData::id.name, user.id)
-                putString(UserData::imageUri.name, user.imageUri)
-                putString(UserData::email.name, user.email)
-                putString(UserData::role.name, user.role.toString())
+            when (user) {
+                is NetworkResponse.Success -> {
+                    val userData = user.body
+                    sharedPreferences.edit {
+                        putString(UserData::id.name, userData.id)
+                        putString(UserData::imageUri.name, userData.imageUri)
+                        putString(UserData::email.name, userData.email)
+                        putString(UserData::role.name, userData.role.toString())
+                    }
+                    currentUser = userData
+                }
+                // todo error handling
+                is NetworkResponse.Error -> Log.e("TODO", "do error handling in UI")
             }
-            currentUser = user
         }
         return currentUser
     }

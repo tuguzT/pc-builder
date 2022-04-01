@@ -8,6 +8,6 @@ class BuildViewHolder(private val binding: ItemBuildBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(build: Build) {
-        TODO()
+        TODO("binding")
     }
 }

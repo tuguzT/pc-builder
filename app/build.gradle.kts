@@ -79,15 +79,18 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
     // Google
     implementation("com.google.android.gms:play-services-auth:20.1.0")
 
+    // Koin DI
+    implementation("io.insert-koin:koin-core:3.2.0-beta-1")
+    implementation("io.insert-koin:koin-android:3.2.0-beta-1")
+    implementation("io.insert-koin:koin-androidx-navigation:3.2.0-beta-1")
+
     // Third-Party
     implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("io.insert-koin:koin-core:3.1.5")
-    implementation("io.insert-koin:koin-android:3.1.5")
-    implementation("io.insert-koin:koin-androidx-navigation:3.1.5")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

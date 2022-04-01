@@ -2,6 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityMainBinding
     private inline val binding get() = _binding
 
+    private lateinit var launcher: ActivityResultLauncher<Intent>
+
     private val navController: NavController
         get() {
             val navHostFragment = supportFragmentManager
@@ -35,22 +38,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
-        lifecycleScope.launch {
-            handleUser()
-        }
-
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
         binding.bottomNavigation.setupWithNavController(navController)
-    }
 
-    private suspend fun handleUser() {
-        if (accountViewModel.findUser(application) != null) return
-
-        val loginIntent = Intent(this, AuthActivity::class.java)
         val contract = ActivityResultContracts.StartActivityForResult()
-        registerForActivityResult(contract) {
+        launcher = registerForActivityResult(contract) {
             if (it.resultCode == RESULT_CANCELED) {
                 finish()
                 return@registerForActivityResult
@@ -58,6 +52,17 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 accountViewModel.updateUserRemote(application)
             }
-        }.launch(loginIntent)
+        }
+
+        lifecycleScope.launch {
+            handleUser()
+        }
+    }
+
+    private suspend fun handleUser() {
+        if (accountViewModel.findUser(application) != null) return
+
+        val loginIntent = Intent(this, AuthActivity::class.java)
+        launcher.launch(loginIntent)
     }
 }
