@@ -8,7 +8,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserData
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
-import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.presentation.repository.net.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

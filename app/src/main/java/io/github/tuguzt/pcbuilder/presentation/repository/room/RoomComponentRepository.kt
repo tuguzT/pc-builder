@@ -2,71 +2,32 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import androidx.lifecycle.LiveData
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Room repository of [components][Component].
  *
  * @see Component
  */
-internal class RoomComponentRepository(private val roomDatabase: RoomDatabase) :
-    Repository<String, Component> {
-
-    private val componentDao get() = roomDatabase.componentDao
-
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+class RoomComponentRepository(private val database: Database) : Repository<Component, String> {
+    private val componentDao get() = database.componentDao
 
     override val allData = componentDao.getAll()
 
     override fun findById(id: String): LiveData<out Component> = componentDao.findById(id)
 
-    override fun add(item: Component) {
-        val component = when (item) {
-            is ComponentData -> ComponentDto(item)
-            is ComponentDto -> item
-            else -> throw IllegalStateException(
-                "Data loss: item must be convertible to ${ComponentDto::class.qualifiedName}"
-            )
+    override suspend fun save(item: Component) = withContext(Dispatchers.IO) {
+        if (componentDao.findByIdSuspend(item.id) == null) {
+            componentDao.insert(item.toDto())
+            return@withContext
         }
-        coroutineScope.launch {
-            componentDao.insert(component)
-        }
+        componentDao.update(item.toDto())
     }
 
-    override fun update(item: Component) {
-        val component = when (item) {
-            is ComponentData -> ComponentDto(item)
-            is ComponentDto -> item
-            else -> throw IllegalStateException(
-                "Data loss: item must be convertible to ${ComponentDto::class.qualifiedName}"
-            )
-        }
-        coroutineScope.launch {
-            componentDao.update(component)
-        }
-    }
+    override suspend fun delete(item: Component) =
+        withContext(Dispatchers.IO) { componentDao.delete(item.toDto()) }
 
-    override fun remove(item: Component) {
-        val component = when (item) {
-            is ComponentData -> ComponentDto(item)
-            is ComponentDto -> item
-            else -> throw IllegalStateException(
-                "Data loss: item must be convertible to ${ComponentDto::class.qualifiedName}"
-            )
-        }
-        coroutineScope.launch {
-            componentDao.delete(component)
-        }
-    }
-
-    override fun clear() {
-        coroutineScope.launch {
-            componentDao.deleteAll()
-        }
-    }
+    override suspend fun clear() = withContext(Dispatchers.IO) { componentDao.deleteAll() }
 }

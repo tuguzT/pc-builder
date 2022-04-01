@@ -10,7 +10,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentFragment
  */
 class ComponentViewModel(
     id: String,
-    componentRepository: Repository<String, Component>,
+    componentRepository: Repository<Component, String>,
 ) : ViewModel() {
     val component = componentRepository.findById(id)
 }

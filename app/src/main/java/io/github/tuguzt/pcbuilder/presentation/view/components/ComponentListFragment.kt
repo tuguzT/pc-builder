@@ -28,6 +28,7 @@ class ComponentListFragment : Fragment() {
     private val sharedViewModel: ComponentsSharedViewModel by koinNavGraphViewModel(R.id.components_nav_graph)
 
     private var _binding: FragmentComponentListBinding? = null
+
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

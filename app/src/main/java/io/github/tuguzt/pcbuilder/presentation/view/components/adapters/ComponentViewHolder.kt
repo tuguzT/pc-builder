@@ -50,7 +50,7 @@ class ComponentViewHolder(
                 else -> "Unknown error"
             }
             Log.e(LOG_TAG, message, throwable)
-            sharedViewModel.updateComponent(ComponentData(component))
+            sharedViewModel.updateComponent(component)
             CoroutineScope(Dispatchers.Main).launch {
                 imageView.visibility = View.GONE
             }

@@ -8,6 +8,7 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentBuildListBinding
 
 class BuildListFragment : Fragment() {
     private var _binding: FragmentBuildListBinding? = null
+
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

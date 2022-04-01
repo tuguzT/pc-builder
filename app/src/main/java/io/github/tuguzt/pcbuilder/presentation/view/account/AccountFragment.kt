@@ -16,7 +16,10 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
-import io.github.tuguzt.pcbuilder.presentation.view.*
+import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
+import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
+import io.github.tuguzt.pcbuilder.presentation.view.toastShort
+import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await

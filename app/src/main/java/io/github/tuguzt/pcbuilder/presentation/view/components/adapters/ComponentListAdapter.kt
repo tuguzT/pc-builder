@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.databinding.ItemComponentBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.ComponentDto
+import io.github.tuguzt.pcbuilder.presentation.repository.room.toData
 import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 
@@ -29,11 +28,7 @@ class ComponentListAdapter(private val sharedViewModel: ComponentsSharedViewMode
     }
 
     override fun onBindViewHolder(holder: ComponentViewHolder, position: Int) {
-        val component = when (val component = currentList[position]) {
-            is ComponentData -> component
-            is ComponentDto -> ComponentData(component)
-            else -> ComponentData(component)
-        }
+        val component = currentList[position].toData()
         holder.bind(component)
     }
 }

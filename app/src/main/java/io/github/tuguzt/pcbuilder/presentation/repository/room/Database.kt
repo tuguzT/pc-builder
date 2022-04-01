@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.repository.room
 
 import androidx.room.Database
+import androidx.room.RoomDatabase
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dao.MonitorDao
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.build.BuildDto
@@ -16,7 +17,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.psu
 import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.storage.StorageDto
 
 /**
- * Room database which contains all the data locally saved by user.
+ * Room database which contains all the data saved by user on the device.
  */
 @Database(
     entities = [
@@ -35,7 +36,7 @@ import io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component.sto
     version = 1,
     exportSchema = false,
 )
-internal abstract class RoomDatabase : androidx.room.RoomDatabase() {
+abstract class Database : RoomDatabase() {
     abstract val componentDao: ComponentDao
     abstract val monitorDao: MonitorDao
 }

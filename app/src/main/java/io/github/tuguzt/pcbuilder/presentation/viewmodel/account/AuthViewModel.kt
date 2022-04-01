@@ -9,7 +9,7 @@ import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.domain.model.user.UserNamePassword
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserNamePasswordData
-import io.github.tuguzt.pcbuilder.presentation.repository.net.backend.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.presentation.repository.net.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

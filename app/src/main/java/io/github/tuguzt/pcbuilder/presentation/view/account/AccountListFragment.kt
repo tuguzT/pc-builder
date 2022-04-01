@@ -20,6 +20,7 @@ class AccountListFragment : Fragment() {
     private val viewModel: AccountListViewModel by koinNavGraphViewModel(R.id.account_nav_graph)
 
     private var _binding: FragmentAccountListBinding? = null
+
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

@@ -16,6 +16,9 @@ interface ComponentDao : IDao<ComponentDto> {
     @Query("SELECT * FROM component WHERE id = :id")
     fun findById(id: String): LiveData<ComponentDto>
 
+    @Query("SELECT * FROM component WHERE id = :id")
+    suspend fun findByIdSuspend(id: String): ComponentDto?
+
     @Query("SELECT * FROM component WHERE name LIKE :name")
     fun findByName(name: String): LiveData<List<ComponentDto>>
 

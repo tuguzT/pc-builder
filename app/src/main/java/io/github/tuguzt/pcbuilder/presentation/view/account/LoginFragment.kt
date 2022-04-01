@@ -36,6 +36,7 @@ class LoginFragment : Fragment() {
     private val authViewModel: AuthViewModel by sharedViewModel()
 
     private var _binding: FragmentLoginBinding? = null
+
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

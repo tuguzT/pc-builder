@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.repository.net.backend
+package io.github.tuguzt.pcbuilder.presentation.repository.net
 
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserData
 import retrofit2.http.GET

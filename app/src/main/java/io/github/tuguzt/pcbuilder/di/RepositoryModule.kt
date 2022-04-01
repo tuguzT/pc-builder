@@ -1,11 +1,11 @@
 package io.github.tuguzt.pcbuilder.di
 
 import android.content.Context
-import androidx.room.Room
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.repository.Repository
+import io.github.tuguzt.pcbuilder.presentation.repository.room.Database
 import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomComponentRepository
-import io.github.tuguzt.pcbuilder.presentation.repository.room.RoomDatabase
+import io.github.tuguzt.pcbuilder.presentation.repository.room.buildDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -17,12 +17,7 @@ val repositoryModule = module {
     single { componentRepository(get()) }
 }
 
-private fun database(context: Context) =
-    Room.databaseBuilder(
-        context.applicationContext,
-        RoomDatabase::class.java,
-        "pc_builder",
-    ).build()
+private fun database(context: Context): Database = buildDatabase(context, "pc_builder")
 
-private fun componentRepository(roomDatabase: RoomDatabase): Repository<String, Component> =
-    RoomComponentRepository(roomDatabase)
+private fun componentRepository(database: Database): Repository<Component, String> =
+    RoomComponentRepository(database)

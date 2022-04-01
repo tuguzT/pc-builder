@@ -1,8 +1,8 @@
 package io.github.tuguzt.pcbuilder.di
 
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountListViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import kotlinx.serialization.json.Json

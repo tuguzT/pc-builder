@@ -3,7 +3,6 @@ package io.github.tuguzt.pcbuilder.presentation.repository.room.dto.component
 import androidx.room.*
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.DistanceConverter
 import io.github.tuguzt.pcbuilder.presentation.repository.room.converters.MassConverter
 import io.nacular.measured.units.Mass
@@ -23,7 +22,4 @@ data class ComponentDto(
     override val weight: Measure<Mass>,
     @Embedded override val size: Size,
     @ColumnInfo(name = "image_uri") val imageUri: String?,
-) : Component {
-    constructor(c: Component) : this(c.id, c.name, c.description, c.weight, c.size, null)
-    constructor(c: ComponentData) : this(c.id, c.name, c.description, c.weight, c.size, c.imageUri)
-}
+) : Component

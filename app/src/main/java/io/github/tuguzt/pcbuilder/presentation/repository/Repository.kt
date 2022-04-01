@@ -6,16 +6,14 @@ import io.github.tuguzt.pcbuilder.domain.model.Identifiable
 /**
  * Base interface for all repositories which contains data of type [T].
  */
-interface Repository<I : Any, T : Identifiable<I>> {
+interface Repository<T : Identifiable<I>, I : Any> {
     val allData: LiveData<out List<T>>
 
     fun findById(id: I): LiveData<out T>
 
-    fun add(item: T)
+    suspend fun save(item: T)
 
-    fun update(item: T)
+    suspend fun delete(item: T)
 
-    fun remove(item: T)
-
-    fun clear()
+    suspend fun clear()
 }

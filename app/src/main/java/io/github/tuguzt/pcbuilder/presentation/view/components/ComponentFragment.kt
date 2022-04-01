@@ -32,6 +32,7 @@ class ComponentFragment : Fragment() {
     private val viewModel: ComponentViewModel by viewModel { parametersOf(args.id) }
 
     private var _binding: FragmentComponentBinding? = null
+
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 

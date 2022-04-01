@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.presentation.repository.net.backend
+package io.github.tuguzt.pcbuilder.presentation.repository.net
 
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserNamePasswordData
