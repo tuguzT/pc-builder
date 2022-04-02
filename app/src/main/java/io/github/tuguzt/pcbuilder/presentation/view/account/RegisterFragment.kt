@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.haroldadmin.cnradapter.NetworkResponse
+import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentRegisterBinding
 import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
@@ -19,6 +22,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class RegisterFragment : Fragment() {
+    companion object {
+        @JvmStatic
+        private val LOG_TAG = RegisterFragment::class.simpleName
+    }
+
     private val authViewModel: AuthViewModel by sharedViewModel()
 
     private var _binding: FragmentRegisterBinding? = null
@@ -56,18 +64,34 @@ class RegisterFragment : Fragment() {
                             password = password,
                         )
                         lifecycleScope.launch {
-                            authViewModel.register(requireActivity().application, user)
-                            with(requireActivity()) {
-                                setResult(AppCompatActivity.RESULT_OK)
-                                finish()
+                            when (val result =
+                                authViewModel.register(requireActivity().application, user)) {
+                                is NetworkResponse.Success -> {
+                                    with(requireActivity()) {
+                                        setResult(AppCompatActivity.RESULT_OK)
+                                        finish()
+                                    }
+                                }
+                                is NetworkResponse.ServerError -> {
+                                    Log.e(LOG_TAG, "Server error", result.error)
+                                    snackbarShort { getString(R.string.server_error) }.show()
+                                }
+                                is NetworkResponse.NetworkError -> {
+                                    Log.e(LOG_TAG, "Network error", result.error)
+                                    snackbarShort { getString(R.string.network_error) }.show()
+                                }
+                                is NetworkResponse.UnknownError -> {
+                                    Log.e(LOG_TAG, "Application error", result.error)
+                                    snackbarShort { getString(R.string.application_error) }.show()
+                                }
                             }
                         }
                         return@setOnClickListener
                     }
-                    snackbarShort(root) { "Incorrect input for username/password!" }.show()
+                    snackbarShort(root) { getString(R.string.incorrect_input_username_password) }.show()
                     return@setOnClickListener
                 }
-                snackbarShort(root) { "Username/password are empty!" }.show()
+                snackbarShort(root) { getString(R.string.username_password_empty) }.show()
             }
         }
     }

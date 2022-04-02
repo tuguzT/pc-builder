@@ -1,17 +1,20 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.account
 
 import android.app.Application
-import android.util.Log
+import androidx.annotation.CheckResult
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserData
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
+import io.github.tuguzt.pcbuilder.presentation.repository.net.BackendCompletableResponse
 import io.github.tuguzt.pcbuilder.presentation.repository.net.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Response
 
 /**
  * View model of 'Account' page.
@@ -20,33 +23,39 @@ class AccountViewModel(private val backendUsersAPI: BackendUsersAPI) : ViewModel
     var currentUser: UserData? = null
     var username: String? = null
 
-    suspend fun updateUserRemote(application: Application): UserData? {
+    @CheckResult
+    suspend fun updateUserFromBackend(application: Application): BackendCompletableResponse {
         val sharedPreferences = application.userSharedPreferences
         val token = sharedPreferences.getString("access_token", null)
 
         token?.let {
-            val user = withContext(Dispatchers.IO) {
+            val result = withContext(Dispatchers.IO) {
                 backendUsersAPI.current()
             }
-            when (user) {
+            return when (result) {
                 is NetworkResponse.Success -> {
-                    val userData = user.body
+                    val user = result.body
                     sharedPreferences.edit {
-                        putString(UserData::id.name, userData.id)
-                        putString(UserData::imageUri.name, userData.imageUri)
-                        putString(UserData::email.name, userData.email)
-                        putString(UserData::role.name, userData.role.toString())
+                        putString(UserData::id.name, user.id)
+                        putString(UserData::imageUri.name, user.imageUri)
+                        putString(UserData::email.name, user.email)
+                        putString(UserData::role.name, user.role.toString())
                     }
-                    currentUser = userData
+                    currentUser = user
+                    NetworkResponse.Success(Unit, result.response)
                 }
-                // todo error handling
-                is NetworkResponse.Error -> Log.e("TODO", "do error handling in UI")
+                is NetworkResponse.Error -> {
+                    @Suppress("UNCHECKED_CAST")
+                    result as BackendCompletableResponse
+                }
             }
         }
-        return currentUser
+        val errorResponse = Response.error<Nothing>(500, "".toResponseBody())
+        return NetworkResponse.UnknownError(Exception(), errorResponse)
     }
 
-    suspend fun findUser(application: Application): UserData? {
+    @CheckResult
+    suspend fun findUser(application: Application): BackendCompletableResponse {
         val sharedPreferences = application.userSharedPreferences
 
         val googleAccount = GoogleSignIn.getLastSignedInAccount(application)
@@ -56,13 +65,13 @@ class AccountViewModel(private val backendUsersAPI: BackendUsersAPI) : ViewModel
                 putString("google_token", googleAccount.idToken)
             }
             currentUser = userFromGoogle
-            return currentUser
+            return NetworkResponse.Success(Unit, Response.success(null))
         }
 
         val accessToken = sharedPreferences.getString("access_token", null)
-        if (accessToken != null) {
-            currentUser = updateUserRemote(application)
-        }
-        return currentUser
+        if (accessToken != null) return updateUserFromBackend(application)
+
+        val errorResponse = Response.error<Nothing>(500, "".toResponseBody())
+        return NetworkResponse.UnknownError(Exception(), errorResponse)
     }
 }

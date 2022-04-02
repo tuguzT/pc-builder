@@ -75,7 +75,7 @@ class ComponentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.component.observe(viewLifecycleOwner) { component: Component? ->
             if (component == null) {
-                toastShort { "Component does not exist!" }.show()
+                toastShort { getString(R.string.component_not_exist) }.show()
                 popBackStackRoot()
                 return@observe
             }

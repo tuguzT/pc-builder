@@ -2,6 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.haroldadmin.cnradapter.NetworkResponse
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
 import io.github.tuguzt.pcbuilder.presentation.view.account.AuthActivity
@@ -20,6 +22,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * Entry point of the application.
  */
 class MainActivity : AppCompatActivity() {
+    companion object {
+        @JvmStatic
+        private val LOG_TAG = MainActivity::class.simpleName
+    }
+
     private val accountViewModel: AccountViewModel by viewModel()
 
     private lateinit var _binding: ActivityMainBinding
@@ -50,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 return@registerForActivityResult
             }
             lifecycleScope.launch {
-                accountViewModel.updateUserRemote(application)
+                accountViewModel.updateUserFromBackend(application)
             }
         }
 
@@ -60,7 +67,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun handleUser() {
-        if (accountViewModel.findUser(application) != null) return
+        when (val result = accountViewModel.findUser(application)) {
+            is NetworkResponse.Success -> return
+            is NetworkResponse.ServerError -> {
+                Log.e(LOG_TAG, "Server error", result.error)
+                snackbarShort(binding.root) { getString(R.string.server_error) }.show()
+            }
+            is NetworkResponse.NetworkError -> {
+                Log.e(LOG_TAG, "Network error", result.error)
+                snackbarShort(binding.root) { getString(R.string.network_error) }.show()
+            }
+            is NetworkResponse.UnknownError -> {
+                Log.e(LOG_TAG, "Application error", result.error)
+                snackbarShort(binding.root) { getString(R.string.application_error) }.show()
+            }
+        }
 
         val loginIntent = Intent(this, AuthActivity::class.java)
         launcher.launch(loginIntent)

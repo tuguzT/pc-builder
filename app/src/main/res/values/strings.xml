@@ -56,4 +56,20 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="moderators">Moderators</string>
+
+    <string name="network_error">Network error: check your Internet connection</string>
+    <string name="server_error">Server error: cannot load data</string>
+    <string name="application_error">Application error</string>
+
+    <string name="email_not_set">Email not set</string>
+    <string name="signed_out">Signed out successfully</string>
+    <string name="user_not_signed_in">User was not signed in!</string>
+    <string name="google_auth_failed">Google authorization failed</string>
+    <string name="incorrect_input_username_password">Incorrect input for username/password!</string>
+    <string name="username_password_empty">Username/password are empty!</string>
+    <string name="component_added">Component was successfully added</string>
+    <string name="incorrect_input">Incorrect input!</string>
+    <string name="some_fields_empty">Some fields are empty!</string>
+    <string name="component_not_exist">Component does not exist!</string>
+    <string name="component_deleted">Component was successfully deleted</string>
 </resources>

@@ -2,6 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,15 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.haroldadmin.cnradapter.NetworkResponse
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountBinding
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
-import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
-import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
-import io.github.tuguzt.pcbuilder.presentation.view.toastShort
-import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
+import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -29,6 +28,11 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * A [Fragment] subclass which represents information about user account.
  */
 class AccountFragment : Fragment() {
+    companion object {
+        @JvmStatic
+        private val LOG_TAG = AccountFragment::class.simpleName
+    }
+
     private val accountViewModel: AccountViewModel by sharedViewModel()
 
     private var _binding: FragmentAccountBinding? = null
@@ -68,7 +72,7 @@ class AccountFragment : Fragment() {
             activity.userSharedPreferences.edit { clear() }
             lifecycleScope.launch {
                 googleSignInClient.signOut().await()
-                toastShort { "Signed out successfully" }.show()
+                toastShort { getString(R.string.signed_out) }.show()
                 val loginIntent = Intent(activity, AuthActivity::class.java)
                 loginLauncher.launch(loginIntent)
             }
@@ -96,25 +100,41 @@ class AccountFragment : Fragment() {
 
     private fun bindUser(): Unit = binding.run {
         lifecycleScope.launch {
-            accountViewModel.updateUserRemote(requireActivity().application)
-            val user = requireNotNull(accountViewModel.currentUser)
+            when (val result =
+                accountViewModel.updateUserFromBackend(requireActivity().application)) {
+                is NetworkResponse.Success -> {
+                    val user = requireNotNull(accountViewModel.currentUser)
 
-            val sharedPreferences = requireActivity().application.userSharedPreferences
-            username.text = sharedPreferences.getString("username", null)
-                ?: requireNotNull(sharedPreferences.getString("google_username", null))
-            email.text = user.email ?: "Email not set"
+                    val sharedPreferences = requireActivity().application.userSharedPreferences
+                    username.text = sharedPreferences.getString("username", null)
+                        ?: requireNotNull(sharedPreferences.getString("google_username", null))
+                    email.text = user.email ?: getString(R.string.email_not_set)
 
-            val uri = user.imageUri
-            if (uri != null) {
-                Picasso.get().load(uri).into(imageView)
-            } else {
-                imageView.setImageResource(R.drawable.ic_baseline_person_24)
-            }
+                    val uri = user.imageUri
+                    if (uri != null) {
+                        Picasso.get().load(uri).into(imageView)
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_baseline_person_24)
+                    }
 
-            role.visibility = View.GONE
-            if (user.role != UserRole.User) {
-                role.visibility = View.VISIBLE
-                role.text = requireContext().getString(R.string.display_role, user.role)
+                    role.visibility = View.GONE
+                    if (user.role != UserRole.User) {
+                        role.visibility = View.VISIBLE
+                        role.text = requireContext().getString(R.string.display_role, user.role)
+                    }
+                }
+                is NetworkResponse.ServerError -> {
+                    Log.e(LOG_TAG, "Server error", result.error)
+                    snackbarShort(root) { getString(R.string.server_error) }.show()
+                }
+                is NetworkResponse.NetworkError -> {
+                    Log.e(LOG_TAG, "Network error", result.error)
+                    snackbarShort(root) { getString(R.string.network_error) }.show()
+                }
+                is NetworkResponse.UnknownError -> {
+                    Log.e(LOG_TAG, "Application error", result.error)
+                    snackbarShort(root) { getString(R.string.application_error) }.show()
+                }
             }
         }
     }

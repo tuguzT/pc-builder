@@ -65,12 +65,12 @@ class ComponentAddFragment : Fragment() {
                         fragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
                     navHostFragment.navController.popBackStack()
 
-                    snackbarShort { "Component was successfully added" }.show()
+                    snackbarShort { getString(R.string.component_added) }.show()
                 } catch (e: NumberFormatException) {
-                    snackbarShort { "Incorrect input!" }.show()
+                    snackbarShort { getString(R.string.incorrect_input) }.show()
                 }
             } else {
-                snackbarShort { "Some fields are empty!" }.show()
+                snackbarShort { getString(R.string.some_fields_empty) }.show()
             }
         }
     }

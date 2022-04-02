@@ -13,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.haroldadmin.cnradapter.NetworkResponse
+import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentLoginBinding
 import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
@@ -53,7 +55,7 @@ class LoginFragment : Fragment() {
         val contract = ActivityResultContracts.StartActivityForResult()
         val googleSignInLauncher = registerForActivityResult(contract) {
             if (it.resultCode != AppCompatActivity.RESULT_OK) {
-                snackbarShort(binding.root) { "User was not signed in!" }.show()
+                snackbarShort(binding.root) { getString(R.string.user_not_signed_in) }.show()
                 return@registerForActivityResult
             }
             lifecycleScope.launch {
@@ -72,9 +74,8 @@ class LoginFragment : Fragment() {
                         finish()
                     }
                 } catch (exception: ApiException) {
-                    val message = "Google authorization failed"
-                    Log.e(LOG_TAG, message, exception)
-                    snackbarShort(binding.root) { message }.show()
+                    Log.e(LOG_TAG, "Google authorization failed", exception)
+                    snackbarShort(binding.root) { getString(R.string.google_auth_failed) }.show()
                 }
             }
         }
@@ -100,18 +101,34 @@ class LoginFragment : Fragment() {
                     if (checkUsername(username) && checkPassword(password)) {
                         val credentials = UserCredentialsData(username, password)
                         lifecycleScope.launch {
-                            authViewModel.auth(requireActivity().application, credentials)
-                            with(requireActivity()) {
-                                setResult(AppCompatActivity.RESULT_OK)
-                                finish()
+                            when (val result =
+                                authViewModel.auth(requireActivity().application, credentials)) {
+                                is NetworkResponse.Success -> {
+                                    with(requireActivity()) {
+                                        setResult(AppCompatActivity.RESULT_OK)
+                                        finish()
+                                    }
+                                }
+                                is NetworkResponse.ServerError -> {
+                                    Log.e(LOG_TAG, "Server error", result.error)
+                                    snackbarShort { getString(R.string.server_error) }.show()
+                                }
+                                is NetworkResponse.NetworkError -> {
+                                    Log.e(LOG_TAG, "Network error", result.error)
+                                    snackbarShort { getString(R.string.network_error) }.show()
+                                }
+                                is NetworkResponse.UnknownError -> {
+                                    Log.e(LOG_TAG, "Application error", result.error)
+                                    snackbarShort { getString(R.string.application_error) }.show()
+                                }
                             }
                         }
                         return@setOnClickListener
                     }
-                    snackbarShort(root) { "Incorrect input for username/password!" }.show()
+                    snackbarShort(root) { getString(R.string.incorrect_input_username_password) }.show()
                     return@setOnClickListener
                 }
-                snackbarShort(root) { "Username/password are empty!" }.show()
+                snackbarShort(root) { getString(R.string.username_password_empty) }.show()
             }
         }
     }

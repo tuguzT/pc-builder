@@ -64,7 +64,7 @@ class ComponentListFragment : Fragment() {
                 val item = adapter.currentList[position]
 
                 sharedViewModel.deleteComponent(item)
-                snackbarShort { "Component was successfully deleted" }.show()
+                snackbarShort { getString(R.string.component_deleted) }.show()
             }
         })
         itemTouchHelper.attachToRecyclerView(binding.list)

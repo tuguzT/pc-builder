@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class AccountListFragment : Fragment() {
+    companion object {
+        @JvmStatic
+        private val LOG_TAG = AccountListFragment::class.simpleName
+    }
+
     private val viewModel: AccountListViewModel by koinNavGraphViewModel(R.id.account_nav_graph)
 
     private var _binding: FragmentAccountListBinding? = null
@@ -41,9 +47,17 @@ class AccountListFragment : Fragment() {
         lifecycleScope.launch {
             when (val result = viewModel.getAllUsers()) {
                 is NetworkResponse.Success -> adapter.submitList(result.body)
-                is NetworkResponse.Error -> {
-                    // todo error handling
-                    snackbarShort { result.error?.toString() ?: "Network error" }
+                is NetworkResponse.ServerError -> {
+                    Log.e(LOG_TAG, "Server error", result.error)
+                    snackbarShort { getString(R.string.server_error) }.show()
+                }
+                is NetworkResponse.NetworkError -> {
+                    Log.e(LOG_TAG, "Network error", result.error)
+                    snackbarShort { getString(R.string.network_error) }.show()
+                }
+                is NetworkResponse.UnknownError -> {
+                    Log.e(LOG_TAG, "Application error", result.error)
+                    snackbarShort { getString(R.string.application_error) }.show()
                 }
             }
         }
