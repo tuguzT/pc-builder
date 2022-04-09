@@ -51,7 +51,8 @@ class AccountViewModel(private val backendUsersAPI: BackendUsersAPI) : ViewModel
             }
         }
         val errorResponse = Response.error<Nothing>(500, "".toResponseBody())
-        return NetworkResponse.UnknownError(Exception(), errorResponse)
+        val error = Exception("No information about any user")
+        return NetworkResponse.UnknownError(error, errorResponse)
     }
 
     @CheckResult
@@ -72,6 +73,7 @@ class AccountViewModel(private val backendUsersAPI: BackendUsersAPI) : ViewModel
         if (accessToken != null) return updateUserFromBackend(application)
 
         val errorResponse = Response.error<Nothing>(500, "".toResponseBody())
-        return NetworkResponse.UnknownError(Exception(), errorResponse)
+        val error = Exception("No information about any user")
+        return NetworkResponse.UnknownError(error, errorResponse)
     }
 }

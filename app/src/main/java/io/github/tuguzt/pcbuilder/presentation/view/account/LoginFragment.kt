@@ -1,7 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +26,12 @@ import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import mu.KotlinLogging
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class LoginFragment : Fragment() {
     companion object {
-        @JvmStatic
-        private val LOG_TAG = AuthActivity::class.simpleName
+        private val logger = KotlinLogging.logger {}
     }
 
     private val authViewModel: AuthViewModel by sharedViewModel()
@@ -75,8 +74,8 @@ class LoginFragment : Fragment() {
                         setResult(AppCompatActivity.RESULT_OK, user.toIntent())
                         finish()
                     }
-                } catch (exception: ApiException) {
-                    Log.e(LOG_TAG, "Google authorization failed", exception)
+                } catch (e: ApiException) {
+                    logger.error(e) { "Google authorization failed" }
                     showSnackbar(binding.root, R.string.google_auth_failed)
                 }
             }
@@ -112,15 +111,15 @@ class LoginFragment : Fragment() {
                                     }
                                 }
                                 is NetworkResponse.ServerError -> {
-                                    Log.e(LOG_TAG, "Server error", result.error)
+                                    logger.error(result.error) { "Server error" }
                                     showSnackbar(root, R.string.server_error)
                                 }
                                 is NetworkResponse.NetworkError -> {
-                                    Log.e(LOG_TAG, "Network error", result.error)
+                                    logger.error(result.error) { "Network error" }
                                     showSnackbar(root, R.string.network_error)
                                 }
                                 is NetworkResponse.UnknownError -> {
-                                    Log.e(LOG_TAG, "Application error", result.error)
+                                    logger.error(result.error) { "Application error" }
                                     showSnackbar(root, R.string.application_error)
                                 }
                             }

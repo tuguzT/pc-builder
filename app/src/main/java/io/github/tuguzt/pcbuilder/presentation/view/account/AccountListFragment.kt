@@ -1,7 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +14,12 @@ import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountListViewModel
 import kotlinx.coroutines.launch
+import mu.KotlinLogging
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class AccountListFragment : Fragment() {
     companion object {
-        @JvmStatic
-        private val LOG_TAG = AccountListFragment::class.simpleName
+        private val logger = KotlinLogging.logger {}
     }
 
     private val viewModel: AccountListViewModel by koinNavGraphViewModel(R.id.account_nav_graph)
@@ -50,15 +49,15 @@ class AccountListFragment : Fragment() {
             when (val result = viewModel.getAllUsers()) {
                 is NetworkResponse.Success -> adapter.submitList(result.body)
                 is NetworkResponse.ServerError -> {
-                    Log.e(LOG_TAG, "Server error", result.error)
+                    logger.error(result.error) { "Server error" }
                     showSnackbar(binding.root, R.string.server_error)
                 }
                 is NetworkResponse.NetworkError -> {
-                    Log.e(LOG_TAG, "Network error", result.error)
+                    logger.error(result.error) { "Network error" }
                     showSnackbar(binding.root, R.string.network_error)
                 }
                 is NetworkResponse.UnknownError -> {
-                    Log.e(LOG_TAG, "Application error", result.error)
+                    logger.error(result.error) { "Application error" }
                     showSnackbar(binding.root, R.string.application_error)
                 }
             }

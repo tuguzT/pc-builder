@@ -2,9 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -16,6 +14,7 @@ import io.github.tuguzt.pcbuilder.databinding.ActivityMainBinding
 import io.github.tuguzt.pcbuilder.presentation.view.account.AuthActivity
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
+import mu.KotlinLogging
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -23,8 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class MainActivity : AppCompatActivity() {
     companion object {
-        @JvmStatic
-        private val LOG_TAG = MainActivity::class.simpleName
+        private val logger = KotlinLogging.logger {}
     }
 
     private val accountViewModel: AccountViewModel by viewModel()
@@ -32,7 +30,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityMainBinding
     private inline val binding get() = _binding
 
-    private lateinit var launcher: ActivityResultLauncher<Intent>
+    private val launcher = registerForActivityResult(StartActivityForResult()) {
+        if (it.resultCode == RESULT_CANCELED) {
+            finish()
+            return@registerForActivityResult
+        }
+        lifecycleScope.launch {
+            accountViewModel.updateUserFromBackend(application)
+        }
+    }
 
     private val navController: NavController
         get() {
@@ -50,17 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.setupWithNavController(navController)
 
-        val contract = ActivityResultContracts.StartActivityForResult()
-        launcher = registerForActivityResult(contract) {
-            if (it.resultCode == RESULT_CANCELED) {
-                finish()
-                return@registerForActivityResult
-            }
-            lifecycleScope.launch {
-                accountViewModel.updateUserFromBackend(application)
-            }
-        }
-
         lifecycleScope.launch {
             handleUser()
         }
@@ -70,15 +65,15 @@ class MainActivity : AppCompatActivity() {
         when (val result = accountViewModel.findUser(application)) {
             is NetworkResponse.Success -> return
             is NetworkResponse.ServerError -> {
-                Log.e(LOG_TAG, "Server error", result.error)
+                logger.error(result.error) { "Server error" }
                 showSnackbar(binding.root, R.string.server_error)
             }
             is NetworkResponse.NetworkError -> {
-                Log.e(LOG_TAG, "Network error", result.error)
+                logger.error(result.error) { "Network error" }
                 showSnackbar(binding.root, R.string.network_error)
             }
             is NetworkResponse.UnknownError -> {
-                Log.e(LOG_TAG, "Application error", result.error)
+                logger.error(result.error) { "Application error" }
                 showSnackbar(binding.root, R.string.application_error)
             }
         }

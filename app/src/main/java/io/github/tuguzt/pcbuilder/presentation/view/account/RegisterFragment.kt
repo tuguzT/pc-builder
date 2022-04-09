@@ -1,7 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +18,12 @@ import io.github.tuguzt.pcbuilder.presentation.model.user.UserNamePasswordData
 import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import kotlinx.coroutines.launch
+import mu.KotlinLogging
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class RegisterFragment : Fragment() {
     companion object {
-        @JvmStatic
-        private val LOG_TAG = RegisterFragment::class.simpleName
+        private val logger = KotlinLogging.logger {}
     }
 
     private val authViewModel: AuthViewModel by sharedViewModel()
@@ -75,15 +74,15 @@ class RegisterFragment : Fragment() {
                                     }
                                 }
                                 is NetworkResponse.ServerError -> {
-                                    Log.e(LOG_TAG, "Server error", result.error)
+                                    logger.error(result.error) { "Server error" }
                                     showSnackbar(root, R.string.server_error)
                                 }
                                 is NetworkResponse.NetworkError -> {
-                                    Log.e(LOG_TAG, "Network error", result.error)
+                                    logger.error(result.error) { "Network error" }
                                     showSnackbar(root, R.string.network_error)
                                 }
                                 is NetworkResponse.UnknownError -> {
-                                    Log.e(LOG_TAG, "Application error", result.error)
+                                    logger.error(result.error) { "Application error" }
                                     showSnackbar(root, R.string.application_error)
                                 }
                             }

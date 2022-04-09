@@ -90,6 +90,8 @@ dependencies {
 
     // Third-Party
     implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("io.github.microutils:kotlin-logging:1.12.5")
+    implementation("org.slf4j:slf4j-android:1.7.36")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

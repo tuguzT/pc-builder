@@ -2,7 +2,6 @@ package io.github.tuguzt.pcbuilder.presentation.view.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +21,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import mu.KotlinLogging
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -29,8 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  */
 class AccountFragment : Fragment() {
     companion object {
-        @JvmStatic
-        private val LOG_TAG = AccountFragment::class.simpleName
+        private val logger = KotlinLogging.logger {}
     }
 
     private val accountViewModel: AccountViewModel by sharedViewModel()
@@ -124,15 +123,15 @@ class AccountFragment : Fragment() {
                     }
                 }
                 is NetworkResponse.ServerError -> {
-                    Log.e(LOG_TAG, "Server error", result.error)
+                    logger.error(result.error) { "Server error" }
                     showSnackbar(root, R.string.server_error)
                 }
                 is NetworkResponse.NetworkError -> {
-                    Log.e(LOG_TAG, "Network error", result.error)
+                    logger.error(result.error) { "Network error" }
                     showSnackbar(root, R.string.network_error)
                 }
                 is NetworkResponse.UnknownError -> {
-                    Log.e(LOG_TAG, "Application error", result.error)
+                    logger.error(result.error) { "Application error" }
                     showSnackbar(root, R.string.application_error)
                 }
             }

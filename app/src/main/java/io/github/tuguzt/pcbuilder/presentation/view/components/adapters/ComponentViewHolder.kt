@@ -2,7 +2,6 @@ package io.github.tuguzt.pcbuilder.presentation.view.components.adapters
 
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +11,7 @@ import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragmentDirections
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import kotlinx.coroutines.*
+import mu.KotlinLogging
 import java.io.FileNotFoundException
 
 /**
@@ -25,7 +25,7 @@ class ComponentViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
-        private val LOG_TAG = ComponentViewHolder::class.simpleName
+        private val logger = KotlinLogging.logger {}
     }
 
     fun bind(component: ComponentData): Unit = binding.run {
@@ -43,13 +43,14 @@ class ComponentViewHolder(
         val contentResolver = binding.root.context.contentResolver
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            val message = when (throwable) {
-                is SecurityException -> "Cannot obtain an image due to security error"
-                is FileNotFoundException -> "Image not found"
-                is NullPointerException -> "Content provider recently crashed"
-                else -> "Unknown error"
+            logger.error(throwable) {
+                when (throwable) {
+                    is SecurityException -> "Cannot obtain an image due to security error"
+                    is FileNotFoundException -> "Image not found"
+                    is NullPointerException -> "Content provider recently crashed"
+                    else -> "Unknown error"
+                }
             }
-            Log.e(LOG_TAG, message, throwable)
             sharedViewModel.updateComponent(component)
             CoroutineScope(Dispatchers.Main).launch {
                 imageView.visibility = View.GONE

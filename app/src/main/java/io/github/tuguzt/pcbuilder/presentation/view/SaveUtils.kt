@@ -7,13 +7,15 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import androidx.core.net.toUri
 import io.github.tuguzt.pcbuilder.R
+import mu.KotlinLogging
 import java.io.File
 import java.io.File.separator
 import java.io.FileOutputStream
 import java.io.OutputStream
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Saves image to the user gallery.
@@ -63,7 +65,7 @@ private fun contentValues() = ContentValues().apply {
 private fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream) {
     try {
         outputStream.use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
-    } catch (exception: Exception) {
-        Log.e(::saveImageToStream.name, "Failed to save an image", exception)
+    } catch (e: Exception) {
+        logger.error(e) { "Failed to save an image" }
     }
 }
