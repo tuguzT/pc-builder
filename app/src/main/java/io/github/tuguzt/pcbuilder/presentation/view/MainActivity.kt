@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.haroldadmin.cnradapter.NetworkResponse
@@ -27,8 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private val accountViewModel: AccountViewModel by viewModel()
 
-    private lateinit var _binding: ActivityMainBinding
-    private inline val binding get() = _binding
+    private lateinit var binding: ActivityMainBinding
 
     private val launcher = registerForActivityResult(StartActivityForResult()) {
         if (it.resultCode == RESULT_CANCELED) {
@@ -40,20 +38,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val navController: NavController
-        get() {
-            val navHostFragment = supportFragmentManager
-                .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
-            return navHostFragment.navController
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         setSupportActionBar(binding.toolbar)
 
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
 
         lifecycleScope.launch {
