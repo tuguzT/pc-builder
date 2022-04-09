@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <!-- Base application theme -->
-    <style name="Theme.PCBuilder.Base" parent="Theme.Material3.DayNight.NoActionBar" />
-
     <!-- Light application theme -->
-    <style name="Theme.PCBuilder" parent="Theme.PCBuilder.Base">
+    <style name="Theme.PCBuilder" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
