@@ -13,7 +13,7 @@ import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.presentation.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
 import io.github.tuguzt.pcbuilder.presentation.view.popBackStackRoot
-import io.github.tuguzt.pcbuilder.presentation.view.toastShort
+import io.github.tuguzt.pcbuilder.presentation.view.showToast
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -67,15 +67,15 @@ class ComponentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        _binding = FragmentComponentBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
-        return FragmentComponentBinding.inflate(inflater, container, false)
-            .also { _binding = it }.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.component.observe(viewLifecycleOwner) { component: Component? ->
             if (component == null) {
-                toastShort { getString(R.string.component_not_exist) }.show()
+                showToast(requireContext(), R.string.component_not_exist)
                 popBackStackRoot()
                 return@observe
             }

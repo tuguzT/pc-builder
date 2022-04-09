@@ -16,7 +16,7 @@ import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserNamePasswordData
-import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -38,8 +38,10 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentRegisterBinding.inflate(inflater, container, false)
-        .also { _binding = it }.root
+    ): View {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
@@ -74,24 +76,24 @@ class RegisterFragment : Fragment() {
                                 }
                                 is NetworkResponse.ServerError -> {
                                     Log.e(LOG_TAG, "Server error", result.error)
-                                    snackbarShort { getString(R.string.server_error) }.show()
+                                    showSnackbar(root, R.string.server_error)
                                 }
                                 is NetworkResponse.NetworkError -> {
                                     Log.e(LOG_TAG, "Network error", result.error)
-                                    snackbarShort { getString(R.string.network_error) }.show()
+                                    showSnackbar(root, R.string.network_error)
                                 }
                                 is NetworkResponse.UnknownError -> {
                                     Log.e(LOG_TAG, "Application error", result.error)
-                                    snackbarShort { getString(R.string.application_error) }.show()
+                                    showSnackbar(root, R.string.application_error)
                                 }
                             }
                         }
                         return@setOnClickListener
                     }
-                    snackbarShort(root) { getString(R.string.incorrect_input_username_password) }.show()
+                    showSnackbar(root, R.string.incorrect_input_username_password)
                     return@setOnClickListener
                 }
-                snackbarShort(root) { getString(R.string.username_password_empty) }.show()
+                showSnackbar(root, R.string.username_password_empty)
             }
         }
     }

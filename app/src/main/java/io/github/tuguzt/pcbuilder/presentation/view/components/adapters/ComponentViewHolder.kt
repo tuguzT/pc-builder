@@ -62,6 +62,5 @@ class ComponentViewHolder(
                 imageView.setImageBitmap(bitmap)
             }
         }
-        return
     }
 }

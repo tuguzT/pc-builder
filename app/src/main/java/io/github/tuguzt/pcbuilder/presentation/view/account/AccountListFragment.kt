@@ -12,7 +12,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentAccountListBinding
 import io.github.tuguzt.pcbuilder.presentation.view.account.adapters.AccountListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
-import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountListViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -34,8 +34,10 @@ class AccountListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentAccountListBinding.inflate(inflater, container, false)
-        .also { _binding = it }.root
+    ): View {
+        _binding = FragmentAccountListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = AccountListAdapter()
@@ -49,15 +51,15 @@ class AccountListFragment : Fragment() {
                 is NetworkResponse.Success -> adapter.submitList(result.body)
                 is NetworkResponse.ServerError -> {
                     Log.e(LOG_TAG, "Server error", result.error)
-                    snackbarShort { getString(R.string.server_error) }.show()
+                    showSnackbar(binding.root, R.string.server_error)
                 }
                 is NetworkResponse.NetworkError -> {
                     Log.e(LOG_TAG, "Network error", result.error)
-                    snackbarShort { getString(R.string.network_error) }.show()
+                    showSnackbar(binding.root, R.string.network_error)
                 }
                 is NetworkResponse.UnknownError -> {
                     Log.e(LOG_TAG, "Application error", result.error)
-                    snackbarShort { getString(R.string.application_error) }.show()
+                    showSnackbar(binding.root, R.string.application_error)
                 }
             }
         }

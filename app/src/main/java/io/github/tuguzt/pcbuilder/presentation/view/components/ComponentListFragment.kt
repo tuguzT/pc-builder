@@ -13,7 +13,7 @@ import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
-import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -37,9 +37,9 @@ class ComponentListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        _binding = FragmentComponentListBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
-        return FragmentComponentListBinding.inflate(inflater, container, false)
-            .also { _binding = it }.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class ComponentListFragment : Fragment() {
                 val item = adapter.currentList[position]
 
                 sharedViewModel.deleteComponent(item)
-                snackbarShort { getString(R.string.component_deleted) }.show()
+                showSnackbar(binding.root, R.string.component_deleted)
             }
         })
         itemTouchHelper.attachToRecyclerView(binding.list)

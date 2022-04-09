@@ -16,42 +16,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            tools:text="Name: Unknown"/>
+            tools:text="Name: Unknown" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            tools:text="Description: Unknown"/>
+            tools:text="Description: Unknown" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            tools:text="Weight: Unknown"/>
+            tools:text="Weight: Unknown" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            tools:text="Length: Unknown"/>
+            tools:text="Length: Unknown" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/width"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            tools:text="Width: Unknown"/>
+            tools:text="Width: Unknown" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/height"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            tools:text="Height: Unknown"/>
+            tools:text="Height: Unknown" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -17,7 +17,7 @@ class PCBuilderApplication : Application() {
         super.onCreate()
         startKoin {
             androidLogger()
-            androidContext(androidContext = this@PCBuilderApplication)
+            androidContext(applicationContext)
             modules(appModule, repositoryModule, networkModule)
         }
     }

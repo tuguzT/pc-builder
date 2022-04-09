@@ -19,11 +19,8 @@ class ComponentListAdapter(private val sharedViewModel: ComponentsSharedViewMode
     ListAdapter<Component, ComponentViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponentViewHolder {
-        val binding = ItemComponentBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false,
-        )
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemComponentBinding.inflate(layoutInflater, parent, false)
         return ComponentViewHolder(binding, sharedViewModel)
     }
 

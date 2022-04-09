@@ -30,8 +30,8 @@
                     android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
                     android:autofillHints="username"
+                    android:inputType="textPersonName"
                     android:maxLength="64"
                     tools:text="tuguzT" />
 
@@ -47,26 +47,26 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
                     android:autofillHints="password"
+                    android:inputType="textPassword"
                     android:maxLength="128" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/register"
-                android:text="@string/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="64dp"
-                android:layout_gravity="center_horizontal" />
+                android:text="@string/register" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login"
-                android:text="@string/have_account_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="@string/have_account_sign_in" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

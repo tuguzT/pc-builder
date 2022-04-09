@@ -15,11 +15,8 @@ import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
  */
 class BuildListAdapter : ListAdapter<Build, BuildViewHolder>(DiffCallback<String, Build>()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuildViewHolder {
-        val binding = ItemBuildBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false,
-        )
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemBuildBinding.inflate(layoutInflater, parent, false)
         return BuildViewHolder(binding)
     }
 

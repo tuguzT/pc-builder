@@ -20,8 +20,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.35"
-            app:srcCompat="@drawable/ic_baseline_person_24"
-            app:shapeAppearanceOverlay="@style/Theme.PCBuilder.RoundImageView" />
+            app:shapeAppearanceOverlay="@style/Theme.PCBuilder.RoundImageView"
+            app:srcCompat="@drawable/ic_baseline_person_24" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/role"
@@ -49,10 +49,10 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/email"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username"
@@ -60,11 +60,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_out"
-            android:text="@string/sign_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:backgroundTint="?attr/colorError"
+            android:text="@string/sign_out"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email" />

@@ -2,6 +2,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.builds
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.github.tuguzt.pcbuilder.databinding.FragmentBuildListBinding
@@ -16,8 +17,10 @@ class BuildListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentBuildListBinding.inflate(inflater, container, false)
-        .also { _binding = it }.root
+    ): View {
+        _binding = FragmentBuildListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

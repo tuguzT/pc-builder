@@ -27,8 +27,7 @@ const val backendBaseUrl = "https://pc-builder-tuguzt.herokuapp.com/"
 val networkModule = module {
     @OptIn(ExperimentalSerializationApi::class)
     single {
-        val json: Json = get()
-        json.asConverterFactory("application/json".toMediaType())
+        Json.asConverterFactory("application/json".toMediaType())
     }
 
     single { backendClient(androidContext()) }

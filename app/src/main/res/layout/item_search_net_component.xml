@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:focusable="true"
-    android:checkable="true">
+    android:focusable="true">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -18,9 +16,9 @@
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:background="?attr/colorButtonNormal"
             android:scaleType="fitCenter"
             android:visibility="gone"
-            android:background="?attr/colorButtonNormal"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -35,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceBody2"
-                tools:text="Component Net description"/>
+                tools:text="Component Net description" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -47,13 +45,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save_local_storage"
+                style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="@string/add_to_favorites"
-                android:textColor="?attr/colorSecondaryVariant"
-                app:rippleColor="?attr/colorButtonNormal"
-                style="?attr/borderlessButtonStyle" />
+                android:text="@string/add_to_favorites" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

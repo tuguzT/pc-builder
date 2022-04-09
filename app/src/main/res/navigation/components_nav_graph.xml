@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/components_nav_graph"
@@ -16,11 +15,11 @@
             app:destination="@id/component_add_fragment" />
         <action
             android:id="@+id/action_component_item_fragment"
+            app:destination="@id/component_fragment"
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out"
-            app:destination="@id/component_fragment" />
+            app:popExitAnim="@anim/slide_out" />
         <action
             android:id="@+id/action_component_search_net_fragment"
             app:destination="@id/component_search_net_fragment" />

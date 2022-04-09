@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account_nav_graph"
@@ -20,6 +19,6 @@
         android:id="@+id/account_list_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.account.AccountListFragment"
         android:label="account_list_fragment"
-        tools:layout="@layout/fragment_account_list"/>
+        tools:layout="@layout/fragment_account_list" />
 
 </navigation>

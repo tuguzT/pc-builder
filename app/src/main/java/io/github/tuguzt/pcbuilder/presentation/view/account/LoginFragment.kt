@@ -22,7 +22,7 @@ import io.github.tuguzt.pcbuilder.presentation.model.user.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.model.user.toIntent
 import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
 import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
-import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import kotlinx.coroutines.launch
@@ -46,8 +46,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentLoginBinding.inflate(inflater, container, false)
-        .also { _binding = it }.root
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
@@ -55,7 +57,7 @@ class LoginFragment : Fragment() {
         val contract = ActivityResultContracts.StartActivityForResult()
         val googleSignInLauncher = registerForActivityResult(contract) {
             if (it.resultCode != AppCompatActivity.RESULT_OK) {
-                snackbarShort(binding.root) { getString(R.string.user_not_signed_in) }.show()
+                showSnackbar(binding.root, R.string.user_not_signed_in)
                 return@registerForActivityResult
             }
             lifecycleScope.launch {
@@ -75,7 +77,7 @@ class LoginFragment : Fragment() {
                     }
                 } catch (exception: ApiException) {
                     Log.e(LOG_TAG, "Google authorization failed", exception)
-                    snackbarShort(binding.root) { getString(R.string.google_auth_failed) }.show()
+                    showSnackbar(binding.root, R.string.google_auth_failed)
                 }
             }
         }
@@ -111,24 +113,24 @@ class LoginFragment : Fragment() {
                                 }
                                 is NetworkResponse.ServerError -> {
                                     Log.e(LOG_TAG, "Server error", result.error)
-                                    snackbarShort { getString(R.string.server_error) }.show()
+                                    showSnackbar(root, R.string.server_error)
                                 }
                                 is NetworkResponse.NetworkError -> {
                                     Log.e(LOG_TAG, "Network error", result.error)
-                                    snackbarShort { getString(R.string.network_error) }.show()
+                                    showSnackbar(root, R.string.network_error)
                                 }
                                 is NetworkResponse.UnknownError -> {
                                     Log.e(LOG_TAG, "Application error", result.error)
-                                    snackbarShort { getString(R.string.application_error) }.show()
+                                    showSnackbar(root, R.string.application_error)
                                 }
                             }
                         }
                         return@setOnClickListener
                     }
-                    snackbarShort(root) { getString(R.string.incorrect_input_username_password) }.show()
+                    showSnackbar(root, R.string.incorrect_input_username_password)
                     return@setOnClickListener
                 }
-                snackbarShort(root) { getString(R.string.username_password_empty) }.show()
+                showSnackbar(root, R.string.username_password_empty)
             }
         }
     }

@@ -48,9 +48,9 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        _binding = FragmentAccountBinding.inflate(inflater, container, false)
         hasOptionsMenu = true
-        return FragmentAccountBinding.inflate(inflater, container, false)
-            .also { _binding = it }.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,7 +72,7 @@ class AccountFragment : Fragment() {
             activity.userSharedPreferences.edit { clear() }
             lifecycleScope.launch {
                 googleSignInClient.signOut().await()
-                toastShort { getString(R.string.signed_out) }.show()
+                showToast(requireContext(), R.string.signed_out)
                 val loginIntent = Intent(activity, AuthActivity::class.java)
                 loginLauncher.launch(loginIntent)
             }
@@ -100,12 +100,12 @@ class AccountFragment : Fragment() {
 
     private fun bindUser(): Unit = binding.run {
         lifecycleScope.launch {
-            when (val result =
-                accountViewModel.updateUserFromBackend(requireActivity().application)) {
+            val application = requireActivity().application
+            when (val result = accountViewModel.updateUserFromBackend(application)) {
                 is NetworkResponse.Success -> {
                     val user = requireNotNull(accountViewModel.currentUser)
 
-                    val sharedPreferences = requireActivity().application.userSharedPreferences
+                    val sharedPreferences = application.userSharedPreferences
                     username.text = sharedPreferences.getString("username", null)
                         ?: requireNotNull(sharedPreferences.getString("google_username", null))
                     email.text = user.email ?: getString(R.string.email_not_set)
@@ -125,15 +125,15 @@ class AccountFragment : Fragment() {
                 }
                 is NetworkResponse.ServerError -> {
                     Log.e(LOG_TAG, "Server error", result.error)
-                    snackbarShort(root) { getString(R.string.server_error) }.show()
+                    showSnackbar(root, R.string.server_error)
                 }
                 is NetworkResponse.NetworkError -> {
                     Log.e(LOG_TAG, "Network error", result.error)
-                    snackbarShort(root) { getString(R.string.network_error) }.show()
+                    showSnackbar(root, R.string.network_error)
                 }
                 is NetworkResponse.UnknownError -> {
                     Log.e(LOG_TAG, "Application error", result.error)
-                    snackbarShort(root) { getString(R.string.application_error) }.show()
+                    showSnackbar(root, R.string.application_error)
                 }
             }
         }

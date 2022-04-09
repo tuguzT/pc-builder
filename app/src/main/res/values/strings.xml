@@ -72,4 +72,5 @@
     <string name="some_fields_empty">Some fields are empty!</string>
     <string name="component_not_exist">Component does not exist!</string>
     <string name="component_deleted">Component was successfully deleted</string>
+    <string name="query_empty">Query cannot be empty!</string>
 </resources>

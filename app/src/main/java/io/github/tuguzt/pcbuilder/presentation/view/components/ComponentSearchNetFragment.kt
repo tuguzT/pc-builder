@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentSearchNetBinding
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
-import io.github.tuguzt.pcbuilder.presentation.view.toastShort
+import io.github.tuguzt.pcbuilder.presentation.view.showToast
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
@@ -28,8 +28,10 @@ class ComponentSearchNetFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentComponentSearchNetBinding.inflate(inflater, container, false)
-        .also { _binding = it }.root
+    ): View {
+        _binding = FragmentComponentSearchNetBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val spaceSize = resources.getDimensionPixelSize(R.dimen.list_item_margin)
@@ -43,9 +45,7 @@ class ComponentSearchNetFragment : Fragment() {
                 override fun onQueryTextChange(newText: String?) = true
 
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query.isNullOrBlank()) {
-                        toastShort { "Query cannot be empty!" }.show()
-                    }
+                    if (query.isNullOrBlank()) showToast(requireContext(), R.string.query_empty)
                     return true
                 }
             })

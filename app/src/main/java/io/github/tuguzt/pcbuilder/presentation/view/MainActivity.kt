@@ -71,15 +71,15 @@ class MainActivity : AppCompatActivity() {
             is NetworkResponse.Success -> return
             is NetworkResponse.ServerError -> {
                 Log.e(LOG_TAG, "Server error", result.error)
-                snackbarShort(binding.root) { getString(R.string.server_error) }.show()
+                showSnackbar(binding.root, R.string.server_error)
             }
             is NetworkResponse.NetworkError -> {
                 Log.e(LOG_TAG, "Network error", result.error)
-                snackbarShort(binding.root) { getString(R.string.network_error) }.show()
+                showSnackbar(binding.root, R.string.network_error)
             }
             is NetworkResponse.UnknownError -> {
                 Log.e(LOG_TAG, "Application error", result.error)
-                snackbarShort(binding.root) { getString(R.string.application_error) }.show()
+                showSnackbar(binding.root, R.string.application_error)
             }
         }
 

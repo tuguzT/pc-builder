@@ -10,7 +10,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentAddBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.presentation.view.snackbarShort
+import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.components.ComponentsSharedViewModel
 import io.nacular.measured.units.Length.Companion.meters
 import io.nacular.measured.units.Mass.Companion.grams
@@ -34,8 +34,10 @@ class ComponentAddFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentComponentAddBinding.inflate(inflater, container, false)
-        .also { _binding = it }.root
+    ): View {
+        _binding = FragmentComponentAddBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val buttonAdd = binding.buttonAdd
@@ -65,12 +67,12 @@ class ComponentAddFragment : Fragment() {
                         fragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
                     navHostFragment.navController.popBackStack()
 
-                    snackbarShort { getString(R.string.component_added) }.show()
+                    showSnackbar(binding.root, R.string.component_added)
                 } catch (e: NumberFormatException) {
-                    snackbarShort { getString(R.string.incorrect_input) }.show()
+                    showSnackbar(binding.root, R.string.incorrect_input)
                 }
             } else {
-                snackbarShort { getString(R.string.some_fields_empty) }.show()
+                showSnackbar(binding.root, R.string.some_fields_empty)
             }
         }
     }

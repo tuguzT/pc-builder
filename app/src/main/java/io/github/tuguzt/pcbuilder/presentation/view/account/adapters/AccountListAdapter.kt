@@ -9,11 +9,8 @@ import io.github.tuguzt.pcbuilder.presentation.view.diffutils.DiffCallback
 
 class AccountListAdapter : ListAdapter<UserData, AccountViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
-        val binding = ItemAccountBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false,
-        )
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemAccountBinding.inflate(layoutInflater, parent, false)
         return AccountViewHolder(binding)
     }
 
