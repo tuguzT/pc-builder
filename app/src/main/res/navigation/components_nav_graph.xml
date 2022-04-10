@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/component_list_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentListFragment"
-        android:label="fragment_component_list"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_component_list">
         <action
             android:id="@+id/action_component_add_fragment"
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/component_add_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentAddFragment"
-        android:label="fragment_component_add"
+        android:label="@string/add_new_component"
         tools:layout="@layout/fragment_component_add" />
 
     <fragment
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/component_search_net_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.components.ComponentSearchNetFragment"
-        android:label="fragment_component_search_net"
+        android:label="@string/search_for_components"
         tools:layout="@layout/fragment_component_search_net" />
 
 </navigation>

@@ -8,13 +8,12 @@ import io.github.tuguzt.pcbuilder.databinding.ActivityAuthBinding
  * Activity for user login.
  */
 class AuthActivity : AppCompatActivity() {
-    private lateinit var _binding: ActivityAuthBinding
-    private inline val binding get() = _binding
+    private lateinit var binding: ActivityAuthBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _binding = ActivityAuthBinding.inflate(layoutInflater)
+        binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 

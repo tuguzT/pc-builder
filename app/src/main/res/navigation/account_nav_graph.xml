@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/account_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.account.AccountFragment"
-        android:label="account_fragment"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_account">
         <action
             android:id="@+id/action_list_fragment"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/account_list_fragment"
         android:name="io.github.tuguzt.pcbuilder.presentation.view.account.AccountListFragment"
-        android:label="account_list_fragment"
+        android:label="@string/moderators"
         tools:layout="@layout/fragment_account_list" />
 
 </navigation>

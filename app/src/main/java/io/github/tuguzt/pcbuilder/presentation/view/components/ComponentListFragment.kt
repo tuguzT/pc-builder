@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentComponentListBinding
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
+import io.github.tuguzt.pcbuilder.presentation.view.MainActivity
 import io.github.tuguzt.pcbuilder.presentation.view.components.adapters.ComponentListAdapter
 import io.github.tuguzt.pcbuilder.presentation.view.decorations.MarginDecoration
 import io.github.tuguzt.pcbuilder.presentation.view.hasOptionsMenu
@@ -43,6 +46,8 @@ class ComponentListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val activity = requireActivity() as MainActivity
+
         val adapter = ComponentListAdapter(sharedViewModel)
         binding.list.adapter = adapter
 
@@ -77,6 +82,10 @@ class ComponentListFragment : Fragment() {
         sharedViewModel.allComponents.observe(viewLifecycleOwner) {
             it?.let { adapter.submitList(it) }
         }
+
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.component_list_fragment))
+        val navController = findNavController()
+        activity.binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

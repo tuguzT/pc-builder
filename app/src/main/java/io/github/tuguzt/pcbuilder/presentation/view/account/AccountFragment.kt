@@ -3,13 +3,14 @@ package io.github.tuguzt.pcbuilder.presentation.view.account
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.squareup.picasso.Picasso
@@ -39,9 +40,6 @@ class AccountFragment : Fragment() {
     // This helper property is only valid between `onCreateView` and `onDestroyView`.
     private inline val binding get() = _binding!!
 
-    private lateinit var _loginLauncher: ActivityResultLauncher<Intent>
-    private inline val loginLauncher get() = _loginLauncher
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,9 +51,9 @@ class AccountFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val activity = requireActivity()
+        val activity = requireActivity() as MainActivity
         val contract = ActivityResultContracts.StartActivityForResult()
-        _loginLauncher = registerForActivityResult(contract) {
+        val loginLauncher = registerForActivityResult(contract) {
             if (it.resultCode == AppCompatActivity.RESULT_CANCELED) {
                 activity.finish()
                 return@registerForActivityResult
@@ -76,6 +74,10 @@ class AccountFragment : Fragment() {
                 loginLauncher.launch(loginIntent)
             }
         }
+
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.account_fragment))
+        val navController = findNavController()
+        activity.binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

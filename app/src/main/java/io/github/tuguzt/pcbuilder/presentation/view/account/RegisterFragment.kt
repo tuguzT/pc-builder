@@ -45,14 +45,13 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
             login.setOnClickListener {
-                val action = RegisterFragmentDirections.actionLoginFragment()
-                findNavController().navigate(action)
+                findNavController().popBackStack()
             }
 
             @Suppress("NAME_SHADOWING")
             register.setOnClickListener {
-                val username = username.text.toString()
-                val password = password.text.toString()
+                val username = username.text?.toString().orEmpty()
+                val password = password.text?.toString().orEmpty()
                 if (username.isNotBlank() && password.isNotBlank()) {
                     val username = username.trim()
                     val password = password.trim()

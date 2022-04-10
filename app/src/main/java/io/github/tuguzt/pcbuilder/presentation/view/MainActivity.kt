@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     private val accountViewModel: AccountViewModel by viewModel()
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var _binding: ActivityMainBinding
+    val binding get() = _binding
 
     private val launcher = registerForActivityResult(StartActivityForResult()) {
         if (it.resultCode == RESULT_CANCELED) {
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -61,19 +62,19 @@ class MainActivity : AppCompatActivity() {
             is NetworkResponse.Success -> return
             is NetworkResponse.ServerError -> {
                 logger.error(result.error) { "Server error" }
-                showSnackbar(binding.root, R.string.server_error)
+                showSnackbar(_binding.root, R.string.server_error)
             }
             is NetworkResponse.NetworkError -> {
                 logger.error(result.error) { "Network error" }
-                showSnackbar(binding.root, R.string.network_error)
+                showSnackbar(_binding.root, R.string.network_error)
             }
             is NetworkResponse.UnknownError -> {
                 logger.error(result.error) { "Application error" }
-                showSnackbar(binding.root, R.string.application_error)
+                showSnackbar(_binding.root, R.string.application_error)
             }
         }
 
-        val loginIntent = Intent(this, AuthActivity::class.java)
-        launcher.launch(loginIntent)
+        val authIntent = Intent(this, AuthActivity::class.java)
+        launcher.launch(authIntent)
     }
 }
