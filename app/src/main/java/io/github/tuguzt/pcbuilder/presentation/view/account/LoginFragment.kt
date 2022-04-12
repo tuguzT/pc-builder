@@ -6,12 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.databinding.FragmentLoginBinding
@@ -19,14 +17,11 @@ import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.model.user.toIntent
-import io.github.tuguzt.pcbuilder.presentation.model.user.toUser
-import io.github.tuguzt.pcbuilder.presentation.view.googleSignInOptions
 import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
-import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import mu.KotlinLogging
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class LoginFragment : Fragment() {
@@ -35,6 +30,7 @@ class LoginFragment : Fragment() {
     }
 
     private val authViewModel: AuthViewModel by sharedViewModel()
+    private val googleSignInClient: GoogleSignInClient by inject()
 
     private var _binding: FragmentLoginBinding? = null
 
@@ -51,7 +47,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+        val activity = requireActivity() as AuthActivity
 
         val contract = ActivityResultContracts.StartActivityForResult()
         val googleSignInLauncher = registerForActivityResult(contract) {
@@ -60,23 +56,36 @@ class LoginFragment : Fragment() {
                 return@registerForActivityResult
             }
             lifecycleScope.launch {
-                try {
-                    val data = it.data
-                    val googleAccount = GoogleSignIn.getSignedInAccountFromIntent(data).await()
-
-                    val sharedPreferences = requireActivity().application.userSharedPreferences
-                    sharedPreferences.edit {
-                        putString("google_token", googleAccount.idToken)
-                        putString("google_username", googleAccount.displayName)
+                val data = it.data
+                val result = runCatching {
+                    authViewModel.googleOAuth2(activity.application, data)
+                }
+                when (val response = result.getOrNull()) {
+                    null -> {
+                        logger.error(result.exceptionOrNull()) { "Google authorization failed" }
+                        showSnackbar(binding.root, R.string.google_auth_failed)
                     }
-                    val user = googleAccount.toUser()
-                    with(requireActivity()) {
-                        setResult(AppCompatActivity.RESULT_OK, user.toIntent())
-                        finish()
+                    else -> when (response) {
+                        is NetworkResponse.Success -> {
+                            with(activity) {
+                                val intent = response.body.toIntent()
+                                setResult(AppCompatActivity.RESULT_OK, intent)
+                                finish()
+                            }
+                        }
+                        is NetworkResponse.ServerError -> {
+                            logger.error(response.error) { "Server error" }
+                            showSnackbar(binding.root, R.string.server_error)
+                        }
+                        is NetworkResponse.NetworkError -> {
+                            logger.error(response.error) { "Network error" }
+                            showSnackbar(binding.root, R.string.network_error)
+                        }
+                        is NetworkResponse.UnknownError -> {
+                            logger.error(response.error) { "Application error" }
+                            showSnackbar(binding.root, R.string.application_error)
+                        }
                     }
-                } catch (e: ApiException) {
-                    logger.error(e) { "Google authorization failed" }
-                    showSnackbar(binding.root, R.string.google_auth_failed)
                 }
             }
         }
@@ -102,24 +111,24 @@ class LoginFragment : Fragment() {
                     if (checkUsername(username) && checkPassword(password)) {
                         val credentials = UserCredentialsData(username, password)
                         lifecycleScope.launch {
-                            when (val result =
-                                authViewModel.auth(requireActivity().application, credentials)) {
+                            val application = activity.application
+                            when (val response = authViewModel.auth(application, credentials)) {
                                 is NetworkResponse.Success -> {
-                                    with(requireActivity()) {
+                                    with(activity) {
                                         setResult(AppCompatActivity.RESULT_OK)
                                         finish()
                                     }
                                 }
                                 is NetworkResponse.ServerError -> {
-                                    logger.error(result.error) { "Server error" }
+                                    logger.error(response.error) { "Server error" }
                                     showSnackbar(root, R.string.server_error)
                                 }
                                 is NetworkResponse.NetworkError -> {
-                                    logger.error(result.error) { "Network error" }
+                                    logger.error(response.error) { "Network error" }
                                     showSnackbar(root, R.string.network_error)
                                 }
                                 is NetworkResponse.UnknownError -> {
-                                    logger.error(result.error) { "Application error" }
+                                    logger.error(response.error) { "Application error" }
                                     showSnackbar(root, R.string.application_error)
                                 }
                             }

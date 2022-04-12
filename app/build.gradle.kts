@@ -24,10 +24,31 @@ android {
         viewBinding = true
     }
     buildTypes {
+        forEach { buildType ->
+            buildType.buildConfigField(
+                "String",
+                "GOOGLE_SERVER_CLIENT_ID",
+                "\"721437970114-c1pn1c5bpge8iru30l1td5km894pj5db.apps.googleusercontent.com\"",
+            )
+            buildType.buildConfigField(
+                "String",
+                "BACKEND_BASE_URL",
+                "\"https://pc-builder-tuguzt.herokuapp.com/\"",
+            )
+        }
+        debug {
+            buildConfigField(
+                "String",
+                "BACKEND_BASE_URL",
+                "\"http://10.0.2.2:8080/\"",
+            )
+        }
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
     compileOptions {
@@ -36,7 +57,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
 }
 

@@ -14,6 +14,7 @@ import io.github.tuguzt.pcbuilder.databinding.FragmentRegisterBinding
 import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
+import io.github.tuguzt.pcbuilder.presentation.model.user.UserData
 import io.github.tuguzt.pcbuilder.presentation.model.user.UserNamePasswordData
 import io.github.tuguzt.pcbuilder.presentation.view.showSnackbar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AuthViewModel
@@ -57,10 +58,12 @@ class RegisterFragment : Fragment() {
                     val password = password.trim()
                     if (checkUsername(username) && checkPassword(password)) {
                         val user = UserNamePasswordData(
-                            email = null,
-                            imageUri = null,
-                            role = UserRole.User,
-                            username = username,
+                            user = UserData(
+                                email = null,
+                                imageUri = null,
+                                role = UserRole.User,
+                                username = username,
+                            ),
                             password = password,
                         )
                         lifecycleScope.launch {

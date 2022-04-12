@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.squareup.picasso.Picasso
 import io.github.tuguzt.pcbuilder.R
@@ -23,6 +23,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.account.AccountViewMode
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import mu.KotlinLogging
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -34,6 +35,7 @@ class AccountFragment : Fragment() {
     }
 
     private val accountViewModel: AccountViewModel by sharedViewModel()
+    private val googleSignInClient: GoogleSignInClient by inject()
 
     private var _binding: FragmentAccountBinding? = null
 
@@ -65,7 +67,6 @@ class AccountFragment : Fragment() {
 
         bindUser()
         binding.signOut.setOnClickListener {
-            val googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions)
             activity.userSharedPreferences.edit { clear() }
             lifecycleScope.launch {
                 googleSignInClient.signOut().await()
@@ -108,7 +109,6 @@ class AccountFragment : Fragment() {
 
                     val sharedPreferences = application.userSharedPreferences
                     username.text = sharedPreferences.getString("username", null)
-                        ?: requireNotNull(sharedPreferences.getString("google_username", null))
                     email.text = user.email ?: getString(R.string.email_not_set)
 
                     val uri = user.imageUri

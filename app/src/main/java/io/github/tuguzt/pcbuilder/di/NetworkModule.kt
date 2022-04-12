@@ -5,6 +5,7 @@ package io.github.tuguzt.pcbuilder.di
 import android.content.Context
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import io.github.tuguzt.pcbuilder.BuildConfig
 import io.github.tuguzt.pcbuilder.presentation.repository.net.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.presentation.repository.net.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.presentation.view.userSharedPreferences
@@ -19,26 +20,24 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.create
 
-const val backendBaseUrl = "https://pc-builder-tuguzt.herokuapp.com/"
-
 /**
  * Network module of the Koin DI.
  */
 val networkModule = module {
     @OptIn(ExperimentalSerializationApi::class)
-    single {
-        Json.asConverterFactory("application/json".toMediaType())
-    }
+    single { Json.asConverterFactory("application/json".toMediaType()) }
 
     single { backendClient(androidContext()) }
 
     // Backend Authentication API
-    single(named("retrofit-backend-auth")) { retrofit(backendBaseUrl, get()) }
+    single(named("retrofit-backend-auth")) {
+        retrofit(BuildConfig.BACKEND_BASE_URL, get())
+    }
     single { backendAuthAPI(get(named("retrofit-backend-auth"))) }
 
     // Backend Users API
     single(named("retrofit-backend-users")) {
-        retrofit("${backendBaseUrl}users/", get(), get())
+        retrofit("${BuildConfig.BACKEND_BASE_URL}users/", get(), get())
     }
     single { backendUsersAPI(get(named("retrofit-backend-users"))) }
 }
