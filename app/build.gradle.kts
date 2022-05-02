@@ -1,11 +1,9 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization")
-    id("kotlin-parcelize")
-    id("androidx.navigation.safeargs.kotlin")
 }
+
+val composeVersion: String by project
 
 android {
     compileSdk = 32
@@ -18,31 +16,19 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = composeVersion
+    }
+
     buildTypes {
-        forEach { buildType ->
-            buildType.buildConfigField(
-                "String",
-                "GOOGLE_SERVER_CLIENT_ID",
-                "\"721437970114-c1pn1c5bpge8iru30l1td5km894pj5db.apps.googleusercontent.com\"",
-            )
-            buildType.buildConfigField(
-                "String",
-                "BACKEND_BASE_URL",
-                "\"https://pc-builder-tuguzt.herokuapp.com/\"",
-            )
-        }
-        debug {
-            buildConfigField(
-                "String",
-                "BACKEND_BASE_URL",
-                "\"http://10.0.2.2:8080/\"",
-            )
-        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -59,6 +45,11 @@ android {
         jvmTarget = "1.8"
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 configurations.all {
@@ -67,55 +58,24 @@ configurations.all {
 
 dependencies {
     // Domain layer
-    implementation("com.github.tuguzT:pc_builder_domain:main-SNAPSHOT") {
+    implementation("com.github.tuguzT:pc_builder_domain:develop-SNAPSHOT") {
         isChanging = true
     }
 
     // Android
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.fragment:fragment-ktx:1.4.1")
-    implementation("com.google.android.material:material:1.5.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
-    implementation("androidx.paging:paging-runtime:3.1.1")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+    implementation("androidx.activity:activity-compose:1.4.0")
 
-    // Kotlin Extensions
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
-
-    // Room
-    implementation("androidx.room:room-runtime:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
-    // Room annotations with Kotlin annotation processing tool
-    kapt("androidx.room:room-compiler:2.4.2")
-
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
-
-    // Google
-    implementation("com.google.android.gms:play-services-auth:20.1.0")
-
-    // Koin DI
-    implementation("io.insert-koin:koin-core:3.2.0-beta-1")
-    implementation("io.insert-koin:koin-android:3.2.0-beta-1")
-    implementation("io.insert-koin:koin-androidx-navigation:3.2.0-beta-1")
-
-    // Third-Party
-    implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("io.github.microutils:kotlin-logging:1.12.5")
-    implementation("org.slf4j:slf4j-android:1.7.36")
+    // Debugging
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
 }
