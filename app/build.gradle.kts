@@ -4,6 +4,7 @@ plugins {
 }
 
 val composeVersion: String by project
+val koinVersion: String by project
 
 android {
     compileSdk = 32
@@ -69,6 +70,15 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.activity:activity-compose:1.4.0")
+
+    // Koin DI
+    implementation("io.insert-koin:koin-core:$koinVersion")
+    implementation("io.insert-koin:koin-android:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
+
+    // Third-Party
+    implementation("io.github.microutils:kotlin-logging:1.12.5")
+    implementation("org.slf4j:slf4j-android:1.7.36")
 
     // Debugging
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")

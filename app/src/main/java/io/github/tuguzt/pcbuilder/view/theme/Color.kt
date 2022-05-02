@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.ui.theme
+package io.github.tuguzt.pcbuilder.view.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -5,8 +5,9 @@ plugins {
 }
 
 buildscript {
-    extra.apply {
-        this["composeVersion"] = "1.1.1"
+    extra.let {
+        it["composeVersion"] = "1.1.1"
+        it["koinVersion"] = "3.2.0-beta-1"
     }
 }
 

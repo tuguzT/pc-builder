@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.ui.theme
+package io.github.tuguzt.pcbuilder.view.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -27,6 +27,9 @@ private val LightColorPalette = lightColors(
     */
 )
 
+/**
+ * Main [Material Theme][MaterialTheme] of the application.
+ */
 @Composable
 fun PCBuilderTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) DarkColorPalette else LightColorPalette
