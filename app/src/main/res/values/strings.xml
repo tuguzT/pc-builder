@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
     <string name="app_name">PC Builder</string>
+    <string name="components">Components</string>
+    <string name="builds">Builds</string>
+    <string name="account">Account</string>
+
+    <string name="search_components">Search for components</string>
 </resources>
