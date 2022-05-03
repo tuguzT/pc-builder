@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -43,7 +44,11 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Mode")
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
 @Composable
 private fun MainScreenPreview() {
     PCBuilderTheme { MainScreen() }

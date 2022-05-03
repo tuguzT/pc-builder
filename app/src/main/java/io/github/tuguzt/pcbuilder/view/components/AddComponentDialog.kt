@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.view.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -162,7 +163,11 @@ private fun AddComponentDialogContent(onAddComponent: (ComponentData) -> Unit) {
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
 @Composable
 private fun AddComponentDialogPreview() {
     PCBuilderTheme {

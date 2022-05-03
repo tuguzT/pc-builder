@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.view.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -67,7 +68,11 @@ fun ComponentItem(component: ComponentData, painter: Painter? = null, onClick: (
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
 @Composable
 private fun ComponentItemPreview() {
     PCBuilderTheme {
