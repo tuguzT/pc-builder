@@ -20,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.MainScreenDestinations.*
+import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 
 @Composable
@@ -35,7 +36,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
             startDestination = Components.route,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(Components.route) { Text(Components.text) }
+            composable(Components.route) { ComponentsScreen() }
             composable(Builds.route) { Text(Builds.text) }
             composable(Account.route) { Text(Account.text) }
         }

@@ -5,5 +5,21 @@
     <string name="builds">Builds</string>
     <string name="account">Account</string>
 
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="weight">Weight</string>
+    <string name="length">Length</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+
     <string name="search_components">Search for components</string>
+    <string name="component_picture">Component picture</string>
+
+    <string name="add_new_component">Add new component</string>
+    <string name="add_component">Add component</string>
+    <string name="weight_in_g">Weight in grams</string>
+    <string name="length_in_mm">Length in millimeters</string>
+    <string name="width_in_mm">Width in millimeters</string>
+    <string name="height_in_mm">Height in millimeters</string>
+    <string name="component_added">Component added successfully</string>
 </resources>
