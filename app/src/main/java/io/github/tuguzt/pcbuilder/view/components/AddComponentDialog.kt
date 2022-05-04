@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
@@ -31,20 +30,10 @@ import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
 
 /**
- * Application [dialog][Dialog] for manual [component][ComponentData] creation.
+ * Application dialog for manual [component][ComponentData] creation.
  */
 @Composable
-fun AddComponentDialog(
-    onDismissRequest: () -> Unit,
-    onAddComponent: (ComponentData) -> Unit,
-) {
-    Dialog(onDismissRequest = onDismissRequest) {
-        AddComponentDialogContent(onAddComponent)
-    }
-}
-
-@Composable
-private fun AddComponentDialogContent(onAddComponent: (ComponentData) -> Unit) {
+fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
     var name by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
     var weight by rememberSaveable { mutableStateOf("") }
@@ -174,6 +163,6 @@ private fun AddComponentDialogContent(onAddComponent: (ComponentData) -> Unit) {
 @Composable
 private fun AddComponentDialogPreview() {
     PCBuilderTheme {
-        AddComponentDialogContent(onAddComponent = {})
+        AddComponentDialog(onAddComponent = {})
     }
 }

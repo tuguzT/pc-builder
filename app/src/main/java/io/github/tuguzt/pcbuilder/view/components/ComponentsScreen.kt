@@ -7,8 +7,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,12 +17,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.collectAsStateLifecycleAware
-import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.ComponentDetails
-import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.ComponentList
+import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.viewmodel.ComponentListViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -39,14 +40,13 @@ fun ComponentsScreen(
     val components by componentListViewModel.components
         .collectAsStateLifecycleAware(scope.coroutineContext)
     val scaffoldState = rememberScaffoldState()
-    var showAddComponentDialog by rememberSaveable { mutableStateOf(false) }
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
             Scaffold(
                 scaffoldState = scaffoldState,
                 floatingActionButton = {
-                    FloatingActionButton(onClick = { showAddComponentDialog = true }) {
+                    FloatingActionButton(onClick = { navController.navigate(AddComponent.route) }) {
                         Icon(
                             imageVector = Icons.Rounded.Add,
                             contentDescription = stringResource(R.string.add_component),
@@ -60,21 +60,15 @@ fun ComponentsScreen(
                         navController.navigate("${ComponentDetails.route}/${it.id}")
                     },
                 )
-
-                if (showAddComponentDialog) {
-                    val componentAddedMessage = stringResource(R.string.component_added)
-                    AddComponentDialog(
-                        onDismissRequest = {
-                            showAddComponentDialog = false
-                        },
-                        onAddComponent = { component ->
-                            componentListViewModel += component
-                            showAddComponentDialog = false
-                            scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar(componentAddedMessage)
-                            }
-                        }
-                    )
+            }
+        }
+        dialog(AddComponent.route) {
+            val componentAddedMessage = stringResource(R.string.component_added)
+            AddComponentDialog { component ->
+                componentListViewModel += component
+                navController.popBackStack()
+                scope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar(componentAddedMessage)
                 }
             }
         }

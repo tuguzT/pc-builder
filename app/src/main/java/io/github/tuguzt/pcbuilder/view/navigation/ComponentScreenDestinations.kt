@@ -15,6 +15,11 @@ sealed class ComponentScreenDestinations(override val route: String) : Describab
             @Composable get() = stringResource(R.string.components)
     }
 
+    object AddComponent : ComponentScreenDestinations(route = "addComponent") {
+        override val description: String
+            @Composable get() = stringResource(R.string.add_new_component)
+    }
+
     object ComponentDetails : ComponentScreenDestinations(route = "component") {
         override val description: String
             @Composable get() = stringResource(R.string.component_details)
