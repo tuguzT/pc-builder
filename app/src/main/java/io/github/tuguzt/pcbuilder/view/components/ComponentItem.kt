@@ -13,6 +13,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,23 +38,15 @@ import io.nacular.measured.units.times
 fun ComponentItem(component: ComponentData, painter: Painter? = null, onClick: () -> Unit) {
     Card(shape = RoundedCornerShape(8.dp), onClick = onClick) {
         Column {
-            when (painter) {
-                null -> Spacer(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f)),
-                )
-                else -> Image(
-                    painter = painter,
-                    contentDescription = stringResource(R.string.component_picture),
-                    alignment = Alignment.Center,
-                    modifier = Modifier
-                        .height(200.dp)
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f)),
-                )
-            }
+            Image(
+                painter = painter ?: ColorPainter(Color.Transparent),
+                contentDescription = painter?.let { stringResource(R.string.component_picture) },
+                alignment = Alignment.Center,
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f)),
+            )
             Column(modifier = Modifier.padding(8.dp)) {
                 DisableSelection {
                     Text(

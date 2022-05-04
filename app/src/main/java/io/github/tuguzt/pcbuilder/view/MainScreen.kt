@@ -12,16 +12,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.R
+import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
+import io.github.tuguzt.pcbuilder.model.user.UserData
+import io.github.tuguzt.pcbuilder.view.account.AccountScreen
+import io.github.tuguzt.pcbuilder.view.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
-import io.github.tuguzt.pcbuilder.viewmodel.ComponentListViewModel
 
 /**
  * Main screen of the PC Builder application.
@@ -49,12 +52,19 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
             startDestination = Components.route,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(Components.route) {
-                val componentListViewModel = hiltViewModel<ComponentListViewModel>()
-                ComponentsScreen(componentListViewModel)
+            composable(Components.route) { ComponentsScreen() }
+            composable(Builds.route) { BuildsScreen() }
+            composable(Account.route) {
+                // TODO get current user from the database
+                val user = UserData(
+                    id = randomNanoId(),
+                    role = UserRole.Administrator,
+                    username = "tuguzT",
+                    email = "timurka.tugushev@gmail.com",
+                    imageUri = "https://avatars.githubusercontent.com/u/56771526",
+                )
+                AccountScreen(user, onSignOut = { /* TODO */ })
             }
-            composable(Builds.route) { Text(Builds.description) }
-            composable(Account.route) { Text(Account.description) }
         }
     }
 }

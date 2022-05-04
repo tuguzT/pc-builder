@@ -89,6 +89,8 @@ dependencies {
     // Third-Party
     implementation("io.github.microutils:kotlin-logging:1.12.5")
     implementation("org.slf4j:slf4j-android:1.7.36")
+    implementation("io.coil-kt:coil-compose:2.0.0-rc03")
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.24.7-alpha")
 
     // Debugging
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
