@@ -30,6 +30,9 @@ import io.nacular.measured.units.Length.Companion.millimeters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
 
+/**
+ * Application [dialog][Dialog] for manual [component][ComponentData] creation.
+ */
 @Composable
 fun AddComponentDialog(
     onDismissRequest: () -> Unit,

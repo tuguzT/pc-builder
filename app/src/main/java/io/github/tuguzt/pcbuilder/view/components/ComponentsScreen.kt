@@ -15,6 +15,9 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import kotlinx.coroutines.launch
 
+/**
+ * Application screen which represents *Components* main application destination.
+ */
 @Composable
 fun ComponentsScreen() {
     val scope = rememberCoroutineScope()

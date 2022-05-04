@@ -18,6 +18,9 @@ import io.nacular.measured.units.Length
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.times
 
+/**
+ * Application screen with information about provided [component].
+ */
 @Composable
 fun ComponentDetailsScreen(component: ComponentData) {
     Column(modifier = Modifier.fillMaxSize()) {

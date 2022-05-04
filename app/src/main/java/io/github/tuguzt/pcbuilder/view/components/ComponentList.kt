@@ -16,6 +16,9 @@ import io.nacular.measured.units.Length
 import io.nacular.measured.units.Mass
 import io.nacular.measured.units.times
 
+/**
+ * Lazy list of provided [components].
+ */
 @Composable
 fun ComponentList(components: List<ComponentData>, onComponentClick: (ComponentData) -> Unit) {
     LazyColumn(

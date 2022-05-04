@@ -27,6 +27,10 @@ import io.nacular.measured.units.Length.Companion.millimeters
 import io.nacular.measured.units.Mass.Companion.kilograms
 import io.nacular.measured.units.times
 
+/**
+ * [Card] composable with data of the provided [component]
+ * and optional image provided by [painter].
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ComponentItem(component: ComponentData, painter: Painter? = null, onClick: () -> Unit) {

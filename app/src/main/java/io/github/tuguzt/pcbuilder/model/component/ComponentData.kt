@@ -11,6 +11,9 @@ import io.nacular.measured.units.Measure
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
+/**
+ * Represents data of the [component][Component].
+ */
 @Serializable
 data class ComponentData(
     override val id: String,
