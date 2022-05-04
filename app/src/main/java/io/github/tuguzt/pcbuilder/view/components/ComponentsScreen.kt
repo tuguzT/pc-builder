@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,10 +19,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.tuguzt.pcbuilder.R
-import io.github.tuguzt.pcbuilder.model.component.ComponentData
+import io.github.tuguzt.pcbuilder.view.collectAsStateLifecycleAware
 import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.ComponentDetails
 import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.ComponentList
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.viewmodel.ComponentListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -30,10 +32,12 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun ComponentsScreen(
+    componentListViewModel: ComponentListViewModel = viewModel(),
     scope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ) {
-    val components = remember { mutableListOf<ComponentData>() }
+    val components by componentListViewModel.components
+        .collectAsStateLifecycleAware(scope.coroutineContext)
     val scaffoldState = rememberScaffoldState()
     var showAddComponentDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -64,7 +68,7 @@ fun ComponentsScreen(
                             showAddComponentDialog = false
                         },
                         onAddComponent = { component ->
-                            components += component
+                            componentListViewModel += component
                             showAddComponentDialog = false
                             scope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(componentAddedMessage)

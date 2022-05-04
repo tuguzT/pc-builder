@@ -10,6 +10,9 @@ buildscript {
         it["composeVersion"] = "1.1.1"
         it["koinVersion"] = "3.2.0-beta-1"
     }
+    dependencies {
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
+    }
 }
 
 task<Delete>("clean") {

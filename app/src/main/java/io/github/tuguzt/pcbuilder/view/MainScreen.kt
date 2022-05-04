@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +21,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.viewmodel.ComponentListViewModel
 
 /**
  * Main screen of the PC Builder application.
@@ -47,7 +49,10 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
             startDestination = Components.route,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(Components.route) { ComponentsScreen() }
+            composable(Components.route) {
+                val componentListViewModel = hiltViewModel<ComponentListViewModel>()
+                ComponentsScreen(componentListViewModel)
+            }
             composable(Builds.route) { Text(Builds.description) }
             composable(Account.route) { Text(Account.description) }
         }
