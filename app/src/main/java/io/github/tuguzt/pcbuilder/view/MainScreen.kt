@@ -17,8 +17,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.R
-import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
+import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 
 /**
@@ -71,7 +71,10 @@ private fun MainScreenTopAppBar(showSearch: Boolean, onSearchClick: () -> Unit) 
         actions = {
             if (showSearch) {
                 IconButton(onClick = onSearchClick) {
-                    Icon(Icons.Rounded.Search, stringResource(R.string.search_components))
+                    Icon(
+                        imageVector = Icons.Rounded.Search,
+                        contentDescription = stringResource(R.string.search_components),
+                    )
                 }
             }
         }

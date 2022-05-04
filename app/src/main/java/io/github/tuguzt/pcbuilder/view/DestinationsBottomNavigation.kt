@@ -42,7 +42,7 @@ fun DestinationsBottomNavigation(
 
         destinations.forEach { destination ->
             BottomNavigationItem(
-                icon = { Icon(destination.imageVector, destination.description) },
+                icon = { Icon(destination.icon, destination.description) },
                 label = { Text(text = destination.description) },
                 selected = currentDestination
                     ?.hierarchy

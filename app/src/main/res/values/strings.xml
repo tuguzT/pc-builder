@@ -13,6 +13,7 @@
     <string name="height">Height</string>
 
     <string name="search_components">Search for components</string>
+    <string name="component_details">Component details</string>
     <string name="component_picture">Component picture</string>
 
     <string name="add_new_component">Add new component</string>

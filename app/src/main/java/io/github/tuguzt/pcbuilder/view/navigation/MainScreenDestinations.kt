@@ -15,25 +15,30 @@ import io.github.tuguzt.pcbuilder.view.MainScreen
  */
 sealed class MainScreenDestinations(
     override val route: String,
-    override val composableDescription: @Composable () -> String,
-    override val imageVector: ImageVector,
-) : BottomNavigationDestination() {
+    override val icon: ImageVector,
+) : BottomNavigationDestination {
 
     object Components : MainScreenDestinations(
         route = "components",
-        composableDescription = { stringResource(R.string.components) },
-        imageVector = Icons.Rounded.Memory,
-    )
+        icon = Icons.Rounded.Memory,
+    ) {
+        override val description: String
+            @Composable get() = stringResource(R.string.components)
+    }
 
     object Builds : MainScreenDestinations(
         route = "builds",
-        composableDescription = { stringResource(R.string.builds) },
-        imageVector = Icons.Rounded.Computer,
-    )
+        icon = Icons.Rounded.Computer,
+    ) {
+        override val description: String
+            @Composable get() = stringResource(R.string.builds)
+    }
 
     object Account : MainScreenDestinations(
         route = "account",
-        composableDescription = { stringResource(R.string.account) },
-        imageVector = Icons.Rounded.AccountCircle,
-    )
+        icon = Icons.Rounded.AccountCircle,
+    ) {
+        override val description: String
+            @Composable get() = stringResource(R.string.account)
+    }
 }
