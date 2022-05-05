@@ -1,6 +1,9 @@
 package io.github.tuguzt.pcbuilder.view
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -31,7 +36,7 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
  */
 @Composable
 fun MainScreen(navController: NavHostController = rememberNavController()) {
-    val showSearch by rememberSaveable { mutableStateOf(true) }
+    var showSearch by rememberSaveable { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
@@ -46,15 +51,22 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                 destinations = listOf(Components, Builds, Account),
             )
         },
-    ) { innerPadding ->
+    ) { padding ->
         NavHost(
             navController = navController,
             startDestination = Components.route,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.padding(padding),
         ) {
-            composable(Components.route) { ComponentsScreen() }
-            composable(Builds.route) { BuildsScreen() }
+            composable(Components.route) {
+                showSearch = true
+                ComponentsScreen()
+            }
+            composable(Builds.route) {
+                showSearch = false
+                BuildsScreen()
+            }
             composable(Account.route) {
+                showSearch = false
                 // TODO get current user from the database
                 val user = UserData(
                     id = randomNanoId(),
@@ -63,7 +75,15 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                     email = "timurka.tugushev@gmail.com",
                     imageUri = "https://avatars.githubusercontent.com/u/56771526",
                 )
-                AccountScreen(user, onSignOut = { /* TODO */ })
+                val context = LocalContext.current
+                val toastText = stringResource(R.string.signed_out_success)
+                AccountScreen(
+                    user = user,
+                    onSignOut = {
+                        showToast(context, toastText, ToastDuration.Short)
+                        /* TODO */
+                    },
+                )
             }
         }
     }
@@ -84,7 +104,7 @@ private fun MainScreenTopAppBar(showSearch: Boolean, onSearchClick: () -> Unit) 
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
         actions = {
-            if (showSearch) {
+            AnimatedVisibility(visible = showSearch, enter = fadeIn(), exit = fadeOut()) {
                 IconButton(onClick = onSearchClick) {
                     Icon(
                         imageVector = Icons.Rounded.Search,

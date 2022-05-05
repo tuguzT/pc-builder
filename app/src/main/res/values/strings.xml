@@ -11,11 +11,15 @@
     <string name="length">Length</string>
     <string name="width">Width</string>
     <string name="height">Height</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
 
     <string name="search_components">Search for components</string>
     <string name="component_details">Component details</string>
     <string name="component_picture">Component picture</string>
     <string name="user_avatar">User avatar</string>
+    <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
 
     <string name="add_new_component">Add new component</string>
@@ -26,4 +30,7 @@
     <string name="height_in_mm">Height in millimeters</string>
     <string name="component_added">Component added successfully</string>
     <string name="avatar_not_loaded">Avatar not loaded</string>
+    <string name="signed_out_success">Signed out successfully</string>
+    <string name="sign_in_google">Continue with Google</string>
+    <string name="no_account">No account?</string>
 </resources>

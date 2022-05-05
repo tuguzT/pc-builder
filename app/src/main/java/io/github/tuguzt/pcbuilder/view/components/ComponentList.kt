@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
@@ -20,8 +21,13 @@ import io.nacular.measured.units.times
  * Lazy list of provided [components].
  */
 @Composable
-fun ComponentList(components: List<ComponentData>, onComponentClick: (ComponentData) -> Unit) {
+fun ComponentList(
+    components: List<ComponentData>,
+    onComponentClick: (ComponentData) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
+        modifier = modifier,
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

@@ -31,9 +31,7 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 @Composable
 fun AccountScreen(user: UserData, onSignOut: () -> Unit) {
     Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxSize(),
+        modifier = Modifier.padding(8.dp).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.view
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -61,6 +62,7 @@ fun DestinationsBottomNavigation(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(name = "Light Mode")
 @Preview(
     name = "Dark Mode",
