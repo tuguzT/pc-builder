@@ -21,6 +21,8 @@
     <string name="user_avatar">User avatar</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
 
     <string name="add_new_component">Add new component</string>
     <string name="add_component">Add component</string>

@@ -54,7 +54,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                     .verticalScroll(rememberScrollState())
                     .weight(weight = 1f, fill = false)
             ) {
-                TextField(
+                OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
                     label = { Text(stringResource(R.string.name)) },
@@ -62,14 +62,14 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextField(
+                OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
                     label = { Text(stringResource(R.string.description)) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextField(
+                OutlinedTextField(
                     value = weight,
                     onValueChange = { weight = it },
                     label = { Text(stringResource(R.string.weight)) },
@@ -83,7 +83,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextField(
+                OutlinedTextField(
                     value = length,
                     onValueChange = { length = it },
                     label = { Text(stringResource(R.string.length)) },
@@ -97,7 +97,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextField(
+                OutlinedTextField(
                     value = width,
                     onValueChange = { width = it },
                     label = { Text(stringResource(R.string.width)) },
@@ -111,7 +111,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextField(
+                OutlinedTextField(
                     value = height,
                     onValueChange = { height = it },
                     label = { Text(stringResource(R.string.height)) },
