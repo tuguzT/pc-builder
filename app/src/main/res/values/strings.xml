@@ -13,13 +13,13 @@
     <string name="height">Height</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="register">Register</string>
 
     <string name="search_components">Search for components</string>
     <string name="component_details">Component details</string>
     <string name="component_picture">Component picture</string>
     <string name="user_avatar">User avatar</string>
     <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
@@ -35,4 +35,5 @@
     <string name="signed_out_success">Signed out successfully</string>
     <string name="sign_in_google">Continue with Google</string>
     <string name="no_account">No account?</string>
+    <string name="have_account">Already have account?</string>
 </resources>
