@@ -2,12 +2,14 @@ package io.github.tuguzt.pcbuilder.view.auth
 
 import android.content.res.Configuration
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
 
 /**
  * Application user sign in screen.
@@ -16,27 +18,17 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 fun SignInScreen(
     onSignIn: (AuthVariant) -> Unit,
     onSignUpNavigate: () -> Unit,
+    viewModel: AuthViewModel = viewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-) {
-    var username by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
-    AuthScreen(snackbarHostState) {
-        AuthScreenContent(
-            title = stringResource(R.string.sign_in),
-            username = username,
-            onUsernameChange = { username = it },
-            password = password,
-            onPasswordChange = { password = it },
-            passwordVisible = passwordVisible,
-            onPasswordVisibleChange = { passwordVisible = !passwordVisible },
-            onAuth = onSignIn,
-            alternativeDestinationDescription = stringResource(R.string.no_account),
-            alternativeDestinationText = stringResource(R.string.sign_up),
-            onAlternativeNavigate = onSignUpNavigate,
-        )
-    }
+) = AuthScreen(snackbarHostState) {
+    AuthScreenContent(
+        title = stringResource(R.string.sign_in),
+        viewModel = viewModel,
+        onAuth = onSignIn,
+        alternativeDestinationDescription = stringResource(R.string.no_account),
+        alternativeDestinationText = stringResource(R.string.sign_up),
+        onAlternativeNavigate = onSignUpNavigate,
+    )
 }
 
 @Preview(name = "Light Mode")

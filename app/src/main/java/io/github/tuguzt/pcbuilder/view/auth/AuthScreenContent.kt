@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.tuguzt.pcbuilder.R
+import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
 
 /**
  * Base screen content for all authentication screens.
@@ -22,23 +24,18 @@ import io.github.tuguzt.pcbuilder.R
 @Composable
 fun AuthScreenContent(
     title: String,
-    username: String,
-    onUsernameChange: (String) -> Unit,
-    password: String,
-    onPasswordChange: (String) -> Unit,
-    passwordVisible: Boolean,
-    onPasswordVisibleChange: (Boolean) -> Unit,
     onAuth: (AuthVariant) -> Unit,
     alternativeDestinationDescription: String,
     alternativeDestinationText: String,
     onAlternativeNavigate: () -> Unit,
+    viewModel: AuthViewModel = viewModel(),
 ) {
     Text(text = title, style = MaterialTheme.typography.h4)
     Spacer(modifier = Modifier.height(32.dp))
 
     OutlinedTextField(
-        value = username,
-        onValueChange = onUsernameChange,
+        value = viewModel.username,
+        onValueChange = { viewModel.username = it },
         label = { Text(stringResource(R.string.username)) },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(0.8f),
@@ -46,11 +43,11 @@ fun AuthScreenContent(
     Spacer(modifier = Modifier.height(16.dp))
 
     PasswordTextField(
-        password = password,
-        onPasswordChange = onPasswordChange,
+        password = viewModel.password,
+        onPasswordChange = { viewModel.password = it },
         modifier = Modifier.fillMaxWidth(0.8f),
-        passwordVisible = passwordVisible,
-        onPasswordVisibleChange = onPasswordVisibleChange,
+        passwordVisible = viewModel.passwordVisible,
+        onPasswordVisibleChange = { viewModel.passwordVisible = it },
     )
     Spacer(modifier = Modifier.height(32.dp))
 
@@ -77,8 +74,8 @@ fun AuthScreenContent(
     }
     Spacer(modifier = Modifier.height(8.dp))
     CredentialsAuthButton(
-        username = username,
-        password = password,
+        username = viewModel.username,
+        password = viewModel.password,
         onClick = { onAuth(it) },
         content = { Text(title) },
     )
