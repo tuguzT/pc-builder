@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.tuguzt.pcbuilder.domain.interactor.checkPassword
 import io.github.tuguzt.pcbuilder.domain.interactor.checkUsername
-import io.github.tuguzt.pcbuilder.model.user.UserCredentialsData
+import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 
 /**
  * Material Design contained button which is enabled

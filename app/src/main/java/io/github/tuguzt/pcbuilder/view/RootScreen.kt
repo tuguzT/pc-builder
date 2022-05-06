@@ -12,7 +12,7 @@ import androidx.navigation.navigation
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
 import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
-import io.github.tuguzt.pcbuilder.model.user.UserData
+import io.github.tuguzt.pcbuilder.domain.model.user.data.UserData
 import io.github.tuguzt.pcbuilder.view.auth.AuthVariant
 import io.github.tuguzt.pcbuilder.view.auth.SignInScreen
 import io.github.tuguzt.pcbuilder.view.auth.SignUpScreen

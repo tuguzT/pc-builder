@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import io.nacular.measured.units.Length.Companion.millimeters
 import io.nacular.measured.units.Mass.Companion.grams

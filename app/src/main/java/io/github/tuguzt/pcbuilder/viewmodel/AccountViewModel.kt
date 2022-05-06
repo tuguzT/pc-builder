@@ -6,8 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
-import io.github.tuguzt.pcbuilder.model.user.UserData
+import io.github.tuguzt.pcbuilder.domain.model.user.data.UserData
 import javax.inject.Inject
 
 /**
@@ -15,7 +16,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AccountViewModel @Inject constructor() : ViewModel() {
-    var currentUser: UserData? by mutableStateOf(mockUser())
+    var currentUser: User? by mutableStateOf(mockUser())
 }
 
 private fun mockUser() = UserData(

@@ -10,8 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.domain.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import io.nacular.measured.units.Length
 import io.nacular.measured.units.Mass
@@ -22,8 +23,8 @@ import io.nacular.measured.units.times
  */
 @Composable
 fun ComponentList(
-    components: List<ComponentData>,
-    onComponentClick: (ComponentData) -> Unit,
+    components: List<Component>,
+    onComponentClick: (Component) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
