@@ -2,8 +2,6 @@ package io.github.tuguzt.pcbuilder.view
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -32,10 +30,13 @@ import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 
 /**
- * Main screen of the PC Builder application.
+ * Main screen of the application.
  */
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController()) {
+fun MainScreen(
+    onSignOut: () -> Unit,
+    navController: NavHostController = rememberNavController(),
+) {
     var showSearch by rememberSaveable { mutableStateOf(true) }
 
     Scaffold(
@@ -67,7 +68,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
             }
             composable(Account.route) {
                 showSearch = false
-                // TODO get current user from the database
+                // TODO get current user from the view model
                 val user = UserData(
                     id = randomNanoId(),
                     role = UserRole.Administrator,
@@ -81,7 +82,7 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
                     user = user,
                     onSignOut = {
                         showToast(context, toastText, ToastDuration.Short)
-                        /* TODO */
+                        onSignOut()
                     },
                 )
             }
@@ -96,7 +97,9 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
 )
 @Composable
 private fun MainScreenPreview() {
-    PCBuilderTheme { MainScreen() }
+    PCBuilderTheme {
+        MainScreen(onSignOut = {})
+    }
 }
 
 @Composable
@@ -104,7 +107,7 @@ private fun MainScreenTopAppBar(showSearch: Boolean, onSearchClick: () -> Unit) 
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
         actions = {
-            AnimatedVisibility(visible = showSearch, enter = fadeIn(), exit = fadeOut()) {
+            AnimatedVisibility(visible = showSearch) {
                 IconButton(onClick = onSearchClick) {
                     Icon(
                         imageVector = Icons.Rounded.Search,
