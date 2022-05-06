@@ -15,19 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.R
-import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
-import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
-import io.github.tuguzt.pcbuilder.model.user.UserData
 import io.github.tuguzt.pcbuilder.view.account.AccountScreen
 import io.github.tuguzt.pcbuilder.view.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.viewmodel.AccountViewModel
 
 /**
  * Main screen of the application.
@@ -35,6 +34,7 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 @Composable
 fun MainScreen(
     onSignOut: () -> Unit,
+    accountViewModel: AccountViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
     var showSearch by rememberSaveable { mutableStateOf(true) }
@@ -66,16 +66,13 @@ fun MainScreen(
                 showSearch = false
                 BuildsScreen()
             }
-            composable(Account.route) {
+            composable(Account.route) account@ {
                 showSearch = false
-                // TODO get current user from the view model
-                val user = UserData(
-                    id = randomNanoId(),
-                    role = UserRole.Administrator,
-                    username = "tuguzT",
-                    email = "timurka.tugushev@gmail.com",
-                    imageUri = "https://avatars.githubusercontent.com/u/56771526",
-                )
+
+                val user = accountViewModel.currentUser ?: kotlin.run {
+                    onSignOut()
+                    return@account
+                }
                 val context = LocalContext.current
                 val toastText = stringResource(R.string.signed_out_success)
                 AccountScreen(

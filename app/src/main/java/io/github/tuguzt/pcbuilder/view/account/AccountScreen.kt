@@ -21,6 +21,7 @@ import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.model.user.UserData
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
@@ -29,7 +30,7 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
  * Application screen which represents *Account* main application destination.
  */
 @Composable
-fun AccountScreen(user: UserData, onSignOut: () -> Unit) {
+fun AccountScreen(user: User, onSignOut: () -> Unit) {
     Column(
         modifier = Modifier.padding(8.dp).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,16 +62,19 @@ fun AccountScreen(user: UserData, onSignOut: () -> Unit) {
             }
         )
         Spacer(modifier = Modifier.height(32.dp))
+
         Text(text = user.username, style = MaterialTheme.typography.h6)
         if (user.role != UserRole.User) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "${user.role}", style = MaterialTheme.typography.subtitle2)
         }
-        if (user.email != null) {
+        val email = user.email
+        if (email != null) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = user.email, style = MaterialTheme.typography.subtitle1)
+            Text(text = email, style = MaterialTheme.typography.subtitle1)
         }
         Spacer(modifier = Modifier.height(48.dp))
+
         Button(
             onClick = onSignOut,
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.error),
