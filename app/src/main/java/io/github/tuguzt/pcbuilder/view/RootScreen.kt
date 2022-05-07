@@ -10,13 +10,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
+import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
 import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserData
 import io.github.tuguzt.pcbuilder.view.auth.AuthVariant
 import io.github.tuguzt.pcbuilder.view.auth.SignInScreen
 import io.github.tuguzt.pcbuilder.view.auth.SignUpScreen
-import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.*
+import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.Auth
+import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.Main
 import io.github.tuguzt.pcbuilder.viewmodel.AccountViewModel
 import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
 
@@ -24,11 +26,16 @@ import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
  * Root screen of the PC Builder application.
  */
 @Composable
-fun RootScreen(navController: NavHostController = rememberNavController()) {
-    val accountViewModel = viewModel<AccountViewModel>()
-    val authViewModel = viewModel<AuthViewModel>()
-
-    NavHost(navController = navController, startDestination = Main.route) {
+fun RootScreen(
+    accountViewModel: AccountViewModel = viewModel(),
+    authViewModel: AuthViewModel = viewModel(),
+    navController: NavHostController = rememberNavController(),
+) {
+    val startDestination = when (accountViewModel.currentUser) {
+        null -> Auth
+        else -> Main
+    }
+    NavHost(navController = navController, startDestination = startDestination.route) {
         composable(Main.route) {
             val onSignOut = {
                 navController.navigateAuth()
@@ -53,6 +60,15 @@ private val googleUser = UserData(
     imageUri = "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg",
 )
 
+// TODO remove in the future
+private fun userFromCredentials(credentials: UserCredentials): User = UserData(
+    id = randomNanoId(),
+    role = UserRole.User,
+    username = credentials.username,
+    email = null,
+    imageUri = null,
+)
+
 /**
  * Configures *Authentication* user flow.
  */
@@ -61,20 +77,11 @@ private fun NavGraphBuilder.authGraph(
     authViewModel: AuthViewModel,
     accountViewModel: AccountViewModel,
 ) = navigation(startDestination = Auth.SignIn.route, route = Auth.route) {
-    val userFromCredentials = { credentials: UserCredentials ->
-        UserData(
-            id = randomNanoId(),
-            role = UserRole.User,
-            username = credentials.username,
-            email = null,
-            imageUri = null,
-        )
-    }
     composable(Auth.SignIn.route) {
         SignInScreen(
-            onSignIn = {
-                val newUser = when (it) {
-                    is AuthVariant.Credentials -> userFromCredentials(it.credentials)
+            onSignIn = { variant ->
+                val newUser = when (variant) {
+                    is AuthVariant.Credentials -> userFromCredentials(variant.credentials)
                     AuthVariant.Google -> googleUser
                 }
                 accountViewModel.currentUser = newUser
@@ -86,9 +93,9 @@ private fun NavGraphBuilder.authGraph(
     }
     composable(Auth.SignUp.route) {
         SignUpScreen(
-            onSignUp = {
-                val newUser = when (it) {
-                    is AuthVariant.Credentials -> userFromCredentials(it.credentials)
+            onSignUp = { variant ->
+                val newUser = when (variant) {
+                    is AuthVariant.Credentials -> userFromCredentials(variant.credentials)
                     AuthVariant.Google -> googleUser
                 }
                 accountViewModel.currentUser = newUser

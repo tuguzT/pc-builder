@@ -31,6 +31,7 @@ fun DestinationsBottomNavigation(
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
     elevation: Dp = BottomNavigationDefaults.Elevation,
+    onDestinationNavigate: (BottomNavigationDestination) -> Unit = {},
 ) {
     BottomNavigation(
         modifier = modifier,
@@ -56,6 +57,7 @@ fun DestinationsBottomNavigation(
                         launchSingleTop = true
                         restoreState = true
                     }
+                    onDestinationNavigate(destination)
                 }
             )
         }

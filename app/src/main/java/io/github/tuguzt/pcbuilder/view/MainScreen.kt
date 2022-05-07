@@ -50,6 +50,12 @@ fun MainScreen(
             DestinationsBottomNavigation(
                 navController = navController,
                 destinations = listOf(Components, Builds, Account),
+                onDestinationNavigate = { destination ->
+                    showSearch = when (destination) {
+                        Components -> true
+                        else -> false
+                    }
+                }
             )
         },
     ) { padding ->
@@ -59,16 +65,12 @@ fun MainScreen(
             modifier = Modifier.padding(padding),
         ) {
             composable(Components.route) {
-                showSearch = true
                 ComponentsScreen()
             }
             composable(Builds.route) {
-                showSearch = false
                 BuildsScreen()
             }
             composable(Account.route) account@ {
-                showSearch = false
-
                 val user = accountViewModel.currentUser ?: kotlin.run {
                     onSignOut()
                     return@account

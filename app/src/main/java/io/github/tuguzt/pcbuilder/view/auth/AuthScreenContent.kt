@@ -15,6 +15,7 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.tuguzt.pcbuilder.R
+import io.github.tuguzt.pcbuilder.view.utils.PasswordTextField
 import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
 
 /**

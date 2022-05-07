@@ -25,6 +25,7 @@ import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.view.utils.HelperOutlinedTextField
 import io.nacular.measured.units.Length.Companion.millimeters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.times
@@ -42,7 +43,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
     var height by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
 
-    Surface(
+    Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.clickable(
             interactionSource = remember { MutableInteractionSource() },
@@ -77,59 +78,43 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
+                HelperOutlinedTextField(
                     value = weight,
                     onValueChange = { weight = it },
                     label = { Text(stringResource(R.string.weight)) },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                Text(
-                    text = stringResource(R.string.weight_in_g),
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    helperText = stringResource(R.string.weight_in_g),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
+                HelperOutlinedTextField(
                     value = length,
                     onValueChange = { length = it },
                     label = { Text(stringResource(R.string.length)) },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                Text(
-                    text = stringResource(R.string.length_in_mm),
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    helperText = stringResource(R.string.length_in_mm),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
+                HelperOutlinedTextField(
                     value = width,
                     onValueChange = { width = it },
                     label = { Text(stringResource(R.string.width)) },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                Text(
-                    text = stringResource(R.string.width_in_mm),
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    helperText = stringResource(R.string.width_in_mm),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
+                HelperOutlinedTextField(
                     value = height,
                     onValueChange = { height = it },
                     label = { Text(stringResource(R.string.height)) },
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                Text(
-                    text = stringResource(R.string.height_in_mm),
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    helperText = stringResource(R.string.height_in_mm),
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))

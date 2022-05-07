@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.view.auth
+package io.github.tuguzt.pcbuilder.view.utils
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import io.github.tuguzt.pcbuilder.R
 
 /**
- * Material Design outlined text field with the ability
- * to hide/show password on trailing icon click.
+ * Material Design [outlined text field][OutlinedTextField] with the ability
+ * to hide/show [password] on trailing icon click.
  */
 @Composable
 fun PasswordTextField(
