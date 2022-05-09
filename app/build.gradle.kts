@@ -11,18 +11,15 @@ val koinVersion: String by project
 
 android {
     compileSdk = 32
+    namespace = "io.github.tuguzt.pcbuilder"
 
     defaultConfig {
-        applicationId = "io.github.tuguzt.pcbuilder"
         minSdk = 21
         targetSdk = 32
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildFeatures {
@@ -82,8 +79,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    implementation("com.google.dagger:hilt-android:2.40.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.40.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Third-Party
