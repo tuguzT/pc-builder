@@ -14,6 +14,9 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
 
+    <string name="unit_gram">g</string>
+    <string name="unit_millimeter">mm</string>
+
     <string name="search_components">Search for components</string>
     <string name="component_details">Component details</string>
     <string name="component_picture">Component picture</string>
