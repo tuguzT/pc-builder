@@ -8,7 +8,7 @@ plugins {
 buildscript {
     extra.let {
         it["composeVersion"] = "1.1.1"
-        it["koinVersion"] = "3.2.0-beta-1"
+        it["accompanistVersion"] = "0.24.7-alpha"
     }
     dependencies {
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.40.1")

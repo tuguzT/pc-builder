@@ -1,10 +1,10 @@
 package io.github.tuguzt.pcbuilder.view.auth
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -82,11 +82,10 @@ fun AuthScreenContent(
     )
 
     Spacer(modifier = Modifier.height(48.dp))
-    Spacer(
-        modifier = Modifier
-            .height(2.dp)
-            .fillMaxWidth(0.45f)
-            .background(MaterialTheme.colors.primary),
+    Divider(
+        modifier = Modifier.fillMaxWidth(0.45f),
+        color = MaterialTheme.colors.primary,
+        thickness = 2.dp,
     )
     Spacer(modifier = Modifier.height(48.dp))
 

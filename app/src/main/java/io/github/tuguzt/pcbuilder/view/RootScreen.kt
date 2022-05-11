@@ -7,8 +7,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
 import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
@@ -88,7 +88,11 @@ private fun NavGraphBuilder.authGraph(
                 navController.navigateMain()
             },
             viewModel = authViewModel,
-            onSignUpNavigate = { navController.navigate(Auth.SignUp.route) },
+            onSignUpNavigate = {
+                navController.navigate(Auth.SignUp.route) {
+                    popUpTo(Auth.route) { inclusive = true }
+                }
+            },
         )
     }
     composable(Auth.SignUp.route) {
@@ -102,7 +106,11 @@ private fun NavGraphBuilder.authGraph(
                 navController.navigateMain()
             },
             viewModel = authViewModel,
-            onSignInNavigate = { navController.navigate(Auth.SignIn.route) },
+            onSignInNavigate = {
+                navController.navigate(Auth.SignIn.route) {
+                    popUpTo(Auth.route) { inclusive = true }
+                }
+            },
         )
     }
 }
