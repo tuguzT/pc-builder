@@ -1,7 +1,9 @@
 package io.github.tuguzt.pcbuilder.view
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -37,11 +39,15 @@ fun MainScreen(
     accountViewModel: AccountViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
+    val appName = stringResource(R.string.app_name)
+
+    var titleText by rememberSaveable { mutableStateOf(appName) }
     var showSearch by rememberSaveable { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
             MainScreenTopAppBar(
+                titleText = titleText,
                 showSearch = showSearch,
                 onSearchClick = { /* TODO */ },
             )
@@ -65,7 +71,7 @@ fun MainScreen(
             modifier = Modifier.padding(padding),
         ) {
             composable(Components.route) {
-                ComponentsScreen()
+                ComponentsScreen(onTitleChanged = { titleText = it })
             }
             composable(Builds.route) {
                 BuildsScreen()
@@ -101,10 +107,17 @@ private fun MainScreenPreview() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun MainScreenTopAppBar(showSearch: Boolean, onSearchClick: () -> Unit) {
+private fun MainScreenTopAppBar(
+    titleText: String,
+    showSearch: Boolean,
+    onSearchClick: () -> Unit,
+) {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.app_name)) },
+        title = {
+            AnimatedContent(targetState = titleText) { text -> Text(text) }
+        },
         actions = {
             AnimatedVisibility(visible = showSearch) {
                 IconButton(onClick = onSearchClick) {
@@ -114,6 +127,6 @@ private fun MainScreenTopAppBar(showSearch: Boolean, onSearchClick: () -> Unit) 
                     )
                 }
             }
-        }
+        },
     )
 }

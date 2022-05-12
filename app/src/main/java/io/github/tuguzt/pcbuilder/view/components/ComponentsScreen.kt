@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -35,16 +36,21 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun ComponentsScreen(
+    onTitleChanged: (String) -> Unit,
     componentListViewModel: ComponentListViewModel = viewModel(),
     scope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ) {
+    val appName = stringResource(R.string.app_name)
+
     val components by componentListViewModel.components
         .collectAsStateLifecycleAware(scope.coroutineContext)
     val scaffoldState = rememberScaffoldState()
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
+            LaunchedEffect(true) { onTitleChanged(appName) }
+
             Scaffold(
                 scaffoldState = scaffoldState,
                 floatingActionButton = {
@@ -83,6 +89,8 @@ fun ComponentsScreen(
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("componentId")
             val component = checkNotNull(components.find { it.id == id })
+            LaunchedEffect(true) { onTitleChanged(component.name) }
+
             ComponentDetailsScreen(component)
         }
     }
@@ -96,6 +104,6 @@ fun ComponentsScreen(
 @Composable
 private fun ComponentsScreenPreview() {
     PCBuilderTheme {
-        ComponentsScreen()
+        ComponentsScreen(onTitleChanged = {})
     }
 }

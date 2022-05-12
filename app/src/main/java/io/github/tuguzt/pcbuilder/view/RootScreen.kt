@@ -57,7 +57,7 @@ private val googleUser = UserData(
     role = UserRole.User,
     username = "UnknownGoogleUser",
     email = null,
-    imageUri = "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg",
+    imageUri = "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png",
 )
 
 // TODO remove in the future
