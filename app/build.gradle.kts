@@ -1,3 +1,6 @@
+import io.github.tuguzt.pcbuilder.buildconfig.android.accompanistVersion
+import io.github.tuguzt.pcbuilder.buildconfig.android.composeVersion
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -5,9 +8,6 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
 }
-
-val composeVersion: String by project
-val accompanistVersion: String by project
 
 android {
     compileSdk = 32
