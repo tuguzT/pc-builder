@@ -1,6 +1,10 @@
 package io.github.tuguzt.pcbuilder.view
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -35,19 +39,25 @@ fun RootScreen(
         null -> Auth
         else -> Main
     }
-    NavHost(navController = navController, startDestination = startDestination.route) {
-        composable(Main.route) {
-            val onSignOut = {
-                navController.navigateAuth()
-                accountViewModel.currentUser = null
-            }
-            MainScreen(onSignOut = onSignOut, accountViewModel = accountViewModel)
-        }
-        authGraph(
+    Scaffold { padding ->
+        NavHost(
+            modifier = Modifier.padding(padding).fillMaxSize(),
             navController = navController,
-            accountViewModel = accountViewModel,
-            authViewModel = authViewModel,
-        )
+            startDestination = startDestination.route,
+        ) {
+            composable(Main.route) {
+                val onSignOut = {
+                    navController.navigateAuth()
+                    accountViewModel.currentUser = null
+                }
+                MainScreen(onSignOut = onSignOut, accountViewModel = accountViewModel)
+            }
+            authGraph(
+                navController = navController,
+                accountViewModel = accountViewModel,
+                authViewModel = authViewModel,
+            )
+        }
     }
 }
 
