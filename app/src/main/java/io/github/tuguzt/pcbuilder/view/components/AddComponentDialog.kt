@@ -3,17 +3,17 @@ package io.github.tuguzt.pcbuilder.view.components
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -33,39 +33,53 @@ import io.nacular.measured.units.times
 /**
  * Application dialog for manual [component][ComponentData] creation.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
+fun AddComponentDialog(
+    modifier: Modifier = Modifier,
+    onAddComponent: (ComponentData) -> Unit,
+    onNavigateUp: () -> Unit,
+) {
     var name by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
     var weight by rememberSaveable { mutableStateOf("") }
     var length by rememberSaveable { mutableStateOf("") }
     var width by rememberSaveable { mutableStateOf("") }
     var height by rememberSaveable { mutableStateOf("") }
+
     val focusManager = LocalFocusManager.current
 
-    Card(
-        shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.clickable(
+    Scaffold(
+        modifier = modifier.clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
             onClick = focusManager::clearFocus,
         ),
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(R.string.add_new_component),
-                style = MaterialTheme.typography.h5,
+        topBar = {
+            SmallTopAppBar(
+                title = { Text(text = stringResource(R.string.add_new_component)) },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateUp) {
+                        Icon(Icons.Rounded.ArrowBack, contentDescription = null)
+                    }
+                },
             )
-            Spacer(modifier = Modifier.height(16.dp))
-
+        },
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(16.dp),
+        ) {
             Column(
                 modifier = Modifier
+                    .weight(1f)
                     .verticalScroll(rememberScrollState())
-                    .weight(weight = 1f, fill = false)
             ) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
+                    modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.name)) },
                     singleLine = true,
                 )
@@ -74,13 +88,15 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text(stringResource(R.string.description)) }
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.description)) },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 HelperOutlinedTextField(
                     value = weight,
                     onValueChange = { weight = it },
+                    modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.weight)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -91,6 +107,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 HelperOutlinedTextField(
                     value = length,
                     onValueChange = { length = it },
+                    modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.length)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -101,6 +118,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 HelperOutlinedTextField(
                     value = width,
                     onValueChange = { width = it },
+                    modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.width)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -111,6 +129,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                 HelperOutlinedTextField(
                     value = height,
                     onValueChange = { height = it },
+                    modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.height)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -120,6 +139,7 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
+                modifier = Modifier.align(Alignment.End),
                 onClick = {
                     val component = ComponentData(
                         id = randomNanoId(),
@@ -142,6 +162,12 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
                     name.isNotEmpty() and description.isNotEmpty()
                 }
             ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(ButtonDefaults.IconSize),
+                )
+                Spacer(Modifier.width(ButtonDefaults.IconSpacing))
                 Text(text = stringResource(R.string.add_component))
             }
         }
@@ -156,6 +182,10 @@ fun AddComponentDialog(onAddComponent: (ComponentData) -> Unit) {
 @Composable
 private fun AddComponentDialogPreview() {
     PCBuilderTheme {
-        AddComponentDialog(onAddComponent = {})
+        AddComponentDialog(
+            modifier = Modifier.fillMaxSize(),
+            onAddComponent = {},
+            onNavigateUp = {},
+        )
     }
 }

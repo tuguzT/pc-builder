@@ -5,9 +5,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +33,7 @@ import io.github.tuguzt.pcbuilder.viewmodel.AccountViewModel
 /**
  * Main screen of the application.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     onSignOut: () -> Unit,
@@ -53,7 +54,7 @@ fun MainScreen(
             )
         },
         bottomBar = {
-            DestinationsBottomNavigation(
+            DestinationsNavigationBar(
                 navController = navController,
                 destinations = listOf(Components, Builds, Account),
                 onDestinationNavigate = { destination ->
@@ -114,7 +115,7 @@ private fun MainScreenTopAppBar(
     showSearch: Boolean,
     onSearchClick: () -> Unit,
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             AnimatedContent(targetState = titleText) { text -> Text(text) }
         },

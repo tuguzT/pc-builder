@@ -1,5 +1,6 @@
 import io.github.tuguzt.pcbuilder.buildconfig.android.accompanistVersion
 import io.github.tuguzt.pcbuilder.buildconfig.android.composeVersion
+import io.github.tuguzt.pcbuilder.buildconfig.android.material3Version
 
 plugins {
     id("com.android.application")
@@ -65,11 +66,15 @@ dependencies {
 
     // Android
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+    implementation("com.google.android.material:material:1.6.0")
+
+    // Jetpack Compose
     implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material3:material3:$material3Version")
+    implementation("androidx.compose.material3:material3-window-size-class:$material3Version")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.compose.material:material-icons-core:$composeVersion")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("androidx.navigation:navigation-compose:2.4.2")

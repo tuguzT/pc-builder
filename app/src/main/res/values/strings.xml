@@ -13,6 +13,7 @@
     <string name="height">Height</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="dismiss">Dismiss</string>
 
     <string name="unit_gram">g</string>
     <string name="unit_millimeter">mm</string>

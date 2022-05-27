@@ -2,14 +2,12 @@ package io.github.tuguzt.pcbuilder.view
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -21,29 +19,21 @@ import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 
 /**
- * [BottomNavigation] composable with configured [destinations].
+ * [NavigationBar] composable with configured [destinations].
  */
 @Composable
-fun DestinationsBottomNavigation(
+fun DestinationsNavigationBar(
     navController: NavHostController,
     destinations: List<BottomNavigationDestination>,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
-    contentColor: Color = contentColorFor(backgroundColor),
-    elevation: Dp = BottomNavigationDefaults.Elevation,
     onDestinationNavigate: (BottomNavigationDestination) -> Unit = {},
 ) {
-    BottomNavigation(
-        modifier = modifier,
-        backgroundColor = backgroundColor,
-        contentColor = contentColor,
-        elevation = elevation,
-    ) {
+    NavigationBar(modifier = modifier) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
         destinations.forEach { destination ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 icon = { Icon(destination.icon, destination.description) },
                 label = { Text(text = destination.description) },
                 selected = currentDestination
@@ -64,23 +54,24 @@ fun DestinationsBottomNavigation(
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(name = "Light Mode")
 @Preview(
     name = "Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
-private fun DestinationsBottomNavigationPreview() {
+private fun DestinationsNavigationBarPreview() {
     PCBuilderTheme {
         Scaffold(
             topBar = {
-                TopAppBar(
+                CenterAlignedTopAppBar(
                     title = { Text(text = stringResource(R.string.app_name)) },
                 )
             },
             bottomBar = {
-                DestinationsBottomNavigation(
+                DestinationsNavigationBar(
                     navController = rememberNavController(),
                     destinations = listOf(Components, Builds, Account),
                 )

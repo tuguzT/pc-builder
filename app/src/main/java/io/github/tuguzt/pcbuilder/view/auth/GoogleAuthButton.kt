@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.view.auth
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,11 +20,14 @@ fun GoogleAuthButton(
     onClick: (AuthVariant.Google) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MaterialTheme(colors = lightColors()) {
-        Button(
+    MaterialTheme(colorScheme = lightColorScheme()) {
+        ElevatedButton(
             onClick = { onClick(AuthVariant.Google) },
             modifier = modifier,
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black,
+            ),
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_google),

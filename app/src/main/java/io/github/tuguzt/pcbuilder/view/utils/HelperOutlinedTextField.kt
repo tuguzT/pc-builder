@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -25,7 +25,7 @@ fun HelperOutlinedTextField(
     onValueChange: (String) -> Unit,
     helperText: String,
     modifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
+    showHelperOnFocus: Boolean = false,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -44,7 +44,7 @@ fun HelperOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
 ) {
     var showHelper by rememberSaveable { mutableStateOf(false) }
-    Column(modifier) {
+    Column {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -63,13 +63,13 @@ fun HelperOutlinedTextField(
             maxLines = maxLines,
             interactionSource = interactionSource,
             shape = shape,
-            modifier = textFieldModifier.onFocusChanged { showHelper = it.isFocused },
+            modifier = modifier.onFocusChanged { showHelper = it.isFocused },
         )
-        AnimatedVisibility(visible = showHelper) {
+        AnimatedVisibility(visible = showHelper || !showHelperOnFocus) {
             val helperTextColor by colors.placeholderColor(enabled = true)
             Text(
                 text = helperText,
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.labelSmall,
                 color = helperTextColor,
                 modifier = Modifier.padding(start = 16.dp),
             )

@@ -2,7 +2,8 @@ package io.github.tuguzt.pcbuilder.view
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,6 +30,7 @@ import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
 /**
  * Root screen of the PC Builder application.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RootScreen(
     accountViewModel: AccountViewModel = viewModel(),
@@ -41,7 +43,9 @@ fun RootScreen(
     }
     Scaffold { padding ->
         NavHost(
-            modifier = Modifier.padding(padding).fillMaxSize(),
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize(),
             navController = navController,
             startDestination = startDestination.route,
         ) {

@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,7 +31,7 @@ fun AuthScreenContent(
     onAlternativeNavigate: () -> Unit,
     viewModel: AuthViewModel = viewModel(),
 ) {
-    Text(text = title, style = MaterialTheme.typography.h4)
+    Text(text = stringResource(R.string.app_name), style = MaterialTheme.typography.headlineLarge)
     Spacer(modifier = Modifier.height(32.dp))
 
     OutlinedTextField(
@@ -52,42 +52,43 @@ fun AuthScreenContent(
     )
     Spacer(modifier = Modifier.height(32.dp))
 
-    val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = MaterialTheme.colors.onBackground)) {
-            append(alternativeDestinationDescription)
-            append(' ')
-        }
-
-        withAnnotation(tag = "alternative", annotation = "Go to alternative") {
-            withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
-                append(alternativeDestinationText)
-            }
-        }
-    }
-    ClickableText(
-        text = annotatedString,
-        style = MaterialTheme.typography.button,
-    ) { offset ->
-        annotatedString
-            .getStringAnnotations(tag = "alternative", start = offset, end = offset)
-            .firstOrNull()
-            ?.let { onAlternativeNavigate() }
-    }
-    Spacer(modifier = Modifier.height(8.dp))
     CredentialsAuthButton(
         username = viewModel.username,
         password = viewModel.password,
         onClick = { onAuth(it) },
         content = { Text(title) },
     )
+    Spacer(modifier = Modifier.height(24.dp))
 
-    Spacer(modifier = Modifier.height(48.dp))
+    val annotatedString = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+            append(alternativeDestinationDescription)
+            append(' ')
+        }
+
+        withAnnotation(tag = "alternative", annotation = "Go to alternative") {
+            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                append(alternativeDestinationText)
+            }
+        }
+    }
+    ClickableText(
+        text = annotatedString,
+        style = MaterialTheme.typography.labelLarge,
+    ) { offset ->
+        annotatedString
+            .getStringAnnotations(tag = "alternative", start = offset, end = offset)
+            .firstOrNull()
+            ?.let { onAlternativeNavigate() }
+    }
+
+    Spacer(modifier = Modifier.height(32.dp))
     Divider(
         modifier = Modifier.fillMaxWidth(0.45f),
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colorScheme.primary,
         thickness = 2.dp,
     )
-    Spacer(modifier = Modifier.height(48.dp))
+    Spacer(modifier = Modifier.height(32.dp))
 
     GoogleAuthButton(onClick = { onAuth(AuthVariant.Google) })
 }

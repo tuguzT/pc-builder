@@ -1,13 +1,11 @@
 package io.github.tuguzt.pcbuilder.view.account
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +30,9 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 @Composable
 fun AccountScreen(user: User, onSignOut: () -> Unit) {
     Column(
-        modifier = Modifier.padding(8.dp).fillMaxSize(),
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -41,43 +41,42 @@ fun AccountScreen(user: User, onSignOut: () -> Unit) {
             contentDescription = user.imageUri?.let { stringResource(R.string.user_avatar) },
             modifier = Modifier
                 .size(144.dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .clip(MaterialTheme.shapes.medium),
             loading = {
-                Surface(
-                    modifier = Modifier
-                        .placeholder(
-                            visible = true,
-                            highlight = PlaceholderHighlight.fade(),
-                        ),
+                Box(
+                    modifier = Modifier.placeholder(
+                        visible = true,
+                        highlight = PlaceholderHighlight.fade(),
+                    ),
                     content = {},
                 )
             },
             error = {
-                Image(
+                Icon(
                     imageVector = Icons.Rounded.Person,
                     contentDescription = stringResource(R.string.avatar_not_loaded),
                     modifier = Modifier
-                        .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f)),
+                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
                 )
             }
         )
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text(text = user.username, style = MaterialTheme.typography.h6)
+        Text(text = user.username, style = MaterialTheme.typography.headlineSmall)
         if (user.role != UserRole.User) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "${user.role}", style = MaterialTheme.typography.subtitle2)
+            Text(text = "${user.role}", style = MaterialTheme.typography.titleSmall)
         }
         val email = user.email
         if (email != null) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = email, style = MaterialTheme.typography.subtitle1)
+            Text(text = email, style = MaterialTheme.typography.titleMedium)
         }
         Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = onSignOut,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.error),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
         ) {
             Text(stringResource(R.string.sign_out))
         }

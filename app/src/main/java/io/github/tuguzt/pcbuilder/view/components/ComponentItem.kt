@@ -2,20 +2,17 @@ package io.github.tuguzt.pcbuilder.view.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.DisableSelection
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,31 +31,38 @@ import io.nacular.measured.units.times
  * [Card] composable with data of the provided [component]
  * and optional image provided by [painter].
  */
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ComponentItem(component: Component, painter: Painter? = null, onClick: () -> Unit) {
-    Card(shape = RoundedCornerShape(8.dp), onClick = onClick) {
+fun ComponentItem(
+    component: Component,
+    painter: Painter? = null,
+    shape: Shape = MaterialTheme.shapes.medium,
+    onClick: () -> Unit,
+) {
+    Card(shape = shape, onClick = onClick) {
         Column {
-            Image(
-                painter = painter ?: ColorPainter(Color.Transparent),
-                contentDescription = painter?.let { stringResource(R.string.component_picture) },
-                alignment = Alignment.Center,
-                modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f)),
-            )
+            Surface(tonalElevation = 2.dp, shape = shape) {
+                Image(
+                    painter = painter ?: ColorPainter(Color.Transparent),
+                    contentDescription = painter?.let { stringResource(R.string.component_picture) },
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(194.dp)
+                        .fillMaxWidth(),
+                )
+            }
             Column(modifier = Modifier.padding(8.dp)) {
                 DisableSelection {
                     Text(
                         text = component.name,
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = component.description,
                         maxLines = 2,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.typography.bodyMedium,
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
