@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -41,11 +40,10 @@ fun ComponentItem(
 ) {
     Card(shape = shape, onClick = onClick) {
         Column {
-            Surface(tonalElevation = 2.dp, shape = shape) {
+            Surface(tonalElevation = 5.dp, shape = shape) {
                 Image(
                     painter = painter ?: ColorPainter(Color.Transparent),
                     contentDescription = painter?.let { stringResource(R.string.component_picture) },
-                    alignment = Alignment.Center,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .height(194.dp)
@@ -94,10 +92,12 @@ private fun ComponentItemPreview() {
                 height = 40 * millimeters,
             ),
         )
-        ComponentItem(
-            component = component,
-            painter = painterResource(R.drawable.ic_launcher_background),
-            onClick = {}
-        )
+        Surface {
+            ComponentItem(
+                component = component,
+                painter = painterResource(R.drawable.ic_launcher_background),
+                onClick = {},
+            )
+        }
     }
 }

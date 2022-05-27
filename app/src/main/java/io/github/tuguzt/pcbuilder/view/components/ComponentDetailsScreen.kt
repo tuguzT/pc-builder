@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -11,7 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,85 +32,82 @@ import io.nacular.measured.units.times
  * Application screen with information about provided [component].
  */
 @Composable
-fun ComponentDetailsScreen(component: Component) {
+fun ComponentDetailsScreen(component: Component, painter: Painter? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
-        Image(
-            modifier = Modifier.height(240.dp),
-            painter = ColorPainter(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)),
-            contentDescription = stringResource(R.string.component_picture),
+        val imageShape = MaterialTheme.shapes.medium.copy(
+            topStart = ZeroCornerSize,
+            topEnd = ZeroCornerSize,
         )
+        Surface(tonalElevation = 5.dp, shape = imageShape) {
+            Image(
+                modifier = Modifier
+                    .heightIn(min = 240.dp)
+                    .fillMaxWidth(),
+                painter = painter ?: ColorPainter(Color.Transparent),
+                contentDescription = stringResource(R.string.component_picture),
+            )
+        }
 
         Column(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxSize(),
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = component.description,
-                style = MaterialTheme.typography.bodyLarge,
+            ComponentProperty(
+                name = stringResource(R.string.description),
+                value = component.description,
             )
-            Spacer(modifier = Modifier.height(16.dp))
 
             Divider()
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.weight),
-                style = MaterialTheme.typography.labelMedium,
+            ComponentProperty(
+                name = stringResource(R.string.weight),
+                value = "${component.weight `in` grams} ${stringResource(R.string.unit_gram)}",
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "${component.weight `in` grams} ${stringResource(R.string.unit_gram)}",
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
 
             Divider()
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.length),
-                style = MaterialTheme.typography.labelMedium,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "${component.size.length `in` millimeters} " +
+            ComponentProperty(
+                name = stringResource(R.string.length),
+                value = "${component.size.length `in` millimeters} " +
                         stringResource(R.string.unit_millimeter),
-                style = MaterialTheme.typography.bodyMedium,
             )
-            Spacer(modifier = Modifier.height(16.dp))
 
             Divider()
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.width),
-                style = MaterialTheme.typography.labelMedium,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "${component.size.width `in` millimeters} " +
+            ComponentProperty(
+                name = stringResource(R.string.width),
+                value = "${component.size.width `in` millimeters} " +
                         stringResource(R.string.unit_millimeter),
-                style = MaterialTheme.typography.bodyMedium,
             )
-            Spacer(modifier = Modifier.height(16.dp))
 
             Divider()
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.height),
-                style = MaterialTheme.typography.labelMedium,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "${component.size.height `in` millimeters} " +
-                        stringResource(R.string.unit_millimeter),
-                style = MaterialTheme.typography.bodyMedium,
+            ComponentProperty(
+                name = stringResource(R.string.height),
+                value = "${component.size.height `in` millimeters} " +
+                        stringResource(R.string.unit_millimeter)
             )
         }
     }
+}
+
+/**
+ * Property of the component with provided [name] and [value].
+ */
+@Composable
+fun ComponentProperty(name: String, value: String) {
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        text = name,
+        style = MaterialTheme.typography.labelMedium,
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        text = value,
+        style = MaterialTheme.typography.bodyLarge,
+    )
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Preview(name = "Light Mode")
