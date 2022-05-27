@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,7 +26,9 @@ import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.viewmodel.ComponentListViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Application screen which represents *Components* main application destination.
@@ -35,14 +37,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun ComponentsScreen(
     onTitleChanged: (String) -> Unit,
-    componentListViewModel: ComponentListViewModel = viewModel(),
+    componentListViewModel: ComponentListViewModel = hiltViewModel(),
     scope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ) {
     val appName = stringResource(R.string.app_name)
 
     val components by componentListViewModel.components
-        .collectAsStateLifecycleAware(scope.coroutineContext)
+        .collectAsStateLifecycleAware(listOf(), scope.coroutineContext)
     val snackbarHostState = remember { SnackbarHostState() }
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
@@ -79,9 +81,11 @@ fun ComponentsScreen(
             AddComponentDialog(
                 modifier = Modifier.fillMaxSize(),
                 onAddComponent = { component ->
-                    componentListViewModel += component
-                    navController.popBackStack()
                     scope.launch {
+                        componentListViewModel.addComponent(component)
+                        withContext(Dispatchers.Main) {
+                            navController.popBackStack()
+                        }
                         snackbarHostState.showSnackbar(
                             message = componentAddedMessage,
                             actionLabel = dismissText,
