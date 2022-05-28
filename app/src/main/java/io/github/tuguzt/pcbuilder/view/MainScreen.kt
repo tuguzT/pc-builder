@@ -79,10 +79,12 @@ fun MainScreen(
                 BuildsScreen()
             }
             composable(Account.route) account@ {
-                val user = accountViewModel.currentUser ?: kotlin.run {
+                val currentUser by accountViewModel.currentUser.collectAsStateLifecycleAware()
+                val user = currentUser ?: kotlin.run {
                     onSignOut()
                     return@account
                 }
+
                 val context = LocalContext.current
                 val toastText = stringResource(R.string.signed_out_success)
                 AccountScreen(

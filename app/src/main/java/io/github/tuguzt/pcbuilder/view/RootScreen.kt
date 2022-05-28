@@ -26,6 +26,7 @@ import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.view.auth.AuthVariant
 import io.github.tuguzt.pcbuilder.view.auth.SignInScreen
 import io.github.tuguzt.pcbuilder.view.auth.SignUpScreen
+import io.github.tuguzt.pcbuilder.view.navigation.Destination
 import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.*
 import io.github.tuguzt.pcbuilder.viewmodel.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.viewmodel.account.AuthViewModel
@@ -46,15 +47,7 @@ fun RootScreen(
     authViewModel: AuthViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
-    LaunchedEffect(Unit) {
-        when (accountViewModel.updateUser()) {
-            is NetworkResponse.Success -> when (accountViewModel.currentUser) {
-                null -> navController.navigateAuth()
-                else -> navController.navigateMain()
-            }
-            else -> navController.navigateAuth() // todo normal error handling
-        }
-    }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold { padding ->
         NavHost(
@@ -65,12 +58,22 @@ fun RootScreen(
             startDestination = Splash.route,
         ) {
             composable(Splash.route) {
+                LaunchedEffect(Unit) {
+                    when (accountViewModel.updateUser()) {
+                        is NetworkResponse.Success -> when (accountViewModel.currentUser.value) {
+                            null -> navController.navigateAuth(Splash)
+                            else -> navController.navigateMain(Splash)
+                        }
+                        else -> navController.navigateAuth(Splash) // todo normal error handling
+                    }
+                }
+
                 Box(modifier = Modifier.fillMaxSize()) {}
             }
             composable(Main.route) {
-                val onSignOut = {
+                val onSignOut: () -> Unit = {
                     navController.navigateAuth()
-                    accountViewModel.currentUser = null
+                    coroutineScope.launch { accountViewModel.signOut() }
                 }
                 MainScreen(onSignOut = onSignOut, accountViewModel = accountViewModel)
             }
@@ -225,23 +228,27 @@ private fun NavGraphBuilder.authGraph(
 /**
  * Navigate to the *Authentication* user flow.
  */
-private fun NavController.navigateAuth() = navigate(Auth.route) {
-    popUpTo(Main.route) {
-        inclusive = true
-        saveState = true
+private fun NavController.navigateAuth(popUpToDestination: Destination? = null) =
+    navigate(Auth.route) {
+        val destination = popUpToDestination ?: Main
+        popUpTo(destination.route) {
+            inclusive = true
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
-    launchSingleTop = true
-    restoreState = true
-}
 
 /**
  * Navigate to the [main screen][MainScreen].
  */
-private fun NavController.navigateMain() = navigate(Main.route) {
-    popUpTo(Auth.route) {
-        inclusive = true
-        saveState = true
+private fun NavController.navigateMain(popUpToDestination: Destination? = null) =
+    navigate(Main.route) {
+        val destination = popUpToDestination ?: Auth
+        popUpTo(destination.route) {
+            inclusive = true
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
-    launchSingleTop = true
-    restoreState = true
-}

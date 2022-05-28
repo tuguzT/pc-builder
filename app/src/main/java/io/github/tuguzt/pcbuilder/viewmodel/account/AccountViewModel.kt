@@ -1,9 +1,6 @@
 package io.github.tuguzt.pcbuilder.viewmodel.account
 
 import androidx.annotation.CheckResult
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -13,6 +10,8 @@ import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.repository.backend.BackendCompletableResponse
 import io.github.tuguzt.pcbuilder.repository.backend.BackendUsersAPI
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -27,7 +26,8 @@ class AccountViewModel @Inject constructor(
     private val sharedPreferences: EncryptedSharedPreferences,
 ) : ViewModel() {
 
-    var currentUser: User? by mutableStateOf(null)
+    private val _currentUser: MutableStateFlow<User?> = MutableStateFlow(null)
+    val currentUser = _currentUser.asStateFlow()
 
     @CheckResult
     suspend fun updateUser(): BackendCompletableResponse {
@@ -45,7 +45,7 @@ class AccountViewModel @Inject constructor(
                     putString(User::email.name, user.email)
                     putString(User::role.name, user.role.toString())
                 }
-                currentUser = user
+                _currentUser.emit(user)
                 NetworkResponse.Success(Unit, result.response)
             }
             is NetworkResponse.Error -> {
@@ -59,6 +59,11 @@ class AccountViewModel @Inject constructor(
     suspend fun findUser(): BackendCompletableResponse {
         sharedPreferences.getString("access_token", null) ?: return makeUnknownError()
         return updateUser()
+    }
+
+    suspend fun signOut() {
+        sharedPreferences.edit { remove("access_token") }
+        _currentUser.emit(null)
     }
 
     companion object {
