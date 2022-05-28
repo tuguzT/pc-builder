@@ -4,7 +4,9 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,13 +28,15 @@ fun ComponentList(
     components: List<Component>,
     onComponentClick: (Component) -> Unit,
     modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
 ) {
     LazyColumn(
         modifier = modifier,
+        state = state,
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(components) { component ->
+        items(components, key = Component::id) { component ->
             ComponentItem(
                 component = component,
                 onClick = { onComponentClick(component) }

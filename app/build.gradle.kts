@@ -15,7 +15,7 @@ android {
     namespace = "io.github.tuguzt.pcbuilder"
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 32
         versionCode = 1
         versionName = "1.0"
@@ -60,7 +60,7 @@ configurations.all {
 
 dependencies {
     // Domain layer
-    implementation("com.github.tuguzT:pc_builder_domain:develop-SNAPSHOT") {
+    implementation("com.github.tuguzT:pc-builder-domain:develop-SNAPSHOT") {
         isChanging = true
     }
 
@@ -68,6 +68,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("com.google.android.material:material:1.6.0")
+    implementation("androidx.security:security-crypto:1.0.0")
 
     // Kotlin Extensions
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
@@ -83,7 +84,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
     implementation("androidx.navigation:navigation-compose:2.4.2")
 
-    implementation("io.coil-kt:coil-compose:2.0.0-rc03")
+    implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
 
     // Room
@@ -100,6 +101,11 @@ dependencies {
     // Logging
     implementation("io.github.microutils:kotlin-logging:1.12.5")
     implementation("org.slf4j:slf4j-android:1.7.36")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
     // Debugging
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")

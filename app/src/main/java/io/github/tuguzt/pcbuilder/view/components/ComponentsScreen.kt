@@ -24,7 +24,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.collectAsStateLifecycleAware
 import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
-import io.github.tuguzt.pcbuilder.viewmodel.ComponentListViewModel
+import io.github.tuguzt.pcbuilder.viewmodel.components.ComponentListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ fun ComponentsScreen(
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
-            LaunchedEffect(true) { onTitleChanged(appName) }
+            LaunchedEffect(Unit) { onTitleChanged(appName) }
 
             Scaffold(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) },

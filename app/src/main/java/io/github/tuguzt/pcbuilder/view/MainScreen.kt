@@ -29,7 +29,7 @@ import io.github.tuguzt.pcbuilder.view.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
-import io.github.tuguzt.pcbuilder.viewmodel.AccountViewModel
+import io.github.tuguzt.pcbuilder.viewmodel.account.AccountViewModel
 
 /**
  * Main screen of the application.

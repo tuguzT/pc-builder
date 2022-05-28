@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.viewmodel
+package io.github.tuguzt.pcbuilder.viewmodel.components
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

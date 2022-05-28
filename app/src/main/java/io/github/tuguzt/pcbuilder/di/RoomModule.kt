@@ -16,11 +16,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RoomDatabaseModule {
+object RoomModule {
     @Provides
     @Singleton
-    fun providePCBuilderDatabase(@ApplicationContext appContext: Context): PCBuilderDatabase =
-        buildDatabase(context = appContext, name = "pc-builder")
+    fun providePCBuilderDatabase(@ApplicationContext context: Context): PCBuilderDatabase =
+        buildDatabase(context = context, name = "pc-builder")
 
     @Provides
     fun provideComponentDao(database: PCBuilderDatabase): ComponentDao = database.componentDao

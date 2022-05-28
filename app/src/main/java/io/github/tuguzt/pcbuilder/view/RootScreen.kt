@@ -1,11 +1,17 @@
 package io.github.tuguzt.pcbuilder.view
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -14,18 +20,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
-import io.github.tuguzt.pcbuilder.domain.model.user.User
-import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
-import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
-import io.github.tuguzt.pcbuilder.domain.model.user.data.UserData
+import com.haroldadmin.cnradapter.NetworkResponse
+import io.github.tuguzt.pcbuilder.R
+import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.view.auth.AuthVariant
 import io.github.tuguzt.pcbuilder.view.auth.SignInScreen
 import io.github.tuguzt.pcbuilder.view.auth.SignUpScreen
-import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.Auth
-import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.Main
-import io.github.tuguzt.pcbuilder.viewmodel.AccountViewModel
-import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
+import io.github.tuguzt.pcbuilder.view.navigation.RootNavigationDestinations.*
+import io.github.tuguzt.pcbuilder.viewmodel.account.AccountViewModel
+import io.github.tuguzt.pcbuilder.viewmodel.account.AuthViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Root screen of the PC Builder application.
@@ -37,18 +46,27 @@ fun RootScreen(
     authViewModel: AuthViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
-    val startDestination = when (accountViewModel.currentUser) {
-        null -> Auth
-        else -> Main
+    LaunchedEffect(Unit) {
+        when (accountViewModel.updateUser()) {
+            is NetworkResponse.Success -> when (accountViewModel.currentUser) {
+                null -> navController.navigateAuth()
+                else -> navController.navigateMain()
+            }
+            else -> navController.navigateAuth() // todo normal error handling
+        }
     }
+
     Scaffold { padding ->
         NavHost(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize(),
             navController = navController,
-            startDestination = startDestination.route,
+            startDestination = Splash.route,
         ) {
+            composable(Splash.route) {
+                Box(modifier = Modifier.fillMaxSize()) {}
+            }
             composable(Main.route) {
                 val onSignOut = {
                     navController.navigateAuth()
@@ -65,24 +83,6 @@ fun RootScreen(
     }
 }
 
-// TODO remove in the future
-private val googleUser = UserData(
-    id = randomNanoId(),
-    role = UserRole.User,
-    username = "UnknownGoogleUser",
-    email = null,
-    imageUri = "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png",
-)
-
-// TODO remove in the future
-private fun userFromCredentials(credentials: UserCredentials): User = UserData(
-    id = randomNanoId(),
-    role = UserRole.User,
-    username = credentials.username,
-    email = null,
-    imageUri = null,
-)
-
 /**
  * Configures *Authentication* user flow.
  */
@@ -92,33 +92,126 @@ private fun NavGraphBuilder.authGraph(
     accountViewModel: AccountViewModel,
 ) = navigation(startDestination = Auth.SignIn.route, route = Auth.route) {
     composable(Auth.SignIn.route) {
-        SignInScreen(
-            onSignIn = { variant ->
-                val newUser = when (variant) {
-                    is AuthVariant.Credentials -> userFromCredentials(variant.credentials)
-                    AuthVariant.Google -> googleUser
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+
+        val dismissText = stringResource(R.string.dismiss)
+        val onSignIn: (AuthVariant) -> Unit = { variant ->
+            when (variant) {
+                is AuthVariant.Credentials -> {
+                    val credentials = UserCredentialsData(
+                        variant.credentials.username,
+                        variant.credentials.password,
+                    )
+                    coroutineScope.launch {
+                        when (val response = authViewModel.auth(credentials)) {
+                            is NetworkResponse.Success -> {
+                                when (val innerResponse = accountViewModel.findUser()) {
+                                    is NetworkResponse.Success -> withContext(Dispatchers.Main) {
+                                        navController.navigateMain()
+                                    }
+                                    is NetworkResponse.Error -> {
+                                        withContext(Dispatchers.Main) {
+                                            logger.error { innerResponse }
+                                        }
+                                        snackbarHostState.showSnackbar(
+                                            message = "Something wrong happened...",
+                                            actionLabel = dismissText,
+                                        )
+                                    }
+                                }
+                            }
+                            is NetworkResponse.Error -> {
+                                withContext(Dispatchers.Main) {
+                                    logger.error { response }
+                                }
+                                snackbarHostState.showSnackbar(
+                                    message = "Something wrong happened...",
+                                    actionLabel = dismissText,
+                                )
+                            }
+                        }
+                    }
                 }
-                accountViewModel.currentUser = newUser
-                navController.navigateMain()
-            },
+                AuthVariant.Google -> {
+                    // todo Google auth
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "Google auth is not supported for now",
+                            actionLabel = dismissText,
+                        )
+                    }
+                }
+            }
+        }
+
+        SignInScreen(
+            onSignIn = onSignIn,
             viewModel = authViewModel,
             onSignUpNavigate = {
                 navController.navigate(Auth.SignUp.route) {
                     popUpTo(Auth.route) { inclusive = true }
                 }
             },
+            snackbarHostState = snackbarHostState,
         )
     }
     composable(Auth.SignUp.route) {
-        SignUpScreen(
-            onSignUp = { variant ->
-                val newUser = when (variant) {
-                    is AuthVariant.Credentials -> userFromCredentials(variant.credentials)
-                    AuthVariant.Google -> googleUser
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+
+        val dismissText = stringResource(R.string.dismiss)
+        val onSignUp: (AuthVariant) -> Unit = { variant ->
+            when (variant) {
+                is AuthVariant.Credentials -> {
+                    val credentials = UserCredentialsData(
+                        variant.credentials.username,
+                        variant.credentials.password,
+                    )
+                    coroutineScope.launch {
+                        when (val response = authViewModel.register(credentials)) {
+                            is NetworkResponse.Success -> {
+                                when (val innerResponse = accountViewModel.findUser()) {
+                                    is NetworkResponse.Success -> withContext(Dispatchers.Main) {
+                                        navController.navigateMain()
+                                    }
+                                    is NetworkResponse.Error -> {
+                                        withContext(Dispatchers.Main) {
+                                            logger.error { innerResponse }
+                                        }
+                                        snackbarHostState.showSnackbar(
+                                            message = "Something wrong happened...",
+                                            actionLabel = dismissText,
+                                        )
+                                    }
+                                }
+                            }
+                            is NetworkResponse.Error -> {
+                                withContext(Dispatchers.Main) {
+                                    logger.error { response }
+                                }
+                                snackbarHostState.showSnackbar(
+                                    message = "Something wrong happened...",
+                                    actionLabel = dismissText,
+                                )
+                            }
+                        }
+                    }
                 }
-                accountViewModel.currentUser = newUser
-                navController.navigateMain()
-            },
+                AuthVariant.Google -> {
+                    // todo Google auth
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "Google auth is not supported for now",
+                            actionLabel = dismissText,
+                        )
+                    }
+                }
+            }
+        }
+
+        SignUpScreen(
+            onSignUp = onSignUp,
             viewModel = authViewModel,
             onSignInNavigate = {
                 navController.navigate(Auth.SignIn.route) {

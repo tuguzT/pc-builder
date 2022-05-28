@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
-import io.github.tuguzt.pcbuilder.viewmodel.AuthViewModel
+import io.github.tuguzt.pcbuilder.viewmodel.account.AuthViewModel
 
 /**
  * Application user sign in screen.
