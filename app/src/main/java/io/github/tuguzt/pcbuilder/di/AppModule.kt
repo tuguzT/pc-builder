@@ -3,6 +3,10 @@ package io.github.tuguzt.pcbuilder.di
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +21,24 @@ object AppModule {
     @Provides
     @Singleton
     fun provideJson(): Json = Json
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInOptions(): GoogleSignInOptions =
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInClient(
+        @ApplicationContext context: Context,
+        options: GoogleSignInOptions,
+    ): GoogleSignInClient = GoogleSignIn.getClient(context, options)
+
+    @Provides
+    fun provideLastSignedInGoogleAccount(@ApplicationContext context: Context): GoogleSignInAccount? =
+        GoogleSignIn.getLastSignedInAccount(context)
 
     @Provides
     @Singleton

@@ -69,8 +69,7 @@ dependencies {
     androidBaseImplementation()
 
     // Kotlin Extensions
-    implementation(KotlinX.Coroutines.dependency)
-    implementation(KotlinX.serializationJson)
+    kotlinXImplementation()
 
     // Jetpack Compose
     composeCoreImplementation()
@@ -89,6 +88,9 @@ dependencies {
 
     // Retrofit
     retrofitImplementation()
+
+    // Google
+    googleImplementation()
 
     // Quality Assurance
     androidTestImplementation(KotlinX.Test.coroutines) {

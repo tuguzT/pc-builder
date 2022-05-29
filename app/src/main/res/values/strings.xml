@@ -40,4 +40,9 @@
     <string name="sign_in_google">Continue with Google</string>
     <string name="no_account">No account?</string>
     <string name="have_account">Already have account?</string>
+
+    <string name="server_error">Error on the server side: try later</string>
+    <string name="network_error">Can\'t connect to the server: check Internet connection</string>
+    <string name="unknown_error">Unexpected application error</string>
+    <string name="google_auth_error">Google authorization failed</string>
 </resources>

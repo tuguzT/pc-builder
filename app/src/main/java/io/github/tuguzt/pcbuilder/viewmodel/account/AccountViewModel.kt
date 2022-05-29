@@ -4,6 +4,8 @@ import androidx.annotation.CheckResult
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.security.crypto.EncryptedSharedPreferences
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.tuguzt.pcbuilder.domain.model.user.User
@@ -12,9 +14,8 @@ import io.github.tuguzt.pcbuilder.repository.backend.BackendUsersAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -22,8 +23,10 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AccountViewModel @Inject constructor(
+    private val lastSignedInGoogleAccount: GoogleSignInAccount?,
     private val backendUsersAPI: BackendUsersAPI,
     private val sharedPreferences: EncryptedSharedPreferences,
+    private val googleSignInClient: GoogleSignInClient,
 ) : ViewModel() {
 
     private val _currentUser: MutableStateFlow<User?> = MutableStateFlow(null)
@@ -31,7 +34,13 @@ class AccountViewModel @Inject constructor(
 
     @CheckResult
     suspend fun updateUser(): BackendCompletableResponse {
-        sharedPreferences.getString("access_token", null) ?: return makeUnknownError()
+        lastSignedInGoogleAccount?.let {
+            _currentUser.emit(it.toUser())
+            return makeSuccess()
+        }
+
+        sharedPreferences.getString("access_token", null)
+            ?: return makeUnknownError("No information about any user")
 
         val result = withContext(Dispatchers.IO) {
             backendUsersAPI.current()
@@ -55,23 +64,16 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    // todo move to the auth view model and connect to the server
     @CheckResult
-    suspend fun findUser(): BackendCompletableResponse {
-        sharedPreferences.getString("access_token", null) ?: return makeUnknownError()
-        return updateUser()
+    suspend fun googleOAuth2(account: GoogleSignInAccount): BackendCompletableResponse {
+        _currentUser.emit(account.toUser())
+        return makeSuccess()
     }
 
     suspend fun signOut() {
         sharedPreferences.edit { clear() }
+        googleSignInClient.signOut().await()
         _currentUser.emit(null)
-    }
-
-    companion object {
-        @JvmStatic
-        private fun makeUnknownError(): BackendCompletableResponse {
-            val errorResponse = Response.error<Nothing>(500, "".toResponseBody())
-            val error = Exception("No information about any user")
-            return NetworkResponse.UnknownError(error, errorResponse)
-        }
     }
 }

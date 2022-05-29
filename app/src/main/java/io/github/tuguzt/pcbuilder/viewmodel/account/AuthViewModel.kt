@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.viewmodel.account
 
+import android.content.Intent
 import androidx.annotation.CheckResult
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.security.crypto.EncryptedSharedPreferences
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
@@ -24,6 +26,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val backendAuthAPI: BackendAuthAPI,
     private val sharedPreferences: EncryptedSharedPreferences,
+    private val googleSignInClient: GoogleSignInClient,
 ) : ViewModel() {
 
     var username by mutableStateOf("")
@@ -72,4 +75,8 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
+    @get:CheckResult
+    val googleSignInIntent: Intent
+        get() = googleSignInClient.signInIntent
 }
