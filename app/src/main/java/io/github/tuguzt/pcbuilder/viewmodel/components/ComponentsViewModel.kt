@@ -11,11 +11,13 @@ import javax.inject.Inject
  * Injectable view model with list of components.
  */
 @HiltViewModel
-class ComponentListViewModel @Inject constructor(
+class ComponentsViewModel @Inject constructor(
     private val componentRepository: Repository<String, Component>,
 ) : ViewModel() {
 
     val components: Flow<List<Component>> get() = componentRepository.getAll()
+
+    fun findById(id: String): Flow<Component> = componentRepository.findById(id)
 
     suspend fun addComponent(component: Component): Unit = componentRepository.save(component)
 }

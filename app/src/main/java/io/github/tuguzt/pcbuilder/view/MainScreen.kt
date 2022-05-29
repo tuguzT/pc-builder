@@ -67,16 +67,18 @@ fun MainScreen(
             )
         },
     ) { padding ->
+        val onTitleChanged: (String) -> Unit = { titleText = it }
+
         NavHost(
             navController = navController,
             startDestination = Components.route,
             modifier = Modifier.padding(padding),
         ) {
             composable(Components.route) {
-                ComponentsScreen(onTitleChanged = { titleText = it })
+                ComponentsScreen(onTitleChanged)
             }
             composable(Builds.route) {
-                BuildsScreen()
+                BuildsScreen(onTitleChanged)
             }
             composable(Account.route) account@ {
                 val currentUser by accountViewModel.currentUser.collectAsStateLifecycleAware()
@@ -89,6 +91,7 @@ fun MainScreen(
                 val toastText = stringResource(R.string.signed_out_success)
                 AccountScreen(
                     user = user,
+                    onTitleChanged = onTitleChanged,
                     onSignOut = {
                         showToast(context, toastText, ToastDuration.Short)
                         onSignOut()

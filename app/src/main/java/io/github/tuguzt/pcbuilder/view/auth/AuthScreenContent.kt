@@ -66,8 +66,10 @@ fun AuthScreenContent(
             append(' ')
         }
 
+        // move here to avoid strange compilation error from Compose
+        val style = SpanStyle(color = MaterialTheme.colorScheme.primary)
         withAnnotation(tag = "alternative", annotation = "Go to alternative") {
-            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+            withStyle(style = style) {
                 append(alternativeDestinationText)
             }
         }

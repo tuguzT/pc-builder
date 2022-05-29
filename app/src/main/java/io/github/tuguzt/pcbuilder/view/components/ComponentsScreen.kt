@@ -1,6 +1,5 @@
 package io.github.tuguzt.pcbuilder.view.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -10,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -23,8 +21,7 @@ import androidx.navigation.navArgument
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.collectAsStateLifecycleAware
 import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.*
-import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
-import io.github.tuguzt.pcbuilder.viewmodel.components.ComponentListViewModel
+import io.github.tuguzt.pcbuilder.viewmodel.components.ComponentsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,19 +34,19 @@ import kotlinx.coroutines.withContext
 @Composable
 fun ComponentsScreen(
     onTitleChanged: (String) -> Unit,
-    componentListViewModel: ComponentListViewModel = hiltViewModel(),
+    componentsViewModel: ComponentsViewModel = hiltViewModel(),
     scope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ) {
     val appName = stringResource(R.string.app_name)
 
-    val components by componentListViewModel.components
+    val components by componentsViewModel.components
         .collectAsStateLifecycleAware(listOf(), scope.coroutineContext)
     val snackbarHostState = remember { SnackbarHostState() }
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
-            LaunchedEffect(Unit) { onTitleChanged(appName) }
+            SideEffect { onTitleChanged(appName) }
 
             Scaffold(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -82,7 +79,7 @@ fun ComponentsScreen(
                 modifier = Modifier.fillMaxSize(),
                 onAddComponent = { component ->
                     scope.launch {
-                        componentListViewModel.addComponent(component)
+                        componentsViewModel.addComponent(component)
                         withContext(Dispatchers.Main) {
                             navController.popBackStack()
                         }
@@ -101,23 +98,15 @@ fun ComponentsScreen(
                 navArgument("componentId") { type = NavType.StringType },
             ),
         ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("componentId")
-            val component = checkNotNull(components.find { it.id == id })
-            LaunchedEffect(Unit) { onTitleChanged(component.name) }
+            val id = backStackEntry.arguments?.getString("componentId") ?: return@composable
+            val component by remember(id) { componentsViewModel.findById(id) }
+                .collectAsStateLifecycleAware(initial = null)
 
-            ComponentDetailsScreen(component)
+            SideEffect {
+                component?.name?.let { onTitleChanged(it) }
+            }
+
+            component?.let { ComponentDetailsScreen(it) }
         }
-    }
-}
-
-@Preview(name = "Light Mode")
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Composable
-private fun ComponentsScreenPreview() {
-    PCBuilderTheme {
-        ComponentsScreen(onTitleChanged = {})
     }
 }

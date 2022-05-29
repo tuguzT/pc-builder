@@ -1,6 +1,9 @@
-import io.github.tuguzt.pcbuilder.buildconfig.android.accompanistVersion
-import io.github.tuguzt.pcbuilder.buildconfig.android.composeVersion
-import io.github.tuguzt.pcbuilder.buildconfig.android.material3Version
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.AndroidBase.androidBaseImplementation
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.DomainLayer
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.Hilt.hiltImplementation
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.JetpackCompose
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.KotlinX
+import io.github.tuguzt.pcbuilder.buildconfig.android.implementations.*
 
 plugins {
     id("com.android.application")
@@ -27,7 +30,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = JetpackCompose.version
     }
 
     buildTypes {
@@ -60,64 +63,40 @@ configurations.all {
 
 dependencies {
     // Domain layer
-    implementation("com.github.tuguzT:pc-builder-domain:develop-SNAPSHOT") {
-        isChanging = true
-    }
+    implementation(DomainLayer.dependency) { isChanging = true }
 
-    // Android
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("com.google.android.material:material:1.6.0")
-    implementation("androidx.security:security-crypto:1.0.0")
+    // Required Android dependencies
+    androidBaseImplementation()
 
     // Kotlin Extensions
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation(KotlinX.Coroutines.dependency)
+    implementation(KotlinX.serializationJson)
 
     // Jetpack Compose
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material3:material3:$material3Version")
-    implementation("androidx.compose.material3:material3-window-size-class:$material3Version")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.compose.material:material-icons-core:$composeVersion")
-    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.4.2")
+    composeCoreImplementation()
+    materialDesignImplementation()
+    composeNavigationImplementation()
 
-    implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
+    // Additional features for Jetpack Compose
+    composeThirdPartyImplementation()
+    accompanistImplementation()
 
-    // Room
-    implementation("androidx.room:room-ktx:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
+    // Persistence
+    roomImplementation()
 
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.40.1")
-    kapt("com.google.dagger:hilt-compiler:2.40.1")
-
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-
-    // Logging
-    implementation("io.github.microutils:kotlin-logging:1.12.5")
-    implementation("org.slf4j:slf4j-android:1.7.36")
+    // Dependency injection
+    hiltImplementation()
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
+    retrofitImplementation()
 
-    // Debugging
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-
-    // Testing
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1") {
-        exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
+    // Quality Assurance
+    androidTestImplementation(KotlinX.Test.coroutines) {
+        exclude(group = KotlinX.group, module = KotlinX.Test.excludedModule)
     }
+    loggingImplementation()
+    unitTestingImplementation()
+    instrumentTestingImplementation()
 }
 
 kapt {

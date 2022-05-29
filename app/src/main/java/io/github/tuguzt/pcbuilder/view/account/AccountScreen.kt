@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +29,14 @@ import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
  * Application screen which represents *Account* main application destination.
  */
 @Composable
-fun AccountScreen(user: User, onSignOut: () -> Unit) {
+fun AccountScreen(
+    onTitleChanged: (String) -> Unit,
+    user: User,
+    onSignOut: () -> Unit,
+) {
+    val appName = stringResource(R.string.app_name)
+    SideEffect { onTitleChanged(appName) }
+
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -99,7 +107,7 @@ private fun AccountScreenPreview() {
                 email = "timurka.tugushev@gmail.com",
                 imageUri = "https://avatars.githubusercontent.com/u/56771526",
             )
-            AccountScreen(user, onSignOut = {})
+            AccountScreen(onTitleChanged = {}, user = user, onSignOut = {})
         }
     }
 }

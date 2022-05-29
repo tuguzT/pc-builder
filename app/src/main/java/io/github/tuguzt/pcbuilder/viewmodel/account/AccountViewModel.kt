@@ -62,7 +62,7 @@ class AccountViewModel @Inject constructor(
     }
 
     suspend fun signOut() {
-        sharedPreferences.edit { remove("access_token") }
+        sharedPreferences.edit { clear() }
         _currentUser.emit(null)
     }
 
