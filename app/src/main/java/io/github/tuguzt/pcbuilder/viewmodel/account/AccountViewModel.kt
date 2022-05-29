@@ -4,13 +4,13 @@ import androidx.annotation.CheckResult
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.security.crypto.EncryptedSharedPreferences
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.tuguzt.pcbuilder.domain.model.user.User
 import io.github.tuguzt.pcbuilder.repository.backend.BackendCompletableResponse
 import io.github.tuguzt.pcbuilder.repository.backend.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.repository.backend.makeUnknownError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    private val lastSignedInGoogleAccount: GoogleSignInAccount?,
     private val backendUsersAPI: BackendUsersAPI,
     private val sharedPreferences: EncryptedSharedPreferences,
     private val googleSignInClient: GoogleSignInClient,
@@ -34,11 +33,6 @@ class AccountViewModel @Inject constructor(
 
     @CheckResult
     suspend fun updateUser(): BackendCompletableResponse {
-        lastSignedInGoogleAccount?.let {
-            _currentUser.emit(it.toUser())
-            return makeSuccess()
-        }
-
         sharedPreferences.getString("access_token", null)
             ?: return makeUnknownError("No information about any user")
 
@@ -62,13 +56,6 @@ class AccountViewModel @Inject constructor(
                 result as BackendCompletableResponse
             }
         }
-    }
-
-    // todo move to the auth view model and connect to the server
-    @CheckResult
-    suspend fun googleOAuth2(account: GoogleSignInAccount): BackendCompletableResponse {
-        _currentUser.emit(account.toUser())
-        return makeSuccess()
     }
 
     suspend fun signOut() {

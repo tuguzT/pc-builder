@@ -14,4 +14,7 @@ interface BackendAuthAPI {
 
     @POST("register")
     suspend fun register(@Body credentials: UserCredentialsData): BackendResponse<UserTokenData>
+
+    @POST("oauth2/google")
+    suspend fun googleOAuth2(@Body authCode: UserTokenData): BackendResponse<UserTokenData>
 }

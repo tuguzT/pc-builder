@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object BackendModule {
-    private const val backendBaseUrl = "https://pc-builder-tuguzt.herokuapp.com/"
+    private const val backendBaseUrl = "http://192.168.0.111:8080/"
 
     @Provides
     @Singleton

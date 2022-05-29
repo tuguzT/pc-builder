@@ -8,13 +8,15 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.security.crypto.EncryptedSharedPreferences
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
+import io.github.tuguzt.pcbuilder.domain.model.user.data.UserTokenData
 import io.github.tuguzt.pcbuilder.repository.backend.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.repository.backend.BackendCompletableResponse
+import io.github.tuguzt.pcbuilder.repository.backend.makeUnknownError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -43,7 +45,6 @@ class AuthViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     sharedPreferences.edit {
                         putString("access_token", userToken.body.accessToken)
-                        putString(UserCredentials::username.name, credentials.username)
                     }
                 }
                 NetworkResponse.Success(Unit, userToken.response)
@@ -79,4 +80,29 @@ class AuthViewModel @Inject constructor(
     @get:CheckResult
     val googleSignInIntent: Intent
         get() = googleSignInClient.signInIntent
+
+    @CheckResult
+    suspend fun googleOAuth2(account: GoogleSignInAccount): BackendCompletableResponse {
+        val authCodeString = account.serverAuthCode
+            ?: return makeUnknownError("Cannot retrieve id from Google account")
+        val authCode = UserTokenData(authCodeString)
+
+        val userToken = withContext(Dispatchers.IO) {
+            backendAuthAPI.googleOAuth2(authCode)
+        }
+        return when (userToken) {
+            is NetworkResponse.Success -> {
+                withContext(Dispatchers.IO) {
+                    sharedPreferences.edit {
+                        putString("access_token", userToken.body.accessToken)
+                    }
+                }
+                NetworkResponse.Success(Unit, userToken.response)
+            }
+            is NetworkResponse.Error -> {
+                @Suppress("UNCHECKED_CAST")
+                userToken as BackendCompletableResponse
+            }
+        }
+    }
 }

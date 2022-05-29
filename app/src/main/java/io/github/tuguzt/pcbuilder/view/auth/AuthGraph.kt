@@ -60,8 +60,10 @@ fun NavGraphBuilder.authGraph(
             }
             coroutineScope.launch {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(it.data).await()
-                accountViewModel.googleOAuth2(account).handle(context, snackbarHostState) {
-                    navController.navigateMain()
+                authViewModel.googleOAuth2(account).handle(context, snackbarHostState) {
+                    accountViewModel.updateUser().handle(context, snackbarHostState) {
+                        navController.navigateMain()
+                    }
                 }
             }
         }

@@ -14,20 +14,26 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+import io.github.tuguzt.pcbuilder.domain.interactor.serialization.json as domainJson
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
     @Singleton
-    fun provideJson(): Json = Json
+    fun provideJson(): Json = Json(domainJson) {}
+
+    private const val serverClientId =
+        "721437970114-c1pn1c5bpge8iru30l1td5km894pj5db.apps.googleusercontent.com"
 
     @Provides
     @Singleton
-    fun provideGoogleSignInOptions(): GoogleSignInOptions =
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    fun provideGoogleSignInOptions(): GoogleSignInOptions {
+        return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestServerAuthCode(serverClientId)
             .requestEmail()
             .build()
+    }
 
     @Provides
     @Singleton
