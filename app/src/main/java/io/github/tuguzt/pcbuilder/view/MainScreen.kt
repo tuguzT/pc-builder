@@ -27,6 +27,7 @@ import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.account.AccountScreen
 import io.github.tuguzt.pcbuilder.view.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.view.components.ComponentsScreen
+import io.github.tuguzt.pcbuilder.view.learn.LearnScreen
 import io.github.tuguzt.pcbuilder.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.viewmodel.account.AccountViewModel
@@ -57,7 +58,7 @@ fun MainScreen(
         bottomBar = {
             DestinationsNavigationBar(
                 navController = navController,
-                destinations = listOf(Components, Builds, Account),
+                destinations = listOf(Components, Builds, Learn, Account),
                 onDestinationNavigate = { destination ->
                     showSearch = when (destination) {
                         Components -> true
@@ -80,7 +81,10 @@ fun MainScreen(
             composable(Builds.route) {
                 BuildsScreen(onTitleChanged)
             }
-            composable(Account.route) account@ {
+            composable(Learn.route) {
+                LearnScreen(onTitleChanged)
+            }
+            composable(Account.route) account@{
                 val currentUser by accountViewModel.currentUser.collectAsStateLifecycleAware()
                 val user = currentUser ?: kotlin.run {
                     onSignOut()

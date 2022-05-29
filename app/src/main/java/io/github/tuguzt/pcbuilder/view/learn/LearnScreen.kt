@@ -1,4 +1,4 @@
-package io.github.tuguzt.pcbuilder.view.builds
+package io.github.tuguzt.pcbuilder.view.learn
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
@@ -15,11 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 
-/**
- * Application screen which represents *Builds* main application destination.
- */
 @Composable
-fun BuildsScreen(onTitleChanged: (String) -> Unit) {
+fun LearnScreen(onTitleChanged: (String) -> Unit) {
     val appName = stringResource(R.string.app_name)
     SideEffect { onTitleChanged(appName) }
 
@@ -40,10 +37,10 @@ fun BuildsScreen(onTitleChanged: (String) -> Unit) {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
-private fun BuildsScreenPreview() {
+private fun LearnScreenPreview() {
     PCBuilderTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            BuildsScreen(onTitleChanged = {})
+            LearnScreen(onTitleChanged = {})
         }
     }
 }

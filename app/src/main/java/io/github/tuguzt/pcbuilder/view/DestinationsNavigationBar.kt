@@ -73,7 +73,7 @@ private fun DestinationsNavigationBarPreview() {
             bottomBar = {
                 DestinationsNavigationBar(
                     navController = rememberNavController(),
-                    destinations = listOf(Components, Builds, Account),
+                    destinations = listOf(Components, Builds, Learn, Account),
                 )
             },
             content = {},
