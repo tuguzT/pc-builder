@@ -3,22 +3,16 @@ package io.github.tuguzt.pcbuilder.repository.room.dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Update
-import io.github.tuguzt.pcbuilder.domain.model.Identifiable
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Base DAO for the application.
  */
-interface IDao<I : Any, T : Identifiable<I>> {
+interface IDao<T> {
     /**
      * Retrieves all instances of [T].
      */
     fun getAll(): Flow<List<T>>
-
-    /**
-     * Finds one instance of [T] by [id].
-     */
-    fun findById(id: I): Flow<T>
 
     /**
      * Inserts one instance of [T] into the table.

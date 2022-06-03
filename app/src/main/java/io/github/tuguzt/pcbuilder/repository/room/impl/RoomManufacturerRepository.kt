@@ -12,30 +12,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class RoomManufacturerRepository(
-    private val manufacturerDao: ManufacturerDao,
-) : Repository<NanoId, ManufacturerData> {
+class RoomManufacturerRepository(private val dao: ManufacturerDao) :
+    Repository<NanoId, ManufacturerData> {
 
     override fun getAll(): Flow<List<ManufacturerData>> =
-        manufacturerDao.getAll().map { it.map(ManufacturerEntity::toData) }
+        dao.getAll().map { it.map(ManufacturerEntity::toData) }
 
     override fun findById(id: NanoId): Flow<ManufacturerData> =
-        manufacturerDao.findById(id.toString()).map { it.toData() }
+        dao.findById(id.toString()).map { it.toData() }
 
-    suspend fun findByIdNow(id: NanoId): ManufacturerData? = withContext(Dispatchers.IO) {
-        manufacturerDao.findByIdNow(id.toString())?.toData()
-    }
+    suspend fun findByIdNow(id: NanoId): ManufacturerData? =
+        withContext(Dispatchers.IO) { dao.findByIdNow(id.toString())?.toData() }
 
     override suspend fun save(item: ManufacturerData): Unit = withContext(Dispatchers.IO) {
-        if (manufacturerDao.findByIdNow(item.id.toString()) == null) {
-            manufacturerDao.insert(item.toEntity())
+        if (dao.findByIdNow(item.id.toString()) == null) {
+            dao.insert(item.toEntity())
         }
-        manufacturerDao.update(item.toEntity())
+        dao.update(item.toEntity())
     }
 
     override suspend fun delete(item: ManufacturerData): Unit =
-        withContext(Dispatchers.IO) { manufacturerDao.delete(item.toEntity()) }
+        withContext(Dispatchers.IO) { dao.delete(item.toEntity()) }
 
-    override suspend fun clear(): Unit =
-        withContext(Dispatchers.IO) { manufacturerDao.clear() }
+    override suspend fun clear(): Unit = withContext(Dispatchers.IO) { dao.clear() }
 }

@@ -6,7 +6,7 @@ import io.github.tuguzt.pcbuilder.repository.room.dto.component.ManufacturerEnti
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ManufacturerDao : IDao<String, ManufacturerEntity> {
+interface ManufacturerDao : IIdentifiableDao<String, ManufacturerEntity> {
     @Query("SELECT * FROM manufacturer")
     override fun getAll(): Flow<List<ManufacturerEntity>>
 
@@ -17,5 +17,5 @@ interface ManufacturerDao : IDao<String, ManufacturerEntity> {
     override suspend fun clear()
 
     @Query("SELECT * FROM manufacturer WHERE manufacturerId = :id")
-    suspend fun findByIdNow(id: String): ManufacturerEntity?
+    override suspend fun findByIdNow(id: String): ManufacturerEntity?
 }

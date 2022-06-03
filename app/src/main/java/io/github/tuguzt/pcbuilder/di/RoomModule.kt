@@ -7,14 +7,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
+import io.github.tuguzt.pcbuilder.domain.model.component.cases.data.CaseData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
 import io.github.tuguzt.pcbuilder.repository.Repository
 import io.github.tuguzt.pcbuilder.repository.room.PCBuilderDatabase
 import io.github.tuguzt.pcbuilder.repository.room.buildDatabase
-import io.github.tuguzt.pcbuilder.repository.room.dao.ComponentDao
-import io.github.tuguzt.pcbuilder.repository.room.dao.ManufacturerDao
-import io.github.tuguzt.pcbuilder.repository.room.impl.RoomComponentRepository
-import io.github.tuguzt.pcbuilder.repository.room.impl.RoomManufacturerRepository
+import io.github.tuguzt.pcbuilder.repository.room.dao.*
+import io.github.tuguzt.pcbuilder.repository.room.impl.*
 import javax.inject.Singleton
 
 @Module
@@ -33,7 +32,24 @@ object RoomModule {
         database.manufacturerDao
 
     @Provides
-    fun provideRoomManufacturerRepository(dao: ManufacturerDao) = RoomManufacturerRepository(dao)
+    fun provideMotherboardFormFactorDao(database: PCBuilderDatabase): MotherboardFormFactorDao =
+        database.motherboardFormFactorDao
+
+    @Provides
+    fun provideCaseDao(database: PCBuilderDatabase): CaseDao = database.caseDao
+
+    @Provides
+    fun provideCaseMotherboardFormFactorCrossRefDao(database: PCBuilderDatabase): CaseMotherboardFormFactorCrossRefDao =
+        database.caseMotherboardFormFactorCrossRefDao
+
+    @Provides
+    fun provideRoomManufacturerRepository(dao: ManufacturerDao): RoomManufacturerRepository =
+        RoomManufacturerRepository(dao)
+
+    @Provides
+    fun provideRoomMotherboardFormFactorRepository(
+        dao: MotherboardFormFactorDao,
+    ): RoomMotherboardFormFactorRepository = RoomMotherboardFormFactorRepository(dao)
 
     @Provides
     fun provideRoomComponentRepository(
@@ -41,4 +57,24 @@ object RoomModule {
         manufacturerRepository: RoomManufacturerRepository,
     ): Repository<NanoId, ComponentData> =
         RoomComponentRepository(componentDao, manufacturerRepository)
+
+    @Provides
+    fun provideRoomCaseMotherboardFormFactorCrossRefRepository(
+        dao: CaseMotherboardFormFactorCrossRefDao,
+    ): RoomCaseMotherboardFormFactorCrossRefRepository =
+        RoomCaseMotherboardFormFactorCrossRefRepository(dao)
+
+    @Provides
+    fun provideRoomCaseRepository(
+        caseDao: CaseDao,
+        componentRepository: Repository<NanoId, ComponentData>,
+        motherboardFormFactorRepository: RoomMotherboardFormFactorRepository,
+        caseMotherboardFormFactorCrossRefRepository: RoomCaseMotherboardFormFactorCrossRefRepository,
+    ): Repository<NanoId, CaseData> =
+        RoomCaseRepository(
+            caseDao,
+            componentRepository as RoomComponentRepository,
+            motherboardFormFactorRepository,
+            caseMotherboardFormFactorCrossRefRepository,
+        )
 }

@@ -52,6 +52,13 @@ class RoomComponentRepository(
             makeComponentData(it, manufacturer)
         }
 
+    suspend fun findByIdNow(id: NanoId): ComponentData? = withContext(Dispatchers.IO) {
+        componentDao.findByIdNow(id.toString())?.let {
+            val manufacturer = manufacturerRepository.findByIdNow(NanoId(it.manufacturerId))!!
+            makeComponentData(it, manufacturer)
+        }
+    }
+
     override suspend fun save(item: ComponentData): Unit = withContext(Dispatchers.IO) {
         manufacturerRepository.save(item.manufacturer)
         if (componentDao.findByIdNow(item.id.toString()) == null) {

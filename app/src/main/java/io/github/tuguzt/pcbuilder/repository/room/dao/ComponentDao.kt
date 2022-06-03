@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  * @see Component
  */
 @Dao
-interface ComponentDao : IDao<String, ComponentEntity> {
+interface ComponentDao : IIdentifiableDao<String, ComponentEntity> {
     @Query("SELECT * FROM component")
     override fun getAll(): Flow<List<ComponentEntity>>
 
@@ -23,7 +23,7 @@ interface ComponentDao : IDao<String, ComponentEntity> {
     override suspend fun clear()
 
     @Query("SELECT * FROM component WHERE componentId = :id")
-    suspend fun findByIdNow(id: String): ComponentEntity?
+    override suspend fun findByIdNow(id: String): ComponentEntity?
 
     @Query("SELECT * FROM component WHERE name LIKE :name")
     fun findByName(name: String): Flow<List<ComponentEntity>>

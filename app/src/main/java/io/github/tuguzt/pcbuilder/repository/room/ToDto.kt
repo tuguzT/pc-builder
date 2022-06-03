@@ -1,10 +1,13 @@
 package io.github.tuguzt.pcbuilder.repository.room
 
 import io.github.tuguzt.pcbuilder.domain.model.component.asMeasure
+import io.github.tuguzt.pcbuilder.domain.model.component.cases.data.CaseData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ManufacturerData
 import io.github.tuguzt.pcbuilder.repository.room.dto.component.ComponentEntity
 import io.github.tuguzt.pcbuilder.repository.room.dto.component.ManufacturerEntity
+import io.github.tuguzt.pcbuilder.repository.room.dto.component.cases.CaseEntity
+import io.github.tuguzt.pcbuilder.repository.room.dto.component.cases.toEmbedded
 
 /**
  * Converts [ComponentData] object to [ComponentEntity] object.
@@ -21,4 +24,21 @@ fun ComponentData.toEntity() = ComponentEntity(
 /**
  * Converts [ManufacturerData] object to [ManufacturerEntity] object.
  */
-fun ManufacturerData.toEntity(): ManufacturerEntity = ManufacturerEntity("$id", name, description)
+fun ManufacturerData.toEntity(): ManufacturerEntity = ManufacturerEntity(
+    manufacturerId = "$id",
+    name = name,
+    description = description,
+)
+
+/**
+ * Converts [CaseData] object to [CaseEntity] object.
+ */
+fun CaseData.toEntity(): CaseEntity = CaseEntity(
+    caseId = "$id",
+    driveBays = driveBays.toEmbedded(),
+    expansionSlots = expansionSlots.toEmbedded(),
+    powerSupply = powerSupply?.power,
+    powerSupplyShroud = powerSupplyShroud,
+    sidePanelWindow = sidePanelWindow,
+    type = type,
+)
