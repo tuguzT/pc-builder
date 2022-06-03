@@ -14,6 +14,7 @@ import io.github.tuguzt.pcbuilder.repository.room.buildDatabase
 import io.github.tuguzt.pcbuilder.repository.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.repository.room.dao.ManufacturerDao
 import io.github.tuguzt.pcbuilder.repository.room.impl.RoomComponentRepository
+import io.github.tuguzt.pcbuilder.repository.room.impl.RoomManufacturerRepository
 import javax.inject.Singleton
 
 @Module
@@ -32,8 +33,12 @@ object RoomModule {
         database.manufacturerDao
 
     @Provides
+    fun provideRoomManufacturerRepository(dao: ManufacturerDao) = RoomManufacturerRepository(dao)
+
+    @Provides
     fun provideRoomComponentRepository(
         componentDao: ComponentDao,
-        manufacturerDao: ManufacturerDao,
-    ): Repository<NanoId, ComponentData> = RoomComponentRepository(componentDao, manufacturerDao)
+        manufacturerRepository: RoomManufacturerRepository,
+    ): Repository<NanoId, ComponentData> =
+        RoomComponentRepository(componentDao, manufacturerRepository)
 }
