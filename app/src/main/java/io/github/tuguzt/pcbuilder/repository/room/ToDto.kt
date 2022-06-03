@@ -1,22 +1,24 @@
 package io.github.tuguzt.pcbuilder.repository.room
 
-import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.domain.model.component.ComponentData
-import io.github.tuguzt.pcbuilder.repository.room.dto.component.ComponentDto
+import io.github.tuguzt.pcbuilder.domain.model.component.asMeasure
+import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.ManufacturerData
+import io.github.tuguzt.pcbuilder.repository.room.dto.component.ComponentEntity
+import io.github.tuguzt.pcbuilder.repository.room.dto.component.ManufacturerEntity
 
 /**
- * Converts [ComponentData] object to [ComponentDto] object.
+ * Converts [ComponentData] object to [ComponentEntity] object.
  */
-fun ComponentData.toDto() = ComponentDto(id, name, description, weight, size, imageUri = null)
+fun ComponentData.toEntity() = ComponentEntity(
+    componentId = "$id",
+    name = name,
+    description = description,
+    weight = weight.asMeasure(),
+    size = size,
+    manufacturerId = manufacturer.id.toString(),
+)
 
 /**
- * Converts [Component] object to [ComponentDto] object.
+ * Converts [ManufacturerData] object to [ManufacturerEntity] object.
  */
-fun Component.toDto(): ComponentDto = when (this) {
-    is ComponentDto -> this
-    is ComponentData -> toDto()
-    else -> {
-        val className = this::class.simpleName
-        throw IllegalStateException("Unable to convert $className to ComponentDto")
-    }
-}
+fun ManufacturerData.toEntity(): ManufacturerEntity = ManufacturerEntity("$id", name, description)

@@ -43,7 +43,7 @@ class AccountViewModel @Inject constructor(
             is NetworkResponse.Success -> {
                 val user = result.body
                 sharedPreferences.edit {
-                    putString(User::id.name, user.id)
+                    putString(User::id.name, "${user.id}")
                     putString(User::imageUri.name, user.imageUri)
                     putString(User::email.name, user.email)
                     putString(User::role.name, user.role.toString())

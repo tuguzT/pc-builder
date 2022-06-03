@@ -19,6 +19,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.tuguzt.pcbuilder.R
+import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.view.collectAsStateLifecycleAware
 import io.github.tuguzt.pcbuilder.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.viewmodel.components.ComponentsViewModel
@@ -99,7 +100,8 @@ fun ComponentsScreen(
             ),
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("componentId") ?: return@composable
-            val component by remember(id) { componentsViewModel.findById(id) }
+            val nanoId = NanoId(id)
+            val component by remember(id) { componentsViewModel.findById(nanoId) }
                 .collectAsStateLifecycleAware(initial = null)
 
             SideEffect {

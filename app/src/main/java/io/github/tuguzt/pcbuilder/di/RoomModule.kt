@@ -6,11 +6,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.tuguzt.pcbuilder.domain.model.component.Component
+import io.github.tuguzt.pcbuilder.domain.model.NanoId
+import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
 import io.github.tuguzt.pcbuilder.repository.Repository
 import io.github.tuguzt.pcbuilder.repository.room.PCBuilderDatabase
 import io.github.tuguzt.pcbuilder.repository.room.buildDatabase
 import io.github.tuguzt.pcbuilder.repository.room.dao.ComponentDao
+import io.github.tuguzt.pcbuilder.repository.room.dao.ManufacturerDao
 import io.github.tuguzt.pcbuilder.repository.room.impl.RoomComponentRepository
 import javax.inject.Singleton
 
@@ -26,6 +28,12 @@ object RoomModule {
     fun provideComponentDao(database: PCBuilderDatabase): ComponentDao = database.componentDao
 
     @Provides
-    fun provideRoomComponentRepository(dao: ComponentDao): Repository<String, Component> =
-        RoomComponentRepository(dao)
+    fun provideManufacturerDao(database: PCBuilderDatabase): ManufacturerDao =
+        database.manufacturerDao
+
+    @Provides
+    fun provideRoomComponentRepository(
+        componentDao: ComponentDao,
+        manufacturerDao: ManufacturerDao,
+    ): Repository<NanoId, ComponentData> = RoomComponentRepository(componentDao, manufacturerDao)
 }

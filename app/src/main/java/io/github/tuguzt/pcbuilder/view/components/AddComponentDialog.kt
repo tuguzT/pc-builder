@@ -22,8 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.tuguzt.pcbuilder.R
 import io.github.tuguzt.pcbuilder.domain.interactor.randomNanoId
-import io.github.tuguzt.pcbuilder.domain.model.component.ComponentData
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
+import io.github.tuguzt.pcbuilder.domain.model.component.Weight
+import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.ManufacturerData
 import io.github.tuguzt.pcbuilder.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.view.utils.HelperOutlinedTextField
 import io.nacular.measured.units.Length.Companion.millimeters
@@ -145,11 +147,15 @@ fun AddComponentDialog(
                         id = randomNanoId(),
                         name = name,
                         description = description,
-                        weight = weight.toDouble() * grams,
+                        weight = Weight(weight.toDouble() * grams),
                         size = Size(
                             length = length.toDouble() * millimeters,
                             width = width.toDouble() * millimeters,
                             height = height.toDouble() * millimeters,
+                        ),
+                        manufacturer = ManufacturerData(
+                            name = "Example",
+                            description = "Hello World",
                         ),
                     )
                     onAddComponent(component)

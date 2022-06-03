@@ -44,7 +44,7 @@ class AuthViewModel @Inject constructor(
             is NetworkResponse.Success -> {
                 withContext(Dispatchers.IO) {
                     sharedPreferences.edit {
-                        putString("access_token", userToken.body.accessToken)
+                        putString("access_token", userToken.body.token)
                     }
                 }
                 NetworkResponse.Success(Unit, userToken.response)
@@ -65,7 +65,7 @@ class AuthViewModel @Inject constructor(
             is NetworkResponse.Success -> {
                 withContext(Dispatchers.IO) {
                     sharedPreferences.edit {
-                        putString("access_token", userToken.body.accessToken)
+                        putString("access_token", userToken.body.token)
                     }
                 }
                 NetworkResponse.Success(Unit, userToken.response)
@@ -94,7 +94,7 @@ class AuthViewModel @Inject constructor(
             is NetworkResponse.Success -> {
                 withContext(Dispatchers.IO) {
                     sharedPreferences.edit {
-                        putString("access_token", userToken.body.accessToken)
+                        putString("access_token", userToken.body.token)
                     }
                 }
                 NetworkResponse.Success(Unit, userToken.response)

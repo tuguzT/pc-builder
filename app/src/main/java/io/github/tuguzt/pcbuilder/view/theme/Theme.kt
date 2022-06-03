@@ -10,7 +10,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import com.example.ui.theme.AppTypography
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.color.MaterialColors
 
