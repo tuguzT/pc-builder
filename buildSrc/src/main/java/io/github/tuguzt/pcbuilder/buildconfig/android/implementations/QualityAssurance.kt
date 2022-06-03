@@ -1,7 +1,7 @@
 package io.github.tuguzt.pcbuilder.buildconfig.android.implementations
 
-import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.QualityAssurance
 import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.JetpackCompose
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.QualityAssurance
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 fun DependencyHandler.unitTestingImplementation() {

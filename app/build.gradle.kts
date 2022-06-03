@@ -15,7 +15,7 @@ plugins {
 
 android {
     compileSdk = 32
-    namespace = "io.github.tuguzt.pcbuilder"
+    namespace = "io.github.tuguzt.pcbuilder.presentation"
 
     defaultConfig {
         minSdk = 23
@@ -64,6 +64,8 @@ configurations.all {
 dependencies {
     // Domain layer
     implementation(DomainLayer.dependency) { isChanging = true }
+    // Data layer
+    implementation(project(":data"))
 
     // Required Android dependencies
     androidBaseImplementation()

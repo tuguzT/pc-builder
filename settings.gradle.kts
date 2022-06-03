@@ -17,4 +17,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "PC Builder"
+
 include(":app")
+include(":data")
