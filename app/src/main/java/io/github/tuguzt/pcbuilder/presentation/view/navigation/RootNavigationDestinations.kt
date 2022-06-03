@@ -1,6 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.view.navigation
 
-import io.github.tuguzt.pcbuilder.presentation.view.RootScreen
+import io.github.tuguzt.pcbuilder.presentation.view.root.RootScreen
 
 /**
  * Navigation destinations of the application's [root screen][RootScreen].

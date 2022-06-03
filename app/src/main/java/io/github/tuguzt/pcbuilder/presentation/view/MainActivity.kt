@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.tuguzt.pcbuilder.presentation.view.root.RootScreen
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
 
 /**

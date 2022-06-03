@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import io.github.tuguzt.pcbuilder.presentation.R
-import io.github.tuguzt.pcbuilder.presentation.view.MainScreen
+import io.github.tuguzt.pcbuilder.presentation.view.root.main.MainScreen
 
 /**
  * Bottom navigation destinations of the application's [main screen][MainScreen].

@@ -3,7 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.tuguzt.pcbuilder.presentation.R
-import io.github.tuguzt.pcbuilder.presentation.view.components.ComponentsScreen
+import io.github.tuguzt.pcbuilder.presentation.view.root.main.components.ComponentsScreen
 
 /**
  * Describable navigation destinations
