@@ -14,7 +14,7 @@
         android:networkSecurityConfig="@xml/test_network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PCBuilder"
+        android:theme="@style/Theme.PCBuilder.Starting"
         tools:targetApi="n">
         <activity
             android:name=".view.MainActivity"

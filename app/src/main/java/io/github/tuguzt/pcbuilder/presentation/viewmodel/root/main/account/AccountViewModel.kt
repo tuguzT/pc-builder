@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
 import io.github.tuguzt.pcbuilder.data.repository.CurrentUserRepository
 import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
@@ -31,6 +32,7 @@ class AccountViewModel @Inject constructor(
     private val tokenRepository: UserTokenRepository,
     private val googleSignInClient: GoogleSignInClient,
     private val currentUserRepository: CurrentUserRepository,
+    @ApplicationContext context: Context,
 ) : ViewModel() {
 
     companion object {
@@ -42,10 +44,14 @@ class AccountViewModel @Inject constructor(
 
     private var updateJob: Job? = null
 
+    init {
+        updateUser(context)
+    }
+
     fun updateUser(context: Context) {
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
-            _uiState = uiState.copy(isUpdating = true)
+            _uiState = uiState.copy(isLoading = true)
             tokenRepository.getToken() ?: kotlin.run {
                 signOut()
                 return@launch
@@ -55,18 +61,18 @@ class AccountViewModel @Inject constructor(
                 currentUserRepository.updateCurrentUser(it)
                 _uiState = uiState.copy(currentUser = it)
             }
-            _uiState = uiState.copy(isUpdating = false)
+            _uiState = uiState.copy(isLoading = false)
         }
     }
 
     fun signOut() {
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
-            _uiState = uiState.copy(isUpdating = true)
+            _uiState = uiState.copy(isLoading = true)
             tokenRepository.setToken(null)
             googleSignInClient.signOut().await()
             currentUserRepository.updateCurrentUser(currentUser = null)
-            _uiState = uiState.copy(currentUser = null, isUpdating = false)
+            _uiState = uiState.copy(currentUser = null, isLoading = false)
         }
     }
 

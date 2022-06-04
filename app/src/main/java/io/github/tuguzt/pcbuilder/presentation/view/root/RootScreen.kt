@@ -12,12 +12,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations.Main
-import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations.Splash
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.navigateAuth
 import io.github.tuguzt.pcbuilder.presentation.view.root.auth.authGraph
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.MainScreen
-import io.github.tuguzt.pcbuilder.presentation.view.root.splash.SplashScreen
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.auth.AuthViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.signedIn
@@ -28,6 +27,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.signe
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RootScreen(
+    startDestination: RootNavigationDestinations,
     accountViewModel: AccountViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
@@ -38,14 +38,11 @@ fun RootScreen(
                 .padding(padding)
                 .fillMaxSize(),
             navController = navController,
-            startDestination = Splash.route,
+            startDestination = startDestination.route,
         ) {
-            composable(Splash.route) {
-                SplashScreen(accountViewModel, navController)
-            }
             composable(Main.route) {
                 LaunchedEffect(accountViewModel.uiState) {
-                    if (accountViewModel.uiState.isUpdating || authViewModel.uiState.isLoading)
+                    if (accountViewModel.uiState.isLoading || authViewModel.uiState.isLoading)
                         return@LaunchedEffect
 
                     if (!accountViewModel.uiState.signedIn) {

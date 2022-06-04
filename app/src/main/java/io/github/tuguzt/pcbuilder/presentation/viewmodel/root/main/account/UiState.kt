@@ -5,7 +5,7 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 
 data class AccountState(
     val currentUser: User? = null,
-    val isUpdating: Boolean = true,
+    val isLoading: Boolean = true,
     val userMessages: List<UserMessage> = listOf(),
 )
 

@@ -1,9 +1,9 @@
 package io.github.tuguzt.pcbuilder.presentation.view.navigation
 
 import androidx.navigation.NavController
-import io.github.tuguzt.pcbuilder.presentation.view.root.main.MainScreen
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations.Auth
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations.Main
+import io.github.tuguzt.pcbuilder.presentation.view.root.main.MainScreen
 
 /**
  * Navigate to the *Authentication* user flow.
