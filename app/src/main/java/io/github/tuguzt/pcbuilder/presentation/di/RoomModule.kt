@@ -10,8 +10,6 @@ import io.github.tuguzt.pcbuilder.data.datasource.local.impl.*
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.PCBuilderDatabase
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.buildDatabase
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dao.*
-import io.github.tuguzt.pcbuilder.data.repository.ComponentRepository
-import io.github.tuguzt.pcbuilder.data.repository.impl.ComponentRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -73,8 +71,4 @@ object RoomModule {
             motherboardFormFactorDataSource,
             caseMotherboardFormFactorCrossRefDataSource,
         )
-
-    @Provides
-    fun provideLocalComponentRepository(dataSource: LocalComponentDataSource): ComponentRepository =
-        ComponentRepositoryImpl(dataSource)
 }

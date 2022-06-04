@@ -1,21 +1,25 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account
 
-import androidx.annotation.CheckResult
-import androidx.core.content.edit
+import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendCompletableResponse
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendUsersAPI
-import io.github.tuguzt.pcbuilder.data.datasource.remote.makeUnknownError
-import io.github.tuguzt.pcbuilder.domain.model.user.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
+import io.github.tuguzt.pcbuilder.data.repository.CurrentUserRepository
+import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
+import io.github.tuguzt.pcbuilder.data.repository.UsersRepository
+import io.github.tuguzt.pcbuilder.domain.model.NanoId
+import io.github.tuguzt.pcbuilder.presentation.R
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import mu.KotlinLogging
 import javax.inject.Inject
 
 /**
@@ -23,44 +27,76 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    private val backendUsersAPI: BackendUsersAPI,
-    private val sharedPreferences: EncryptedSharedPreferences,
+    private val usersRepository: UsersRepository,
+    private val tokenRepository: UserTokenRepository,
     private val googleSignInClient: GoogleSignInClient,
+    private val currentUserRepository: CurrentUserRepository,
 ) : ViewModel() {
 
-    private val _currentUser: MutableStateFlow<User?> = MutableStateFlow(null)
-    val currentUser = _currentUser.asStateFlow()
+    companion object {
+        private val logger = KotlinLogging.logger {}
+    }
 
-    @CheckResult
-    suspend fun updateUser(): BackendCompletableResponse {
-        sharedPreferences.getString("access_token", null)
-            ?: return makeUnknownError("No information about any user")
+    private var _uiState by mutableStateOf(AccountState())
+    val uiState get() = _uiState
 
-        val result = withContext(Dispatchers.IO) {
-            backendUsersAPI.current()
-        }
-        return when (result) {
-            is NetworkResponse.Success -> {
-                val user = result.body
-                sharedPreferences.edit {
-                    putString(User::id.name, "${user.id}")
-                    putString(User::imageUri.name, user.imageUri)
-                    putString(User::email.name, user.email)
-                    putString(User::role.name, user.role.toString())
-                }
-                _currentUser.emit(user)
-                NetworkResponse.Success(Unit, result.response)
+    private var updateJob: Job? = null
+
+    fun updateUser(context: Context) {
+        updateJob?.cancel()
+        updateJob = viewModelScope.launch {
+            _uiState = uiState.copy(isUpdating = true)
+            tokenRepository.getToken() ?: kotlin.run {
+                signOut()
+                return@launch
             }
-            is NetworkResponse.Error -> {
-                @Suppress("UNCHECKED_CAST")
-                result as BackendCompletableResponse
+
+            usersRepository.current().handle(context) {
+                currentUserRepository.updateCurrentUser(it)
+                _uiState = uiState.copy(currentUser = it)
             }
+            _uiState = uiState.copy(isUpdating = false)
         }
     }
 
-    suspend fun signOut() {
-        sharedPreferences.edit { clear() }
-        googleSignInClient.signOut().await()
-        _currentUser.emit(null)
+    fun signOut() {
+        updateJob?.cancel()
+        updateJob = viewModelScope.launch {
+            _uiState = uiState.copy(isUpdating = true)
+            tokenRepository.setToken(null)
+            googleSignInClient.signOut().await()
+            currentUserRepository.updateCurrentUser(currentUser = null)
+            _uiState = uiState.copy(currentUser = null, isUpdating = false)
+        }
+    }
+
+    fun userMessageShown(messageId: NanoId) {
+        val messages = uiState.userMessages.filterNot { it.id == messageId }
+        _uiState = uiState.copy(userMessages = messages)
+    }
+
+    private inline fun <S> BackendResponse<S>.handle(
+        context: Context,
+        serverErrorMessage: String = context.getString(R.string.server_error),
+        networkErrorMessage: String = context.getString(R.string.network_error),
+        unknownErrorMessage: String = context.getString(R.string.unknown_error),
+        onSuccess: (S) -> Unit,
+    ): Unit = when (this) {
+        is NetworkResponse.Success -> onSuccess(body)
+        is NetworkResponse.ServerError -> {
+            logger.error(error) { "Server error occurred" }
+            val errorMessages = uiState.userMessages + UserMessage(serverErrorMessage)
+            _uiState = uiState.copy(userMessages = errorMessages)
+        }
+        is NetworkResponse.NetworkError -> {
+            logger.error(error) { "Network error occurred" }
+            val errorMessages = uiState.userMessages + UserMessage(networkErrorMessage)
+            _uiState = uiState.copy(userMessages = errorMessages)
+        }
+        is NetworkResponse.UnknownError -> {
+            logger.error(error) { "Unknown error occurred" }
+            val errorMessages = uiState.userMessages + UserMessage(unknownErrorMessage)
+            _uiState = uiState.copy(userMessages = errorMessages)
+        }
     }
 }

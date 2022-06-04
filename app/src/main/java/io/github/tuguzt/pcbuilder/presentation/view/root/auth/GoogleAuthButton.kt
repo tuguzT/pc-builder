@@ -17,12 +17,12 @@ import io.github.tuguzt.pcbuilder.presentation.R
  */
 @Composable
 fun GoogleAuthButton(
-    onClick: (AuthVariant.Google) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     MaterialTheme(colorScheme = lightColorScheme()) {
         ElevatedButton(
-            onClick = { onClick(AuthVariant.Google) },
+            onClick = onClick,
             modifier = modifier,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,

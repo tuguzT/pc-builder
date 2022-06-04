@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
@@ -17,21 +18,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.haroldadmin.cnradapter.NetworkResponse
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
-import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
-import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations.Auth
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.navigateMain
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.auth.AuthViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import mu.KotlinLogging
-
-private val logger = KotlinLogging.logger {}
 
 /**
  * Configures *Authentication* user flow.
@@ -60,11 +54,7 @@ fun NavGraphBuilder.authGraph(
             }
             coroutineScope.launch {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(it.data).await()
-                authViewModel.googleOAuth2(account).handle(context, snackbarHostState) {
-                    accountViewModel.updateUser().handle(context, snackbarHostState) {
-                        navController.navigateMain()
-                    }
-                }
+                authViewModel.googleOAuth2(account, context)
             }
         }
 
@@ -77,20 +67,20 @@ fun NavGraphBuilder.authGraph(
 
         val onSignIn: (AuthVariant) -> Unit = { variant ->
             when (variant) {
-                is AuthVariant.Credentials -> {
-                    val credentials = variant.credentials.toData()
-                    coroutineScope.launch {
-                        authViewModel.auth(credentials).handle(context, snackbarHostState) {
-                            accountViewModel.updateUser().handle(context, snackbarHostState) {
-                                navController.navigateMain()
-                            }
-                        }
-                    }
-                }
+                AuthVariant.Credentials -> authViewModel.auth(context)
                 AuthVariant.Google -> {
                     val intent = authViewModel.googleSignInIntent
                     launcher.launch(intent)
                 }
+            }
+        }
+
+        LaunchedEffect(authViewModel.uiState) {
+            if (authViewModel.uiState.isLoading) return@LaunchedEffect
+
+            if (authViewModel.uiState.isLoggedIn) {
+                accountViewModel.updateUser(context)
+                navController.navigateMain()
             }
         }
 
@@ -104,6 +94,16 @@ fun NavGraphBuilder.authGraph(
             },
             snackbarHostState = snackbarHostState,
         )
+
+        authViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+            LaunchedEffect(message) {
+                snackbarHostState.showSnackbar(
+                    message = message.message,
+                    actionLabel = context.getString(R.string.dismiss),
+                )
+                authViewModel.userMessageShown(message.id)
+            }
+        }
     }
     composable(Auth.SignUp.route) {
         val snackbarHostState = remember { SnackbarHostState() }
@@ -114,20 +114,20 @@ fun NavGraphBuilder.authGraph(
 
         val onSignUp: (AuthVariant) -> Unit = { variant ->
             when (variant) {
-                is AuthVariant.Credentials -> {
-                    val credentials = variant.credentials.toData()
-                    coroutineScope.launch {
-                        authViewModel.register(credentials).handle(context, snackbarHostState) {
-                            accountViewModel.updateUser().handle(context, snackbarHostState) {
-                                navController.navigateMain()
-                            }
-                        }
-                    }
-                }
+                AuthVariant.Credentials -> authViewModel.register(context)
                 AuthVariant.Google -> {
                     val intent = authViewModel.googleSignInIntent
                     launcher.launch(intent)
                 }
+            }
+        }
+
+        LaunchedEffect(authViewModel.uiState) {
+            if (authViewModel.uiState.isLoading) return@LaunchedEffect
+
+            if (authViewModel.uiState.isLoggedIn) {
+                accountViewModel.updateUser(context)
+                navController.navigateMain()
             }
         }
 
@@ -140,44 +140,15 @@ fun NavGraphBuilder.authGraph(
                 }
             },
         )
-    }
-}
 
-/**
- * Convert [UserCredentials] to [UserCredentialsData].
- */
-private fun UserCredentials.toData() = UserCredentialsData(username, password)
-
-/**
- * Handles backend auth errors and shows it to the user.
- */
-private suspend inline fun <S> BackendResponse<S>.handle(
-    context: Context,
-    snackbarHostState: SnackbarHostState,
-    onSuccess: (S) -> Unit,
-) {
-    when (this) {
-        is NetworkResponse.Success -> onSuccess(body)
-        is NetworkResponse.ServerError -> {
-            logger.error(error) { "Server error occurred" }
-            snackbarHostState.showSnackbar(
-                message = context.getString(R.string.server_error),
-                actionLabel = context.getString(R.string.dismiss),
-            )
-        }
-        is NetworkResponse.NetworkError -> {
-            logger.error(error) { "Network error occurred" }
-            snackbarHostState.showSnackbar(
-                message = context.getString(R.string.network_error),
-                actionLabel = context.getString(R.string.dismiss),
-            )
-        }
-        is NetworkResponse.UnknownError -> {
-            logger.error(error) { "Unknown error occurred" }
-            snackbarHostState.showSnackbar(
-                message = context.getString(R.string.unknown_error),
-                actionLabel = context.getString(R.string.dismiss),
-            )
+        authViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+            LaunchedEffect(message) {
+                snackbarHostState.showSnackbar(
+                    message = message.message,
+                    actionLabel = context.getString(R.string.dismiss),
+                )
+                authViewModel.userMessageShown(message.id)
+            }
         }
     }
 }

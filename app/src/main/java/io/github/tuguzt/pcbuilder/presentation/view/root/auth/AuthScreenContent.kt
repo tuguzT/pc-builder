@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.utils.PasswordTextField
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.auth.AuthViewModel
@@ -52,13 +51,7 @@ fun AuthScreenContent(
     Spacer(modifier = Modifier.height(32.dp))
 
     Button(
-        onClick = {
-            val credentials = UserCredentialsData(
-                username = viewModel.uiState.username,
-                password = viewModel.uiState.password,
-            )
-            onAuth(AuthVariant.Credentials(credentials))
-        },
+        onClick = { onAuth(AuthVariant.Credentials) },
         enabled = viewModel.uiState.isValid,
         content = { Text(title) },
     )
@@ -72,7 +65,7 @@ fun AuthScreenContent(
 
         // move here to avoid strange compilation error from Compose
         val style = SpanStyle(color = MaterialTheme.colorScheme.primary)
-        withAnnotation(tag = "alternative", annotation = "Go to alternative") {
+        withAnnotation(tag = "alternative", annotation = alternativeDestinationText) {
             withStyle(style = style) {
                 append(alternativeDestinationText)
             }

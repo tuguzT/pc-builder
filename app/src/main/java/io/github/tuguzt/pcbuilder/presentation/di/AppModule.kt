@@ -12,6 +12,17 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.tuguzt.pcbuilder.data.datasource.AuthDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.UserTokenDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.UsersDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalComponentDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalUserTokenDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteAuthDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteUsersDataSource
+import io.github.tuguzt.pcbuilder.data.repository.*
+import io.github.tuguzt.pcbuilder.data.repository.impl.*
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 import io.github.tuguzt.pcbuilder.domain.interactor.serialization.json as domainJson
@@ -59,4 +70,36 @@ object AppModule {
         )
         return encryptedSharedPreferences as EncryptedSharedPreferences
     }
+
+    @Provides
+    fun provideLocalComponentRepository(dataSource: LocalComponentDataSource): ComponentRepository =
+        ComponentRepositoryImpl(dataSource)
+
+    @Provides
+    fun provideAuthDataSource(backendAuthAPI: BackendAuthAPI): AuthDataSource =
+        RemoteAuthDataSource(backendAuthAPI)
+
+    @Provides
+    fun provideUsersDataSource(backendUsersAPI: BackendUsersAPI): UsersDataSource =
+        RemoteUsersDataSource(backendUsersAPI)
+
+    @Provides
+    fun provide(sharedPreferences: EncryptedSharedPreferences): UserTokenDataSource =
+        LocalUserTokenDataSource(sharedPreferences)
+
+    @Provides
+    fun provideAuthRepository(dataSource: AuthDataSource): AuthRepository =
+        AuthRepositoryImpl(dataSource)
+
+    @Provides
+    fun provideUsersRepository(dataSource: UsersDataSource): UsersRepository =
+        UsersRepositoryImpl(dataSource)
+
+    @Provides
+    fun provideTokenRepository(dataSource: UserTokenDataSource): UserTokenRepository =
+        UserTokenRepositoryImpl(dataSource)
+
+    @Provides
+    @Singleton
+    fun provideCurrentUserRepository(): CurrentUserRepository = CurrentUserRepositoryImpl()
 }

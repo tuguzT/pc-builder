@@ -24,16 +24,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.presentation.R
-import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
 import io.github.tuguzt.pcbuilder.presentation.view.ToastDuration
-import io.github.tuguzt.pcbuilder.presentation.view.collectAsStateLifecycleAware
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.account.AccountScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.learn.LearnScreen
-import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.showToast
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
 
 /**
@@ -42,7 +41,6 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.Accou
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    onSignOut: () -> Unit,
     accountViewModel: AccountViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
@@ -89,11 +87,7 @@ fun MainScreen(
                 LearnScreen(onTitleChanged)
             }
             composable(Account.route) account@{
-                val currentUser by accountViewModel.currentUser.collectAsStateLifecycleAware()
-                val user = currentUser ?: kotlin.run {
-                    onSignOut()
-                    return@account
-                }
+                val user = accountViewModel.uiState.currentUser ?: return@account
 
                 val context = LocalContext.current
                 val toastText = stringResource(R.string.signed_out_success)
@@ -102,7 +96,7 @@ fun MainScreen(
                     onTitleChanged = onTitleChanged,
                     onSignOut = {
                         showToast(context, toastText, ToastDuration.Short)
-                        onSignOut()
+                        accountViewModel.signOut()
                     },
                 )
             }
@@ -118,7 +112,7 @@ fun MainScreen(
 @Composable
 private fun MainScreenPreview() {
     PCBuilderTheme {
-        MainScreen(onSignOut = {})
+        MainScreen()
     }
 }
 
