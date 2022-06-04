@@ -12,13 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 
 @Composable
-fun LearnScreen(onTitleChanged: (String) -> Unit) {
+fun LearnScreen(mainViewModel: MainViewModel = hiltViewModel()) {
     val appName = stringResource(R.string.app_name)
-    SideEffect { onTitleChanged(appName) }
+    SideEffect { mainViewModel.updateTitle(appName) }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -40,7 +42,7 @@ fun LearnScreen(onTitleChanged: (String) -> Unit) {
 private fun LearnScreenPreview() {
     PCBuilderTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            LearnScreen(onTitleChanged = {})
+            LearnScreen()
         }
     }
 }

@@ -26,7 +26,6 @@ fun DestinationsNavigationBar(
     navController: NavHostController,
     destinations: List<BottomNavigationDestination>,
     modifier: Modifier = Modifier,
-    onDestinationNavigate: (BottomNavigationDestination) -> Unit = {},
 ) {
     NavigationBar(modifier = modifier) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -47,7 +46,6 @@ fun DestinationsNavigationBar(
                         launchSingleTop = true
                         restoreState = true
                     }
-                    onDestinationNavigate(destination)
                 }
             )
         }

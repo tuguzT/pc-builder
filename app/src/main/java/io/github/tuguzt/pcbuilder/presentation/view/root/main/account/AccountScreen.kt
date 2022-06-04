@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.fade
@@ -24,18 +25,19 @@ import io.github.tuguzt.pcbuilder.domain.model.user.UserRole
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserData
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 
 /**
  * Application screen which represents *Account* main application destination.
  */
 @Composable
 fun AccountScreen(
-    onTitleChanged: (String) -> Unit,
     user: User,
+    mainViewModel: MainViewModel = hiltViewModel(),
     onSignOut: () -> Unit,
 ) {
     val appName = stringResource(R.string.app_name)
-    SideEffect { onTitleChanged(appName) }
+    SideEffect { mainViewModel.updateTitle(appName) }
 
     Column(
         modifier = Modifier
@@ -107,7 +109,7 @@ private fun AccountScreenPreview() {
                 email = "timurka.tugushev@gmail.com",
                 imageUri = "https://avatars.githubusercontent.com/u/56771526",
             )
-            AccountScreen(onTitleChanged = {}, user = user, onSignOut = {})
+            AccountScreen(user = user, onSignOut = {})
         }
     }
 }

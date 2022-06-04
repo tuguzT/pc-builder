@@ -12,16 +12,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 
 /**
  * Application screen which represents *Builds* main application destination.
  */
 @Composable
-fun BuildsScreen(onTitleChanged: (String) -> Unit) {
+fun BuildsScreen(mainViewModel: MainViewModel = hiltViewModel()) {
     val appName = stringResource(R.string.app_name)
-    SideEffect { onTitleChanged(appName) }
+    SideEffect { mainViewModel.updateTitle(appName) }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -43,7 +45,7 @@ fun BuildsScreen(onTitleChanged: (String) -> Unit) {
 private fun BuildsScreenPreview() {
     PCBuilderTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            BuildsScreen(onTitleChanged = {})
+            BuildsScreen()
         }
     }
 }
