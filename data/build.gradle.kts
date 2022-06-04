@@ -1,3 +1,4 @@
+import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.AndroidBase
 import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.DomainLayer
 import io.github.tuguzt.pcbuilder.buildconfig.android.dependencies.KotlinX
 import io.github.tuguzt.pcbuilder.buildconfig.android.implementations.retrofitImplementation
@@ -15,7 +16,7 @@ android {
     compileSdk = 32
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 32
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -46,6 +47,8 @@ configurations.all {
 
 dependencies {
     implementation(KotlinX.serializationJson)
+    implementation(AndroidBase.security)
+    implementation(AndroidBase.core)
     roomImplementation()
     retrofitImplementation()
     implementation(DomainLayer.dependency) { isChanging = true }

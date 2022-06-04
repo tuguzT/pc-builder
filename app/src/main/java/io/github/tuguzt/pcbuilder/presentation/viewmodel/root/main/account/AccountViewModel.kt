@@ -7,9 +7,9 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendCompletableResponse
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendUsersAPI
-import io.github.tuguzt.pcbuilder.data.repository.backend.makeUnknownError
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendCompletableResponse
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.makeUnknownError
 import io.github.tuguzt.pcbuilder.domain.model.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

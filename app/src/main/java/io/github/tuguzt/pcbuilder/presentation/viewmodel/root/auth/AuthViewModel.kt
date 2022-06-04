@@ -12,9 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendAuthAPI
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendCompletableResponse
-import io.github.tuguzt.pcbuilder.data.repository.backend.makeUnknownError
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendCompletableResponse
+import io.github.tuguzt.pcbuilder.data.datasource.remote.makeUnknownError
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserTokenData
 import kotlinx.coroutines.Dispatchers

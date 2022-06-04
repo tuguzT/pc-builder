@@ -6,14 +6,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.tuguzt.pcbuilder.data.repository.Repository
-import io.github.tuguzt.pcbuilder.data.repository.room.PCBuilderDatabase
-import io.github.tuguzt.pcbuilder.data.repository.room.buildDatabase
-import io.github.tuguzt.pcbuilder.data.repository.room.dao.*
-import io.github.tuguzt.pcbuilder.data.repository.room.impl.*
-import io.github.tuguzt.pcbuilder.domain.model.NanoId
-import io.github.tuguzt.pcbuilder.domain.model.component.cases.data.CaseData
-import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
+import io.github.tuguzt.pcbuilder.data.datasource.local.impl.*
+import io.github.tuguzt.pcbuilder.data.datasource.local.room.PCBuilderDatabase
+import io.github.tuguzt.pcbuilder.data.datasource.local.room.buildDatabase
+import io.github.tuguzt.pcbuilder.data.datasource.local.room.dao.*
+import io.github.tuguzt.pcbuilder.data.repository.ComponentRepository
+import io.github.tuguzt.pcbuilder.data.repository.impl.ComponentRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -43,38 +41,40 @@ object RoomModule {
         database.caseMotherboardFormFactorCrossRefDao
 
     @Provides
-    fun provideRoomManufacturerRepository(dao: ManufacturerDao): RoomManufacturerRepository =
-        RoomManufacturerRepository(dao)
+    fun provideLocalManufacturerDataSource(dao: ManufacturerDao): LocalManufacturerDataSource =
+        LocalManufacturerDataSource(dao)
 
     @Provides
-    fun provideRoomMotherboardFormFactorRepository(
-        dao: MotherboardFormFactorDao,
-    ): RoomMotherboardFormFactorRepository = RoomMotherboardFormFactorRepository(dao)
+    fun provideLocalMotherboardFormFactorDataSource(dao: MotherboardFormFactorDao): LocalMotherboardFormFactorDataSource =
+        LocalMotherboardFormFactorDataSource(dao)
 
     @Provides
-    fun provideRoomComponentRepository(
+    fun provideLocalComponentDataSource(
         componentDao: ComponentDao,
-        manufacturerRepository: RoomManufacturerRepository,
-    ): Repository<NanoId, ComponentData> =
-        RoomComponentRepository(componentDao, manufacturerRepository)
+        manufacturerDataSource: LocalManufacturerDataSource,
+    ): LocalComponentDataSource = LocalComponentDataSource(componentDao, manufacturerDataSource)
 
     @Provides
-    fun provideRoomCaseMotherboardFormFactorCrossRefRepository(
+    fun provideLocalCaseMotherboardFormFactorCrossRefDataSource(
         dao: CaseMotherboardFormFactorCrossRefDao,
-    ): RoomCaseMotherboardFormFactorCrossRefRepository =
-        RoomCaseMotherboardFormFactorCrossRefRepository(dao)
+    ): LocalCaseMotherboardFormFactorCrossRefDataSource =
+        LocalCaseMotherboardFormFactorCrossRefDataSource(dao)
 
     @Provides
-    fun provideRoomCaseRepository(
+    fun provideLocalCaseDataSource(
         caseDao: CaseDao,
-        componentRepository: Repository<NanoId, ComponentData>,
-        motherboardFormFactorRepository: RoomMotherboardFormFactorRepository,
-        caseMotherboardFormFactorCrossRefRepository: RoomCaseMotherboardFormFactorCrossRefRepository,
-    ): Repository<NanoId, CaseData> =
-        RoomCaseRepository(
+        componentDataSource: LocalComponentDataSource,
+        motherboardFormFactorDataSource: LocalMotherboardFormFactorDataSource,
+        caseMotherboardFormFactorCrossRefDataSource: LocalCaseMotherboardFormFactorCrossRefDataSource,
+    ): LocalCaseDataSource =
+        LocalCaseDataSource(
             caseDao,
-            componentRepository as RoomComponentRepository,
-            motherboardFormFactorRepository,
-            caseMotherboardFormFactorCrossRefRepository,
+            componentDataSource,
+            motherboardFormFactorDataSource,
+            caseMotherboardFormFactorCrossRefDataSource,
         )
+
+    @Provides
+    fun provideLocalComponentRepository(dataSource: LocalComponentDataSource): ComponentRepository =
+        ComponentRepositoryImpl(dataSource)
 }

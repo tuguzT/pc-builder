@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,7 +23,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.presentation.R
-import io.github.tuguzt.pcbuilder.presentation.view.collectAsStateLifecycleAware
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -40,9 +42,6 @@ fun ComponentsScreen(
     navController: NavHostController = rememberNavController(),
 ) {
     val appName = stringResource(R.string.app_name)
-
-    val components by componentsViewModel.components
-        .collectAsStateLifecycleAware(listOf(), scope.coroutineContext)
     val snackbarHostState = remember { SnackbarHostState() }
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
@@ -63,7 +62,7 @@ fun ComponentsScreen(
             ) { padding ->
                 ComponentList(
                     modifier = Modifier.padding(padding),
-                    components = components,
+                    components = componentsViewModel.uiState.components,
                     onComponentClick = {
                         navController.navigate("${ComponentDetails.route}/${it.id}")
                     },
@@ -101,12 +100,11 @@ fun ComponentsScreen(
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("componentId") ?: return@composable
             val nanoId = NanoId(id)
-            val component by remember(id) { componentsViewModel.findById(nanoId) }
-                .collectAsStateLifecycleAware(initial = null)
-
-            SideEffect {
-                component?.name?.let { onTitleChanged(it) }
+            val component = remember(id) {
+                componentsViewModel.uiState.components.firstOrNull { it.id == nanoId }
             }
+
+            SideEffect { component?.name?.let { onTitleChanged(it) } }
 
             component?.let { ComponentDetailsScreen(it) }
         }

@@ -7,8 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendAuthAPI
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendUsersAPI
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

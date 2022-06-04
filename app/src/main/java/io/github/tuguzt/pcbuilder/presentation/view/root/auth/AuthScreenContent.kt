@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.utils.PasswordTextField
@@ -28,7 +28,7 @@ fun AuthScreenContent(
     alternativeDestinationDescription: String,
     alternativeDestinationText: String,
     onAlternativeNavigate: () -> Unit,
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel = hiltViewModel(),
 ) {
     Text(text = stringResource(R.string.app_name), style = MaterialTheme.typography.headlineLarge)
     Spacer(modifier = Modifier.height(32.dp))

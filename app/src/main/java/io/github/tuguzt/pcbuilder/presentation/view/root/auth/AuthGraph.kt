@@ -18,7 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.haroldadmin.cnradapter.NetworkResponse
-import io.github.tuguzt.pcbuilder.data.repository.backend.BackendResponse
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
 import io.github.tuguzt.pcbuilder.domain.model.user.UserCredentials
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.presentation.R

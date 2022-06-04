@@ -163,4 +163,4 @@ lint/tmp/
 
 ### Project
 .idea/
-!/app/src/main/java/**/build
+!/**/src/main/java/**/build
