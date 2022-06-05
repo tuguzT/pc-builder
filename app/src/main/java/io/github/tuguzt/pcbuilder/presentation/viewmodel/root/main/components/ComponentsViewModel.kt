@@ -9,19 +9,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.tuguzt.pcbuilder.data.Result
 import io.github.tuguzt.pcbuilder.data.repository.ComponentRepository
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
-import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.di.Local
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * Injectable view model with list of components.
- */
 @HiltViewModel
 class ComponentsViewModel @Inject constructor(
-    @Local private val localRepository: ComponentRepository,
+    private val componentRepository: ComponentRepository,
 ) : ViewModel() {
 
     private var _uiState by mutableStateOf(ComponentsState())
@@ -36,42 +31,15 @@ class ComponentsViewModel @Inject constructor(
     fun updateComponents() {
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
-            updateComponentsNow()
-            _uiState = uiState.copy(isUpdating = false)
-        }
-    }
-
-    private suspend fun updateComponentsNow() {
-        _uiState = uiState.copy(isUpdating = true)
-        _uiState = when (val result = localRepository.getAll()) {
-            is Result.Error -> {
-                val message = UserMessage(ComponentsMessageKind.UnknownError)
-                val userMessages = uiState.userMessages + message
-                uiState.copy(userMessages = userMessages)
+            _uiState = uiState.copy(isUpdating = true)
+            _uiState = when (val result = componentRepository.getAll()) {
+                is Result.Error -> {
+                    val message = UserMessage(ComponentsMessageKind.UnknownError)
+                    val userMessages = uiState.userMessages + message
+                    uiState.copy(userMessages = userMessages, isUpdating = false)
+                }
+                is Result.Success -> uiState.copy(components = result.data, isUpdating = false)
             }
-            is Result.Success -> uiState.copy(components = result.data)
-        }
-    }
-
-    fun addComponent(component: ComponentData) {
-        viewModelScope.launch {
-            localRepository.save(component)
-            updateComponentsNow()
-
-            val message = UserMessage(ComponentsMessageKind.ComponentAdded)
-            val userMessages = uiState.userMessages + message
-            _uiState = uiState.copy(userMessages = userMessages, isUpdating = false)
-        }
-    }
-
-    fun deleteComponent(component: ComponentData) {
-        viewModelScope.launch {
-            localRepository.delete(component)
-            updateComponentsNow()
-
-            val message = UserMessage(ComponentsMessageKind.ComponentDeleted)
-            val userMessages = uiState.userMessages + message
-            _uiState = uiState.copy(userMessages = userMessages, isUpdating = false)
         }
     }
 

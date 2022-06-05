@@ -9,11 +9,3 @@ annotation class AuthRetrofit
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class SimpleRetrofit
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class Local
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class Remote

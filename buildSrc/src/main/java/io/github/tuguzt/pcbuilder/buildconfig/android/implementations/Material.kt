@@ -5,7 +5,6 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 
 // Provide app theming with Material Design
 fun DependencyHandler.materialThemeImplementation() {
-    implementation(JetpackCompose.Material.dependency)
     implementation(JetpackCompose.Material.You.dependency)
     implementation(JetpackCompose.Material.You.windowSizeClass)
 }

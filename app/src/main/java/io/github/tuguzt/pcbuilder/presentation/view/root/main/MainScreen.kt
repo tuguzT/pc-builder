@@ -1,15 +1,12 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main
 
-import android.content.res.Configuration
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -28,17 +24,17 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.ToastDuration
-import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.Favorites
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.SearchComponent
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.account.AccountScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.showToast
-import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.addComponentVisible
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.favoritesVisible
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.navigationVisible
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.searchVisible
 
@@ -63,7 +59,6 @@ fun MainScreen(
         val currentDestination = when (currentRoute) {
             Components.route -> Components
             Builds.route -> Builds
-//            Learn.route -> Learn
             Account.route -> Account
             else -> return@LaunchedEffect
         }
@@ -74,28 +69,19 @@ fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        topBar = { MainScreenTopAppBar(viewModel = mainViewModel) },
+        topBar = {
+            MainScreenTopAppBar(
+                viewModel = mainViewModel,
+                componentsNavController = componentsNavController,
+            )
+        },
         bottomBar = {
             DestinationsNavigationBar(
                 navController = navController,
-                destinations = listOf(Components, Builds, /* Learn, */ Account),
+                destinations = listOf(Components, Builds, Account),
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        floatingActionButton = {
-            if (mainViewModel.uiState.addComponentVisible) {
-                ExtendedFloatingActionButton(
-                    text = { Text(stringResource(R.string.add_component)) },
-                    icon = {
-                        Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
-                    },
-                    onClick = {
-                        val route = ComponentScreenDestinations.RemoteSearchComponent.route
-                        componentsNavController.navigate(route)
-                    },
-                )
-            }
-        },
     ) { padding ->
         NavHost(
             navController = navController,
@@ -112,9 +98,6 @@ fun MainScreen(
             composable(Builds.route) {
                 BuildsScreen(mainViewModel)
             }
-//            composable(Learn.route) {
-//                LearnScreen(mainViewModel)
-//            }
             composable(Account.route) account@{
                 val user = accountViewModel.uiState.currentUser ?: return@account
 
@@ -133,21 +116,12 @@ fun MainScreen(
     }
 }
 
-@Preview(name = "Light Mode")
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Composable
-private fun MainScreenPreview() {
-    PCBuilderTheme {
-        MainScreen()
-    }
-}
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun MainScreenTopAppBar(viewModel: MainViewModel) {
+private fun MainScreenTopAppBar(
+    viewModel: MainViewModel,
+    componentsNavController: NavHostController,
+) {
     val tonalElevation by animateDpAsState(if (viewModel.uiState.isFilled) 4.dp else 0.dp)
 
     Surface(tonalElevation = tonalElevation) {
@@ -166,11 +140,35 @@ private fun MainScreenTopAppBar(viewModel: MainViewModel) {
                 }
             },
             actions = {
-                AnimatedVisibility(visible = viewModel.uiState.searchVisible) {
-                    IconButton(onClick = { /* TODO */ }) {
+                AnimatedVisibility(
+                    visible = viewModel.uiState.searchVisible,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    IconButton(
+                        onClick = {
+                            componentsNavController.navigate(SearchComponent.route)
+                        },
+                    ) {
                         Icon(
                             imageVector = Icons.Rounded.Search,
                             contentDescription = stringResource(R.string.search_components),
+                        )
+                    }
+                }
+                AnimatedVisibility(
+                    visible = viewModel.uiState.favoritesVisible,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    IconButton(
+                        onClick = {
+                            componentsNavController.navigate(Favorites.route)
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Star,
+                            contentDescription = stringResource(R.string.favorite_components),
                         )
                     }
                 }

@@ -61,6 +61,12 @@ fun ComponentDetailsScreen(component: Component, painter: Painter? = null) {
                 .fillMaxSize(),
         ) {
             ComponentProperty(
+                name = stringResource(R.string.name),
+                value = component.name,
+            )
+
+            Divider()
+            ComponentProperty(
                 name = stringResource(R.string.description),
                 value = component.description,
             )

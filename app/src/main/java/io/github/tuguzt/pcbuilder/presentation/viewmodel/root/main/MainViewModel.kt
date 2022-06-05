@@ -27,7 +27,6 @@ class MainViewModel @Inject constructor() : ViewModel() {
     }
 
     fun updateCurrentDestination(currentDestination: Destination) {
-        logger.info { currentDestination }
         _uiState = uiState.copy(currentDestination = currentDestination)
     }
 

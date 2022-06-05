@@ -10,11 +10,11 @@ data class MainState(
     val onNavigateUpAction: () -> Unit = {},
 )
 
-inline val MainState.searchVisible: Boolean
+inline val MainState.favoritesVisible: Boolean
     get() = currentDestination == MainScreenDestinations.Components
+
+inline val MainState.searchVisible: Boolean
+    get() = favoritesVisible
 
 inline val MainState.navigationVisible: Boolean
     get() = currentDestination !is MainScreenDestinations
-
-inline val MainState.addComponentVisible: Boolean
-    get() = searchVisible

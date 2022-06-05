@@ -15,7 +15,6 @@ import dagger.hilt.components.SingletonComponent
 import io.github.tuguzt.pcbuilder.data.datasource.AuthDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UserTokenDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UsersDataSource
-import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalComponentDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalUserTokenDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
@@ -73,13 +72,7 @@ object AppModule {
     }
 
     @Provides
-    @Local
-    fun provideLocalComponentRepository(dataSource: LocalComponentDataSource): ComponentRepository =
-        ComponentRepositoryImpl(dataSource)
-
-    @Provides
-    @Remote
-    fun provideRemoteComponentRepository(dataSource: RemoteComponentDataSource): ComponentRepository =
+    fun provideComponentRepository(dataSource: RemoteComponentDataSource): ComponentRepository =
         ComponentRepositoryImpl(dataSource)
 
     @Provides
