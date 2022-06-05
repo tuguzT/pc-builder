@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.tuguzt.pcbuilder.data.Result
 import io.github.tuguzt.pcbuilder.data.repository.ComponentRepository
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
@@ -37,8 +38,14 @@ class ComponentsViewModel @Inject constructor(
     }
 
     private suspend fun updateComponentsNow() {
-        val components = componentRepository.getAll()
-        _uiState = uiState.copy(components = components)
+        _uiState = when (val result = componentRepository.getAll()) {
+            is Result.Error -> {
+                val message = UserMessage(ComponentsMessageKind.UnknownError)
+                val userMessages = uiState.userMessages + message
+                uiState.copy(userMessages = userMessages)
+            }
+            is Result.Success -> uiState.copy(components = result.data)
+        }
     }
 
     fun addComponent(component: ComponentData) {

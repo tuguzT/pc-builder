@@ -1,9 +1,13 @@
 package io.github.tuguzt.pcbuilder.data.datasource.local.impl
 
+import io.github.tuguzt.pcbuilder.data.Error
+import io.github.tuguzt.pcbuilder.data.Result
 import io.github.tuguzt.pcbuilder.data.datasource.ComponentDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.ComponentDto
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.toEntity
+import io.github.tuguzt.pcbuilder.data.map
+import io.github.tuguzt.pcbuilder.data.toResult
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Weight
@@ -35,35 +39,63 @@ class LocalComponentDataSource(
         )
     }
 
-    override suspend fun getAll(): List<ComponentData> = componentDao.getAll().map {
-        val manufacturer = manufacturerDataSource.findById(NanoId(it.manufacturerId))!!
-        makeComponentData(it, manufacturer)
+    override suspend fun getAll(): Result<List<ComponentData>, Error> {
+        return runCatching {
+            componentDao.getAll().map {
+                val manufacturer =
+                    when (val result = manufacturerDataSource.findById(NanoId(it.manufacturerId))) {
+                        is Result.Error -> return result.map()
+                        is Result.Success -> checkNotNull(result.data)
+                    }
+                makeComponentData(it, manufacturer)
+            }
+        }.toResult()
     }
 
-    override suspend fun findById(id: NanoId): ComponentData? = withContext(Dispatchers.IO) {
-        componentDao.findById(id.toString())?.let {
-            val manufacturer = manufacturerDataSource.findById(NanoId(it.manufacturerId))!!
-            makeComponentData(it, manufacturer)
-        }
+    override suspend fun findById(id: NanoId): Result<ComponentData?, Error> {
+        return runCatching {
+            withContext(Dispatchers.IO) { componentDao.findById(id.toString()) }?.let {
+                val manufacturer =
+                    when (val result =
+                        manufacturerDataSource.findById(NanoId(it.manufacturerId))) {
+                        is Result.Error -> return result.map()
+                        is Result.Success -> checkNotNull(result.data)
+                    }
+                makeComponentData(it, manufacturer)
+            }
+        }.toResult()
     }
 
-    override suspend fun save(item: ComponentData): Unit = withContext(Dispatchers.IO) {
-        manufacturerDataSource.save(item.manufacturer)
-        if (componentDao.findById(item.id.toString()) == null) {
-            componentDao.insert(item.toEntity())
-            return@withContext
-        }
-        componentDao.update(item.toEntity())
+    override suspend fun save(item: ComponentData): Result<Unit, Error> =
+        runCatching {
+            withContext(Dispatchers.IO) {
+                manufacturerDataSource.save(item.manufacturer)
+                if (componentDao.findById(item.id.toString()) == null) {
+                    componentDao.insert(item.toEntity())
+                    return@withContext
+                }
+                componentDao.update(item.toEntity())
+            }
+        }.toResult()
+
+    override suspend fun delete(item: ComponentData): Result<Unit, Error> =
+        runCatching {
+            withContext(Dispatchers.IO) { componentDao.delete(item.toEntity()) }
+        }.toResult()
+
+    override suspend fun clear(): Result<Unit, Error> =
+        runCatching { withContext(Dispatchers.IO) { componentDao.clear() } }.toResult()
+
+    override suspend fun findByName(name: String): Result<List<ComponentData>, Error> {
+        return runCatching {
+            componentDao.findByName(name).map {
+                val manufacturer =
+                    when (val result = manufacturerDataSource.findById(NanoId(it.manufacturerId))) {
+                        is Result.Error -> return result.map()
+                        is Result.Success -> checkNotNull(result.data)
+                    }
+                makeComponentData(it, manufacturer)
+            }
+        }.toResult()
     }
-
-    override suspend fun delete(item: ComponentData): Unit =
-        withContext(Dispatchers.IO) { componentDao.delete(item.toEntity()) }
-
-    override suspend fun clear(): Unit = withContext(Dispatchers.IO) { componentDao.clear() }
-
-    override suspend fun findByName(name: String): List<ComponentData> =
-        componentDao.findByName(name).map {
-            val manufacturer = manufacturerDataSource.findById(NanoId(it.manufacturerId))!!
-            makeComponentData(it, manufacturer)
-        }
 }

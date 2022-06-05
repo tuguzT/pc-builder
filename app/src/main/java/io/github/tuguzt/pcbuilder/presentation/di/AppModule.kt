@@ -17,8 +17,8 @@ import io.github.tuguzt.pcbuilder.data.datasource.UserTokenDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UsersDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalComponentDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalUserTokenDataSource
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendAuthAPI
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteAuthDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteUsersDataSource
 import io.github.tuguzt.pcbuilder.data.repository.*

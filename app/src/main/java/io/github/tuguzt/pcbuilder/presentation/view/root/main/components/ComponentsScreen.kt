@@ -128,4 +128,5 @@ fun ComponentsScreen(
 fun ComponentsMessageKind.message(context: Context): String = when (this) {
     ComponentsMessageKind.ComponentAdded -> context.getString(R.string.component_added)
     ComponentsMessageKind.ComponentDeleted -> context.getString(R.string.component_deleted)
+    else -> context.getString(R.string.unknown_error)
 }

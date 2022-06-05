@@ -1,14 +1,16 @@
 package io.github.tuguzt.pcbuilder.presentation.di
 
-import androidx.security.crypto.EncryptedSharedPreferences
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendAuthAPI
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.dataOrNull
+import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -30,11 +32,10 @@ object BackendModule {
         json.asConverterFactory("application/json".toMediaType())
 
     @Provides
-    @Singleton
-    fun provideAuthInterceptorClient(sharedPreferences: EncryptedSharedPreferences): OkHttpClient =
+    fun provideAuthInterceptorClient(tokenRepository: UserTokenRepository): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor { chain ->
-                val token = sharedPreferences.getString("access_token", null).orEmpty()
+                val token = runBlocking { tokenRepository.getToken() }.dataOrNull()?.token
                 val request = chain
                     .request()
                     .newBuilder()
@@ -45,13 +46,11 @@ object BackendModule {
             .build()
 
     @Provides
-    @Singleton
     @AuthRetrofit
     fun provideAuthRetrofit(converterFactory: Converter.Factory): Retrofit =
         retrofit(backendBaseUrl, converterFactory)
 
     @Provides
-    @Singleton
     @SimpleRetrofit
     fun provideRetrofit(
         converterFactory: Converter.Factory,
@@ -60,11 +59,9 @@ object BackendModule {
         retrofit("${backendBaseUrl}users/", converterFactory, authInterceptorClient)
 
     @Provides
-    @Singleton
     fun providesBackendAuthAPI(@AuthRetrofit retrofit: Retrofit): BackendAuthAPI = retrofit.create()
 
     @Provides
-    @Singleton
     fun providesBackendUsersAPI(@SimpleRetrofit retrofit: Retrofit): BackendUsersAPI =
         retrofit.create()
 

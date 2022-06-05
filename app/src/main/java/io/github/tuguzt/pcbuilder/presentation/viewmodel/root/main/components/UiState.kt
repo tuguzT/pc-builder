@@ -13,4 +13,5 @@ data class ComponentsState(
 enum class ComponentsMessageKind : MessageKind {
     ComponentAdded,
     ComponentDeleted,
+    UnknownError,
 }

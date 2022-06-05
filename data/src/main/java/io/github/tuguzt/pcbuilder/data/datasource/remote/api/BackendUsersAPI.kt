@@ -1,11 +1,12 @@
-package io.github.tuguzt.pcbuilder.data.datasource.remote
+package io.github.tuguzt.pcbuilder.data.datasource.remote.api
 
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserData
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 /**
- * Backend API for user management (requires no access token).
+ * Backend API for user management (requires access token).
  */
 interface BackendUsersAPI {
     @GET("all")

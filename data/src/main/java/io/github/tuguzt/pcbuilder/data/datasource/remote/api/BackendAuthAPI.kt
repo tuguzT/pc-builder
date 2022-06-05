@@ -1,5 +1,6 @@
-package io.github.tuguzt.pcbuilder.data.datasource.remote
+package io.github.tuguzt.pcbuilder.data.datasource.remote.api
 
+import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserTokenData
 import retrofit2.http.Body

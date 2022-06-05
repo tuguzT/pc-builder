@@ -8,9 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
+import io.github.tuguzt.pcbuilder.data.Result
 import io.github.tuguzt.pcbuilder.data.repository.AuthRepository
 import io.github.tuguzt.pcbuilder.data.repository.CurrentUserRepository
 import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
@@ -130,20 +129,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private inline fun <S> BackendResponse<S>.handle(onSuccess: (S) -> Unit): Unit = when (this) {
-        is NetworkResponse.Success -> onSuccess(body)
-        is NetworkResponse.ServerError -> {
-            logger.error(error) { "Server error occurred" }
-            val message = UserMessage(AuthMessageKind.Backend.server())
-            val errorMessages = uiState.userMessages + message
-            _uiState = uiState.copy(userMessages = errorMessages)
-        }
-        is NetworkResponse.NetworkError -> {
-            val message = UserMessage(AuthMessageKind.Backend.network())
-            val errorMessages = uiState.userMessages + message
-            _uiState = uiState.copy(userMessages = errorMessages)
-        }
-        is NetworkResponse.UnknownError -> {
+    private inline fun <S, E> Result<S, E>.handle(onSuccess: (S) -> Unit): Unit = when (this) {
+        is Result.Success -> onSuccess(data)
+        is Result.Error -> {
+            logger.error(throwable) { "Unknown error occurred" }
             val message = UserMessage(AuthMessageKind.Backend.unknown())
             val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)

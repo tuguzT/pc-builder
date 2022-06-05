@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
+import io.github.tuguzt.pcbuilder.data.Result
+import io.github.tuguzt.pcbuilder.data.dataOrNull
 import io.github.tuguzt.pcbuilder.data.repository.CurrentUserRepository
 import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
 import io.github.tuguzt.pcbuilder.data.repository.UsersRepository
@@ -48,7 +48,7 @@ class AccountViewModel @Inject constructor(
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
             _uiState = uiState.copy(isLoading = true)
-            tokenRepository.getToken() ?: kotlin.run {
+            tokenRepository.getToken().dataOrNull() ?: kotlin.run {
                 signOut()
                 return@launch
             }
@@ -77,22 +77,11 @@ class AccountViewModel @Inject constructor(
         _uiState = uiState.copy(userMessages = messages)
     }
 
-    private inline fun <S> BackendResponse<S>.handle(onSuccess: (S) -> Unit): Unit = when (this) {
-        is NetworkResponse.Success -> onSuccess(body)
-        is NetworkResponse.ServerError -> {
-            logger.error(error) { "Server error occurred" }
-            val message = UserMessage(AccountMessageKind.Backend.server())
-            val errorMessages = uiState.userMessages + message
-            _uiState = uiState.copy(userMessages = errorMessages)
-        }
-        is NetworkResponse.NetworkError -> {
-            logger.error(error) { "Network error occurred" }
-            val message = UserMessage(AccountMessageKind.Backend.network())
-            val errorMessages = uiState.userMessages + message
-            _uiState = uiState.copy(userMessages = errorMessages)
-        }
-        is NetworkResponse.UnknownError -> {
-            logger.error(error) { "Unknown error occurred" }
+    private inline fun <S, E> Result<S, E>.handle(onSuccess: (S) -> Unit): Unit = when (this) {
+        is Result.Success -> onSuccess(data)
+        is Result.Error -> {
+            signOut()
+            logger.error(throwable) { "Unknown error occurred" }
             val message = UserMessage(AccountMessageKind.Backend.unknown())
             val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
