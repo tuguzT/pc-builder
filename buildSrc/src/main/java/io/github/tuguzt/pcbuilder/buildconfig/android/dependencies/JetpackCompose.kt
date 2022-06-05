@@ -13,6 +13,8 @@ object JetpackCompose {
             const val extended = "androidx.compose.material:material-icons-extended:$version"
         }
 
+        const val dependency = "androidx.compose.material:material:$version"
+
         object You {
             private const val version = "1.0.0-alpha12"
 

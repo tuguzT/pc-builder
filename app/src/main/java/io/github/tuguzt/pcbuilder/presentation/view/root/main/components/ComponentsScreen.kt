@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,9 +23,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestina
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * Application screen which represents *Components* main application destination.
@@ -54,6 +53,7 @@ fun ComponentsScreen(
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
+            val context = LocalContext.current
             SideEffect { mainViewModel.updateTitle(appName) }
 
             Scaffold(
@@ -74,33 +74,38 @@ fun ComponentsScreen(
                     onComponentClick = {
                         navController.navigate("${ComponentDetails.route}/${it.id}")
                     },
+                    onComponentDismiss = {
+                        componentsViewModel.deleteComponent(it, context)
+                    }
                 )
+            }
+
+            componentsViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(
+                        message = message.message,
+                        actionLabel = context.getString(R.string.dismiss),
+                    )
+                    componentsViewModel.userMessageShown(message.id)
+                }
             }
         }
         dialog(
             route = AddComponent.route,
             dialogProperties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
-            val componentAddedMessage = stringResource(R.string.component_added)
-            val dismissText = stringResource(R.string.dismiss)
+            val context = LocalContext.current
             AddComponentDialog(
                 modifier = Modifier.fillMaxSize(),
                 onAddComponent = { component ->
                     scope.launch {
-                        componentsViewModel.addComponent(component)
-                        withContext(Dispatchers.Main) {
-                            navController.popBackStack()
-                        }
-                        snackbarHostState.showSnackbar(
-                            message = componentAddedMessage,
-                            actionLabel = dismissText,
-                        )
+                        componentsViewModel.addComponent(component, context)
+                        navController.popBackStack()
                     }
                 },
                 onNavigateUp = { navController.navigateUp() },
             )
         }
-        // todo make destination with parameters
         composable(
             route = "${ComponentDetails.route}/{componentId}",
             arguments = listOf(
@@ -109,7 +114,7 @@ fun ComponentsScreen(
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("componentId") ?: return@composable
             val nanoId = NanoId(id)
-            val component = remember(id) {
+            val component = remember(nanoId) {
                 componentsViewModel.uiState.components.first { it.id == nanoId }
             }
 

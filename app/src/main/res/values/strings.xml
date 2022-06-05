@@ -37,6 +37,7 @@
     <string name="width_in_mm">Width in millimeters</string>
     <string name="height_in_mm">Height in millimeters</string>
     <string name="component_added">Component added successfully</string>
+    <string name="component_deleted">Component deleted successfully</string>
     <string name="avatar_not_loaded">Avatar not loaded</string>
     <string name="signed_out_success">Signed out successfully</string>
     <string name="sign_in_google">Continue with Google</string>

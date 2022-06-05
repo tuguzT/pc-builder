@@ -2,7 +2,6 @@ package io.github.tuguzt.pcbuilder.presentation.view.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.Computer
 import androidx.compose.material.icons.rounded.Memory
 import androidx.compose.runtime.Composable
@@ -35,13 +34,13 @@ sealed class MainScreenDestinations(
             @Composable get() = stringResource(R.string.builds)
     }
 
-    object Learn : MainScreenDestinations(
-        route = "learn",
-        icon = Icons.Rounded.Book,
-    ) {
-        override val description: String
-            @Composable get() = stringResource(R.string.learn)
-    }
+//    object Learn : MainScreenDestinations(
+//        route = "learn",
+//        icon = Icons.Rounded.Book,
+//    ) {
+//        override val description: String
+//            @Composable get() = stringResource(R.string.learn)
+//    }
 
     object Account : MainScreenDestinations(
         route = "account",

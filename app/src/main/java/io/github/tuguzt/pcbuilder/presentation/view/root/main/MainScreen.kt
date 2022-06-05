@@ -29,7 +29,6 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestina
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.account.AccountScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.components.ComponentsScreen
-import io.github.tuguzt.pcbuilder.presentation.view.root.main.learn.LearnScreen
 import io.github.tuguzt.pcbuilder.presentation.view.showToast
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
@@ -54,7 +53,7 @@ fun MainScreen(
         val currentDestination = when (currentRoute) {
             Components.route -> Components
             Builds.route -> Builds
-            Learn.route -> Learn
+//            Learn.route -> Learn
             Account.route -> Account
             else -> return@LaunchedEffect
         }
@@ -63,15 +62,12 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            MainScreenTopAppBar(
-                viewModel = mainViewModel,
-                navController = navController,
-            )
+            MainScreenTopAppBar(viewModel = mainViewModel)
         },
         bottomBar = {
             DestinationsNavigationBar(
                 navController = navController,
-                destinations = listOf(Components, Builds, Learn, Account),
+                destinations = listOf(Components, Builds, /* Learn, */ Account),
             )
         },
     ) { padding ->
@@ -86,9 +82,9 @@ fun MainScreen(
             composable(Builds.route) {
                 BuildsScreen(mainViewModel)
             }
-            composable(Learn.route) {
-                LearnScreen(mainViewModel)
-            }
+//            composable(Learn.route) {
+//                LearnScreen(mainViewModel)
+//            }
             composable(Account.route) account@{
                 val user = accountViewModel.uiState.currentUser ?: return@account
 
@@ -121,10 +117,7 @@ private fun MainScreenPreview() {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun MainScreenTopAppBar(
-    viewModel: MainViewModel,
-    navController: NavHostController,
-) {
+private fun MainScreenTopAppBar(viewModel: MainViewModel) {
     Surface(tonalElevation = 2.dp) {
         CenterAlignedTopAppBar(
             title = {

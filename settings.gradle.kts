@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PC Builder"
+rootProject.name = "pc-builder"
 
 include(":app")
 include(":data")
