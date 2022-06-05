@@ -3,6 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
@@ -24,7 +25,10 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestina
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsMessageKind
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.RemoteComponentsMessageKind
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.RemoteSearchComponentsViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
@@ -35,6 +39,7 @@ import kotlinx.coroutines.launch
 fun ComponentsScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     componentsViewModel: ComponentsViewModel = hiltViewModel(),
+    remoteSearchViewModel: RemoteSearchComponentsViewModel = hiltViewModel(),
     scope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ) {
@@ -43,6 +48,7 @@ fun ComponentsScreen(
     LaunchedEffect(currentRoute) {
         val currentDestination = when {
             currentRoute == ComponentList.route -> MainScreenDestinations.Components
+            currentRoute == RemoteSearchComponent.route -> RemoteSearchComponent
             currentRoute?.let { ComponentDetails.route in it } == true -> ComponentDetails
             else -> return@LaunchedEffect
         }
@@ -51,11 +57,13 @@ fun ComponentsScreen(
     }
 
     val appName = stringResource(R.string.app_name)
-    val snackbarHostState = remember { SnackbarHostState() }
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
+            val listState = rememberLazyListState()
+            val snackbarHostState = remember { SnackbarHostState() }
             val context = LocalContext.current
+
             SideEffect { mainViewModel.updateTitle(appName) }
 
             Scaffold(
@@ -66,19 +74,22 @@ fun ComponentsScreen(
                         icon = {
                             Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
                         },
-                        onClick = { navController.navigate(AddComponent.route) },
+                        onClick = { navController.navigate(RemoteSearchComponent.route) },
                     )
                 }
             ) { padding ->
-                ComponentList(
-                    modifier = Modifier.padding(padding),
+                DismissComponentList(
+                    modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize(),
                     components = componentsViewModel.uiState.components,
                     onComponentClick = {
                         navController.navigate("${ComponentDetails.route}/${it.id}")
                     },
                     onComponentDismiss = {
                         componentsViewModel.deleteComponent(it)
-                    }
+                    },
+                    lazyListState = listState,
                 )
             }
 
@@ -90,6 +101,56 @@ fun ComponentsScreen(
                     )
                     componentsViewModel.userMessageShown(message.id)
                 }
+            }
+            LaunchedEffect(listState) {
+                snapshotFlow { listState.firstVisibleItemScrollOffset }
+                    .distinctUntilChanged()
+                    .collect {
+                        mainViewModel.updateFilled(isFilled = it > 0)
+                    }
+            }
+        }
+        composable(RemoteSearchComponent.route) {
+            val snackbarHostState = remember { SnackbarHostState() }
+            val listState = rememberLazyListState()
+            val context = LocalContext.current
+
+            SideEffect { mainViewModel.updateTitle(appName) }
+
+            Scaffold(
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+            ) { padding ->
+                ComponentList(
+                    modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize(),
+                    components = remoteSearchViewModel.uiState.components,
+                    onComponentClick = { /* TODO */ },
+                    isRefreshing = remoteSearchViewModel.uiState.isUpdating,
+                    onRefresh = { remoteSearchViewModel.updateComponents() },
+                    lazyListState = listState,
+                )
+            }
+
+            remoteSearchViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(
+                        message = when (message.kind) {
+                            RemoteComponentsMessageKind.UnknownError -> {
+                                context.getString(R.string.unknown_error)
+                            }
+                        },
+                        actionLabel = context.getString(R.string.dismiss),
+                    )
+                    remoteSearchViewModel.userMessageShown(message.id)
+                }
+            }
+            LaunchedEffect(listState) {
+                snapshotFlow { listState.firstVisibleItemScrollOffset }
+                    .distinctUntilChanged()
+                    .collect {
+                        mainViewModel.updateFilled(isFilled = it > 0)
+                    }
             }
         }
         dialog(

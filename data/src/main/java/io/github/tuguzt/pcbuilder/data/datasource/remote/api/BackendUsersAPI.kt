@@ -9,15 +9,15 @@ import retrofit2.http.Path
  * Backend API for user management (requires access token).
  */
 interface BackendUsersAPI {
-    @GET("all")
+    @GET("users/all")
     suspend fun getAll(): BackendResponse<List<UserData>>
 
-    @GET("current")
+    @GET("users/current")
     suspend fun current(): BackendResponse<UserData>
 
-    @GET("id/{id}")
+    @GET("users/id/{id}")
     suspend fun findById(@Path("id") id: String): BackendResponse<UserData?>
 
-    @GET("username/{username}")
+    @GET("users/username/{username}")
     suspend fun findByUsername(@Path("username") username: String): BackendResponse<UserData?>
 }

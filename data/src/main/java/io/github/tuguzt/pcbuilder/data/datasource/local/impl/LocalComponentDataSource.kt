@@ -6,7 +6,7 @@ import io.github.tuguzt.pcbuilder.data.datasource.ComponentDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dao.ComponentDao
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.ComponentDto
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.toEntity
-import io.github.tuguzt.pcbuilder.data.map
+import io.github.tuguzt.pcbuilder.data.cast
 import io.github.tuguzt.pcbuilder.data.toResult
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
@@ -44,7 +44,7 @@ class LocalComponentDataSource(
             componentDao.getAll().map {
                 val manufacturer =
                     when (val result = manufacturerDataSource.findById(NanoId(it.manufacturerId))) {
-                        is Result.Error -> return result.map()
+                        is Result.Error -> return result.cast()
                         is Result.Success -> checkNotNull(result.data)
                     }
                 makeComponentData(it, manufacturer)
@@ -58,7 +58,7 @@ class LocalComponentDataSource(
                 val manufacturer =
                     when (val result =
                         manufacturerDataSource.findById(NanoId(it.manufacturerId))) {
-                        is Result.Error -> return result.map()
+                        is Result.Error -> return result.cast()
                         is Result.Success -> checkNotNull(result.data)
                     }
                 makeComponentData(it, manufacturer)
@@ -91,7 +91,7 @@ class LocalComponentDataSource(
             componentDao.findByName(name).map {
                 val manufacturer =
                     when (val result = manufacturerDataSource.findById(NanoId(it.manufacturerId))) {
-                        is Result.Error -> return result.map()
+                        is Result.Error -> return result.cast()
                         is Result.Success -> checkNotNull(result.data)
                     }
                 makeComponentData(it, manufacturer)

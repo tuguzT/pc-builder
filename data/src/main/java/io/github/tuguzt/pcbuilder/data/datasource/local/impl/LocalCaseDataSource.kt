@@ -9,7 +9,7 @@ import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.cases
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.cases.toDomain
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.motherboard.MotherboardFormFactorDto
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.toEntity
-import io.github.tuguzt.pcbuilder.data.map
+import io.github.tuguzt.pcbuilder.data.cast
 import io.github.tuguzt.pcbuilder.data.toResult
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.cases.CasePowerSupply
@@ -53,19 +53,19 @@ class LocalCaseDataSource(
             caseDao.getAll().map { caseEntity ->
                 val component =
                     when (val result = componentDataSource.findById(NanoId(caseEntity.caseId))) {
-                        is Result.Error -> return result.map()
+                        is Result.Error -> return result.cast()
                         is Result.Success -> checkNotNull(result.data)
                     }
                 val list = when (val result =
                     caseMotherboardFormFactorCrossRefDataSource.findByCaseId(caseEntity.id)) {
-                    is Result.Error -> return result.map()
+                    is Result.Error -> return result.cast()
                     is Result.Success -> checkNotNull(result.data)
                 }
                 val motherboardFormFactors = list
                     .map {
                         when (val result =
                             motherboardFormFactorDataSource.findById(it.motherboardFormFactorId)) {
-                            is Result.Error -> return result.map()
+                            is Result.Error -> return result.cast()
                             is Result.Success -> checkNotNull(result.data).id
                         }
                     }
@@ -80,18 +80,18 @@ class LocalCaseDataSource(
                 ?.let { entity ->
                     val component =
                         when (val result = componentDataSource.findById(NanoId(entity.caseId))) {
-                            is Result.Error -> return result.map()
+                            is Result.Error -> return result.cast()
                             is Result.Success -> checkNotNull(result.data)
                         }
                     val list = when (val result = caseMotherboardFormFactorCrossRefDataSource
                         .findByCaseId(entity.id)) {
-                        is Result.Error -> return result.map()
+                        is Result.Error -> return result.cast()
                         is Result.Success -> checkNotNull(result.data)
                     }
                     val motherboardFormFactors = list.map {
                         when (val result =
                             motherboardFormFactorDataSource.findById(it.motherboardFormFactorId)) {
-                            is Result.Error -> return result.map()
+                            is Result.Error -> return result.cast()
                             is Result.Success -> checkNotNull(result.data).id
                         }
                     }

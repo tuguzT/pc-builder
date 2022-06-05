@@ -23,7 +23,10 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 @Composable
 fun BuildsScreen(mainViewModel: MainViewModel = hiltViewModel()) {
     val appName = stringResource(R.string.app_name)
-    SideEffect { mainViewModel.updateTitle(appName) }
+    SideEffect {
+        mainViewModel.updateTitle(appName)
+        mainViewModel.updateFilled(isFilled = false)
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),

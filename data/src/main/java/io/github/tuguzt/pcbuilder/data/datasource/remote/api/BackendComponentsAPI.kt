@@ -9,12 +9,12 @@ import retrofit2.http.Path
  * Backend API for PC component management (requires access token).
  */
 interface BackendComponentsAPI {
-    @GET("all")
+    @GET("components/all")
     suspend fun getAll(): BackendResponse<List<ComponentData>>
 
-    @GET("id/{id}")
+    @GET("components/id/{id}")
     suspend fun findById(@Path("id") id: String): BackendResponse<ComponentData?>
 
-    @GET("name/{name}")
+    @GET("components/name/{name}")
     suspend fun findByName(@Path("name") name: String): BackendResponse<ComponentData?>
 }

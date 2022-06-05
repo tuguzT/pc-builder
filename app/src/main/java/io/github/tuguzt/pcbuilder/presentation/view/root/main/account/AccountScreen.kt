@@ -37,7 +37,10 @@ fun AccountScreen(
     onSignOut: () -> Unit,
 ) {
     val appName = stringResource(R.string.app_name)
-    SideEffect { mainViewModel.updateTitle(appName) }
+    SideEffect {
+        mainViewModel.updateTitle(appName)
+        mainViewModel.updateFilled(isFilled = false)
+    }
 
     Column(
         modifier = Modifier

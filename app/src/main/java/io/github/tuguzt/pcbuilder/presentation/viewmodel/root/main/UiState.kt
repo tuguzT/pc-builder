@@ -5,6 +5,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestina
 
 data class MainState(
     val title: String = "",
+    val isFilled: Boolean = false,
     val currentDestination: Destination = MainScreenDestinations.Components,
     val onNavigateUpAction: () -> Unit = {},
 )

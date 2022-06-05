@@ -8,7 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.tuguzt.pcbuilder.data.dataOrNull
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendComponentsAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteComponentDataSource
 import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -28,7 +30,7 @@ object BackendModule {
     @Provides
     @Singleton
     @OptIn(ExperimentalSerializationApi::class)
-    fun providesConverterFactory(json: Json): Converter.Factory =
+    fun provideConverterFactory(json: Json): Converter.Factory =
         json.asConverterFactory("application/json".toMediaType())
 
     @Provides
@@ -56,14 +58,22 @@ object BackendModule {
         converterFactory: Converter.Factory,
         authInterceptorClient: OkHttpClient,
     ): Retrofit =
-        retrofit("${backendBaseUrl}users/", converterFactory, authInterceptorClient)
+        retrofit(backendBaseUrl, converterFactory, authInterceptorClient)
 
     @Provides
-    fun providesBackendAuthAPI(@AuthRetrofit retrofit: Retrofit): BackendAuthAPI = retrofit.create()
+    fun provideBackendAuthAPI(@AuthRetrofit retrofit: Retrofit): BackendAuthAPI = retrofit.create()
 
     @Provides
-    fun providesBackendUsersAPI(@SimpleRetrofit retrofit: Retrofit): BackendUsersAPI =
+    fun provideBackendUsersAPI(@SimpleRetrofit retrofit: Retrofit): BackendUsersAPI =
         retrofit.create()
+
+    @Provides
+    fun provideBackendComponentsAPI(@SimpleRetrofit retrofit: Retrofit): BackendComponentsAPI =
+        retrofit.create()
+
+    @Provides
+    fun provideRemoteComponentDataSource(backendComponentsAPI: BackendComponentsAPI): RemoteComponentDataSource =
+        RemoteComponentDataSource(backendComponentsAPI)
 
     @JvmStatic
     @Suppress("NOTHING_TO_INLINE")

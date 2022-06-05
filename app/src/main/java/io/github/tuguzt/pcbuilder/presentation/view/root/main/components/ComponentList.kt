@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.domain.model.component.Weight
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
@@ -25,39 +27,72 @@ import io.nacular.measured.units.times
 /**
  * Lazy list of provided [components].
  */
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ComponentList(
     components: List<ComponentData>,
     onComponentClick: (ComponentData) -> Unit,
-    onComponentDismiss: (ComponentData) -> Unit,
     modifier: Modifier = Modifier,
-    state: LazyListState = rememberLazyListState(),
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit = {},
+    lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    LazyColumn(
-        modifier = modifier,
-        state = state,
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        items(components, key = { "${it.id}" }) { component ->
-            val dismissState = rememberDismissState(
-                confirmStateChange = {
-                    if (it == DismissValue.DismissedToStart) {
-                        onComponentDismiss(component)
-                    }
-                    true
-                }
-            )
-            SwipeToDismiss(
-                state = dismissState,
-                background = {},
-                directions = setOf(DismissDirection.EndToStart),
-            ) {
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing), onRefresh = onRefresh) {
+        LazyColumn(
+            modifier = modifier,
+            state = lazyListState,
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            items(components, key = { "${it.id}" }) { component ->
                 ComponentItem(
                     component = component,
                     onClick = { onComponentClick(component) },
                 )
+            }
+        }
+    }
+}
+
+/**
+ * Lazy list of provided [components] with the ability to dismiss them.
+ */
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DismissComponentList(
+    components: List<ComponentData>,
+    onComponentClick: (ComponentData) -> Unit,
+    onComponentDismiss: (ComponentData) -> Unit,
+    modifier: Modifier = Modifier,
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit = {},
+    lazyListState: LazyListState = rememberLazyListState(),
+) {
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing), onRefresh = onRefresh) {
+        LazyColumn(
+            modifier = modifier,
+            state = lazyListState,
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            items(components, key = { "${it.id}" }) { component ->
+                val dismissState = rememberDismissState(
+                    confirmStateChange = {
+                        if (it == DismissValue.DismissedToStart) {
+                            onComponentDismiss(component)
+                        }
+                        true
+                    }
+                )
+                SwipeToDismiss(
+                    state = dismissState,
+                    background = {},
+                    directions = setOf(DismissDirection.EndToStart),
+                ) {
+                    ComponentItem(
+                        component = component,
+                        onClick = { onComponentClick(component) },
+                    )
+                }
             }
         }
     }
@@ -69,7 +104,7 @@ fun ComponentList(
     uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
-private fun ComponentListPreview() {
+private fun DismissComponentListPreview() {
     PCBuilderTheme {
         var components by remember {
             mutableStateOf(
@@ -96,7 +131,7 @@ private fun ComponentListPreview() {
             )
         }
         Surface {
-            ComponentList(
+            DismissComponentList(
                 components = components,
                 onComponentClick = {},
                 onComponentDismiss = { components = components - it },

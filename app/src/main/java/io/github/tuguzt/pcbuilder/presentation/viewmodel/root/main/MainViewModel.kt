@@ -22,6 +22,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
         _uiState = uiState.copy(title = title)
     }
 
+    fun updateFilled(isFilled: Boolean) {
+        _uiState = uiState.copy(isFilled = isFilled)
+    }
+
     fun updateCurrentDestination(currentDestination: Destination) {
         logger.info { currentDestination }
         _uiState = uiState.copy(currentDestination = currentDestination)

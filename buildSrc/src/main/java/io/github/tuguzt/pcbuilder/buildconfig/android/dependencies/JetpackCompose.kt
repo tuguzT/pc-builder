@@ -25,7 +25,7 @@ object JetpackCompose {
     }
 
     object Accompanist {
-        private const val version = "0.24.9-beta"
+        private const val version = "0.24.10-beta"
 
         const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
         const val swipeToRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"

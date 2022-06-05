@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -123,7 +124,9 @@ private fun MainScreenPreview() {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MainScreenTopAppBar(viewModel: MainViewModel) {
-    Surface(tonalElevation = 2.dp) {
+    val tonalElevation by animateDpAsState(if (viewModel.uiState.isFilled) 4.dp else 0.dp)
+
+    Surface(tonalElevation = tonalElevation) {
         CenterAlignedTopAppBar(
             title = {
                 AnimatedContent(targetState = viewModel.uiState.title) { title -> Text(title) }

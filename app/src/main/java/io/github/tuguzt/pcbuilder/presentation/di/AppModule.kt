@@ -20,6 +20,7 @@ import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalUserTokenDataS
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteAuthDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteComponentDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteUsersDataSource
 import io.github.tuguzt.pcbuilder.data.repository.*
 import io.github.tuguzt.pcbuilder.data.repository.impl.*
@@ -72,7 +73,13 @@ object AppModule {
     }
 
     @Provides
+    @Local
     fun provideLocalComponentRepository(dataSource: LocalComponentDataSource): ComponentRepository =
+        ComponentRepositoryImpl(dataSource)
+
+    @Provides
+    @Remote
+    fun provideRemoteComponentRepository(dataSource: RemoteComponentDataSource): ComponentRepository =
         ComponentRepositoryImpl(dataSource)
 
     @Provides

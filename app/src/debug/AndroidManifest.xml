@@ -14,11 +14,12 @@
         android:networkSecurityConfig="@xml/test_network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PCBuilder.Starting"
+        android:theme="@style/Theme.PCBuilder"
         tools:targetApi="n">
         <activity
             android:name=".view.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.PCBuilder.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

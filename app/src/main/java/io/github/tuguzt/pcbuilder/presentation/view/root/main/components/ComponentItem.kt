@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -17,6 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
+import com.google.accompanist.placeholder.material.placeholder
 import io.github.tuguzt.pcbuilder.domain.model.component.Component
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
 import io.github.tuguzt.pcbuilder.domain.model.component.Weight
@@ -29,8 +33,7 @@ import io.nacular.measured.units.Mass.Companion.kilograms
 import io.nacular.measured.units.times
 
 /**
- * [Card] composable with data of the provided [component]
- * and optional image provided by [painter].
+ * [Card] with data of the provided [component] and optional image provided by [painter].
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,25 +41,36 @@ fun ComponentItem(
     component: Component,
     painter: Painter? = null,
     shape: Shape = MaterialTheme.shapes.medium,
+    imageShape: Shape = MaterialTheme.shapes.medium,
     onClick: () -> Unit,
 ) {
-    Card(shape = shape, onClick = onClick) {
-        Column {
-            Surface(tonalElevation = 5.dp, shape = shape) {
-                Image(
-                    painter = painter ?: ColorPainter(Color.Transparent),
-                    contentDescription = painter?.let { stringResource(R.string.component_picture) },
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .height(194.dp)
-                        .fillMaxWidth(),
-                )
-            }
-            Column(modifier = Modifier.padding(8.dp)) {
+    ElevatedCard(shape = shape, onClick = onClick) {
+        Row(modifier = Modifier.padding(16.dp)) {
+            Image(
+                modifier = Modifier
+                    .size(128.dp)
+                    .clip(imageShape)
+                    .run {
+                        when (painter) {
+                            null -> placeholder(
+                                visible = true,
+                                highlight = PlaceholderHighlight.fade(),
+                            )
+                            else -> this
+                        }
+                    },
+                painter = painter ?: ColorPainter(Color.Transparent),
+                contentDescription = painter?.let { stringResource(R.string.component_picture) },
+                contentScale = ContentScale.Crop,
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(verticalArrangement = Arrangement.SpaceBetween) {
                 DisableSelection {
                     Text(
                         text = component.name,
-                        style = MaterialTheme.typography.headlineSmall,
+                        maxLines = 2,
+                        style = MaterialTheme.typography.titleMedium,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
