@@ -7,12 +7,14 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.ToastDuration
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.account.AccountScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.builds.BuildsScreen
@@ -35,6 +38,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
 import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.addComponentVisible
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.navigationVisible
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.searchVisible
 
@@ -66,15 +70,31 @@ fun MainScreen(
         mainViewModel.updateCurrentDestination(currentDestination)
     }
 
+    val componentsNavController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
-        topBar = {
-            MainScreenTopAppBar(viewModel = mainViewModel)
-        },
+        topBar = { MainScreenTopAppBar(viewModel = mainViewModel) },
         bottomBar = {
             DestinationsNavigationBar(
                 navController = navController,
                 destinations = listOf(Components, Builds, /* Learn, */ Account),
             )
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        floatingActionButton = {
+            if (mainViewModel.uiState.addComponentVisible) {
+                ExtendedFloatingActionButton(
+                    text = { Text(stringResource(R.string.add_component)) },
+                    icon = {
+                        Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
+                    },
+                    onClick = {
+                        val route = ComponentScreenDestinations.RemoteSearchComponent.route
+                        componentsNavController.navigate(route)
+                    },
+                )
+            }
         },
     ) { padding ->
         NavHost(
@@ -83,7 +103,11 @@ fun MainScreen(
             modifier = Modifier.padding(padding),
         ) {
             composable(Components.route) {
-                ComponentsScreen(mainViewModel)
+                ComponentsScreen(
+                    mainViewModel,
+                    navController = componentsNavController,
+                    snackbarHostState = snackbarHostState,
+                )
             }
             composable(Builds.route) {
                 BuildsScreen(mainViewModel)

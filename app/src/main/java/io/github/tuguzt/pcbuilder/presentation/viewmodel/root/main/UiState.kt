@@ -15,3 +15,6 @@ inline val MainState.searchVisible: Boolean
 
 inline val MainState.navigationVisible: Boolean
     get() = currentDestination !is MainScreenDestinations
+
+inline val MainState.addComponentVisible: Boolean
+    get() = searchVisible
