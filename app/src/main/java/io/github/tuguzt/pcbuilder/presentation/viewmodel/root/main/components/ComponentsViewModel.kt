@@ -1,6 +1,5 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.tuguzt.pcbuilder.data.repository.ComponentRepository
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
-import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -35,9 +33,7 @@ class ComponentsViewModel @Inject constructor(
 
     fun updateComponents() {
         updateJob?.cancel()
-        updateJob = viewModelScope.launch {
-            updateComponentsNow()
-        }
+        updateJob = viewModelScope.launch { updateComponentsNow() }
     }
 
     private suspend fun updateComponentsNow() {
@@ -45,26 +41,24 @@ class ComponentsViewModel @Inject constructor(
         _uiState = uiState.copy(components = components)
     }
 
-    fun addComponent(component: ComponentData, context: Context) {
+    fun addComponent(component: ComponentData) {
         viewModelScope.launch {
             componentRepository.save(component)
             updateComponentsNow()
 
-            val userMessages = uiState.userMessages + UserMessage(
-                message = context.getString(R.string.component_added),
-            )
+            val message = UserMessage(ComponentsMessageKind.ComponentAdded)
+            val userMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = userMessages)
         }
     }
 
-    fun deleteComponent(component: ComponentData, context: Context) {
+    fun deleteComponent(component: ComponentData) {
         viewModelScope.launch {
             componentRepository.delete(component)
             updateComponentsNow()
 
-            val userMessages = uiState.userMessages + UserMessage(
-                message = context.getString(R.string.component_deleted),
-            )
+            val message = UserMessage(ComponentsMessageKind.ComponentDeleted)
+            val userMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = userMessages)
         }
     }

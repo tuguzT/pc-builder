@@ -1,6 +1,5 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.root.auth
 
-import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +18,6 @@ import io.github.tuguzt.pcbuilder.data.repository.UsersRepository
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserCredentialsData
 import io.github.tuguzt.pcbuilder.domain.model.user.data.UserTokenData
-import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -68,7 +66,7 @@ class AuthViewModel @Inject constructor(
 
     private var authJob: Job? = null
 
-    fun auth(context: Context) {
+    fun auth() {
         authJob?.cancel()
         authJob = viewModelScope.launch {
             _uiState = uiState.copy(isLoading = true)
@@ -76,9 +74,9 @@ class AuthViewModel @Inject constructor(
                 username = uiState.username,
                 password = uiState.password,
             )
-            authRepository.auth(credentials).handle(context) { tokenData ->
+            authRepository.auth(credentials).handle { tokenData ->
                 tokenRepository.setToken(tokenData)
-                usersRepository.current().handle(context) {
+                usersRepository.current().handle {
                     currentUserRepository.updateCurrentUser(it)
                     _uiState = uiState.copy(isLoggedIn = true)
                 }
@@ -87,7 +85,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun register(context: Context) {
+    fun register() {
         authJob?.cancel()
         authJob = viewModelScope.launch {
             _uiState = uiState.copy(isLoading = true)
@@ -95,9 +93,9 @@ class AuthViewModel @Inject constructor(
                 username = uiState.username,
                 password = uiState.password,
             )
-            authRepository.register(credentials).handle(context) { token ->
+            authRepository.register(credentials).handle { token ->
                 tokenRepository.setToken(token)
-                usersRepository.current().handle(context) {
+                usersRepository.current().handle {
                     currentUserRepository.updateCurrentUser(it)
                     _uiState = uiState.copy(isLoggedIn = true)
                 }
@@ -109,10 +107,9 @@ class AuthViewModel @Inject constructor(
     val googleSignInIntent: Intent
         get() = googleSignInClient.signInIntent
 
-    fun googleOAuth2(account: GoogleSignInAccount, context: Context) {
+    fun googleOAuth2(account: GoogleSignInAccount) {
         val authCodeString = account.serverAuthCode ?: run {
-            // todo get message from string resources
-            val newMessage = UserMessage("Cannot retrieve id from Google account")
+            val newMessage = UserMessage(AuthMessageKind.NoGoogleId)
             val errorMessages = uiState.userMessages + newMessage
             _uiState = uiState.copy(userMessages = errorMessages)
             return
@@ -122,9 +119,9 @@ class AuthViewModel @Inject constructor(
         authJob = viewModelScope.launch {
             _uiState = uiState.copy(isLoading = true)
             val authCode = UserTokenData(authCodeString)
-            authRepository.googleOAuth2(authCode).handle(context) { token ->
+            authRepository.googleOAuth2(authCode).handle { token ->
                 tokenRepository.setToken(token)
-                usersRepository.current().handle(context) {
+                usersRepository.current().handle {
                     currentUserRepository.updateCurrentUser(it)
                     _uiState = uiState.copy(isLoggedIn = true)
                 }
@@ -133,27 +130,22 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    private inline fun <S> BackendResponse<S>.handle(
-        context: Context,
-        serverErrorMessage: String = context.getString(R.string.server_error),
-        networkErrorMessage: String = context.getString(R.string.network_error),
-        unknownErrorMessage: String = context.getString(R.string.unknown_error),
-        onSuccess: (S) -> Unit,
-    ): Unit = when (this) {
+    private inline fun <S> BackendResponse<S>.handle(onSuccess: (S) -> Unit): Unit = when (this) {
         is NetworkResponse.Success -> onSuccess(body)
         is NetworkResponse.ServerError -> {
             logger.error(error) { "Server error occurred" }
-            val errorMessages = uiState.userMessages + UserMessage(serverErrorMessage)
+            val message = UserMessage(AuthMessageKind.Backend.server())
+            val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
         }
         is NetworkResponse.NetworkError -> {
-            logger.error(error) { "Network error occurred" }
-            val errorMessages = uiState.userMessages + UserMessage(networkErrorMessage)
+            val message = UserMessage(AuthMessageKind.Backend.network())
+            val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
         }
         is NetworkResponse.UnknownError -> {
-            logger.error(error) { "Unknown error occurred" }
-            val errorMessages = uiState.userMessages + UserMessage(unknownErrorMessage)
+            val message = UserMessage(AuthMessageKind.Backend.unknown())
+            val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
         }
     }

@@ -21,6 +21,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.RootNavigationDestinations.Auth
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.navigateMain
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.BackendErrorKind
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.auth.AuthMessageKind
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.auth.AuthViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -38,11 +40,11 @@ fun NavGraphBuilder.authGraph(
 
     @Composable
     fun rememberGoogleAuthLauncher(
-        context: Context,
         coroutineScope: CoroutineScope,
         snackbarHostState: SnackbarHostState,
-    ): ManagedActivityResultLauncher<Intent, ActivityResult> =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    ): ManagedActivityResultLauncher<Intent, ActivityResult> {
+        val context = LocalContext.current
+        return rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode != RESULT_OK) {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(
@@ -54,20 +56,21 @@ fun NavGraphBuilder.authGraph(
             }
             coroutineScope.launch {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(it.data).await()
-                authViewModel.googleOAuth2(account, context)
+                authViewModel.googleOAuth2(account)
             }
         }
+    }
 
     composable(Auth.SignIn.route) {
         val snackbarHostState = remember { SnackbarHostState() }
         val coroutineScope = rememberCoroutineScope()
         val context = LocalContext.current
 
-        val launcher = rememberGoogleAuthLauncher(context, coroutineScope, snackbarHostState)
+        val launcher = rememberGoogleAuthLauncher(coroutineScope, snackbarHostState)
 
         val onSignIn: (AuthVariant) -> Unit = { variant ->
             when (variant) {
-                AuthVariant.Credentials -> authViewModel.auth(context)
+                AuthVariant.Credentials -> authViewModel.auth()
                 AuthVariant.Google -> {
                     val intent = authViewModel.googleSignInIntent
                     launcher.launch(intent)
@@ -79,7 +82,7 @@ fun NavGraphBuilder.authGraph(
             if (authViewModel.uiState.isLoading) return@LaunchedEffect
 
             if (authViewModel.uiState.isLoggedIn) {
-                accountViewModel.updateUser(context)
+                accountViewModel.updateUser()
                 navController.navigateMain()
             }
         }
@@ -98,7 +101,7 @@ fun NavGraphBuilder.authGraph(
         authViewModel.uiState.userMessages.firstOrNull()?.let { message ->
             LaunchedEffect(message) {
                 snackbarHostState.showSnackbar(
-                    message = message.message,
+                    message = message.kind.message(context),
                     actionLabel = context.getString(R.string.dismiss),
                 )
                 authViewModel.userMessageShown(message.id)
@@ -110,11 +113,11 @@ fun NavGraphBuilder.authGraph(
         val coroutineScope = rememberCoroutineScope()
         val context = LocalContext.current
 
-        val launcher = rememberGoogleAuthLauncher(context, coroutineScope, snackbarHostState)
+        val launcher = rememberGoogleAuthLauncher(coroutineScope, snackbarHostState)
 
         val onSignUp: (AuthVariant) -> Unit = { variant ->
             when (variant) {
-                AuthVariant.Credentials -> authViewModel.register(context)
+                AuthVariant.Credentials -> authViewModel.register()
                 AuthVariant.Google -> {
                     val intent = authViewModel.googleSignInIntent
                     launcher.launch(intent)
@@ -126,7 +129,7 @@ fun NavGraphBuilder.authGraph(
             if (authViewModel.uiState.isLoading) return@LaunchedEffect
 
             if (authViewModel.uiState.isLoggedIn) {
-                accountViewModel.updateUser(context)
+                accountViewModel.updateUser()
                 navController.navigateMain()
             }
         }
@@ -144,11 +147,20 @@ fun NavGraphBuilder.authGraph(
         authViewModel.uiState.userMessages.firstOrNull()?.let { message ->
             LaunchedEffect(message) {
                 snackbarHostState.showSnackbar(
-                    message = message.message,
+                    message = message.kind.message(context),
                     actionLabel = context.getString(R.string.dismiss),
                 )
                 authViewModel.userMessageShown(message.id)
             }
         }
     }
+}
+
+private fun AuthMessageKind.message(context: Context): String = when (this) {
+    is AuthMessageKind.Backend -> when (this.backendErrorKind) {
+        BackendErrorKind.ServerError -> context.getString(R.string.server_error)
+        BackendErrorKind.NetworkError -> context.getString(R.string.network_error)
+        BackendErrorKind.UnknownError -> context.getString(R.string.unknown_error)
+    }
+    AuthMessageKind.NoGoogleId -> context.getString(R.string.no_google_id)
 }

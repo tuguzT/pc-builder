@@ -1,6 +1,5 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,13 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.tuguzt.pcbuilder.data.datasource.remote.BackendResponse
 import io.github.tuguzt.pcbuilder.data.repository.CurrentUserRepository
 import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
 import io.github.tuguzt.pcbuilder.data.repository.UsersRepository
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
-import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -32,7 +29,6 @@ class AccountViewModel @Inject constructor(
     private val tokenRepository: UserTokenRepository,
     private val googleSignInClient: GoogleSignInClient,
     private val currentUserRepository: CurrentUserRepository,
-    @ApplicationContext context: Context,
 ) : ViewModel() {
 
     companion object {
@@ -45,10 +41,10 @@ class AccountViewModel @Inject constructor(
     private var updateJob: Job? = null
 
     init {
-        updateUser(context)
+        updateUser()
     }
 
-    fun updateUser(context: Context) {
+    fun updateUser() {
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
             _uiState = uiState.copy(isLoading = true)
@@ -57,7 +53,7 @@ class AccountViewModel @Inject constructor(
                 return@launch
             }
 
-            usersRepository.current().handle(context) {
+            usersRepository.current().handle {
                 currentUserRepository.updateCurrentUser(it)
                 _uiState = uiState.copy(currentUser = it)
             }
@@ -81,27 +77,24 @@ class AccountViewModel @Inject constructor(
         _uiState = uiState.copy(userMessages = messages)
     }
 
-    private inline fun <S> BackendResponse<S>.handle(
-        context: Context,
-        serverErrorMessage: String = context.getString(R.string.server_error),
-        networkErrorMessage: String = context.getString(R.string.network_error),
-        unknownErrorMessage: String = context.getString(R.string.unknown_error),
-        onSuccess: (S) -> Unit,
-    ): Unit = when (this) {
+    private inline fun <S> BackendResponse<S>.handle(onSuccess: (S) -> Unit): Unit = when (this) {
         is NetworkResponse.Success -> onSuccess(body)
         is NetworkResponse.ServerError -> {
             logger.error(error) { "Server error occurred" }
-            val errorMessages = uiState.userMessages + UserMessage(serverErrorMessage)
+            val message = UserMessage(AccountMessageKind.Backend.server())
+            val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
         }
         is NetworkResponse.NetworkError -> {
             logger.error(error) { "Network error occurred" }
-            val errorMessages = uiState.userMessages + UserMessage(networkErrorMessage)
+            val message = UserMessage(AccountMessageKind.Backend.network())
+            val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
         }
         is NetworkResponse.UnknownError -> {
             logger.error(error) { "Unknown error occurred" }
-            val errorMessages = uiState.userMessages + UserMessage(unknownErrorMessage)
+            val message = UserMessage(AccountMessageKind.Backend.unknown())
+            val errorMessages = uiState.userMessages + message
             _uiState = uiState.copy(userMessages = errorMessages)
         }
     }

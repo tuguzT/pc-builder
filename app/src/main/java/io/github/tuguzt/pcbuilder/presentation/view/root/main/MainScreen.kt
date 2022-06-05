@@ -47,6 +47,11 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
+    val appName = stringResource(R.string.app_name)
+    LaunchedEffect(Unit) {
+        mainViewModel.updateTitle(appName)
+    }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     LaunchedEffect(currentRoute) {

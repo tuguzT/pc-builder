@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,7 @@ import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsMessageKind
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -75,7 +77,7 @@ fun ComponentsScreen(
                         navController.navigate("${ComponentDetails.route}/${it.id}")
                     },
                     onComponentDismiss = {
-                        componentsViewModel.deleteComponent(it, context)
+                        componentsViewModel.deleteComponent(it)
                     }
                 )
             }
@@ -83,7 +85,7 @@ fun ComponentsScreen(
             componentsViewModel.uiState.userMessages.firstOrNull()?.let { message ->
                 LaunchedEffect(message) {
                     snackbarHostState.showSnackbar(
-                        message = message.message,
+                        message = message.kind.message(context),
                         actionLabel = context.getString(R.string.dismiss),
                     )
                     componentsViewModel.userMessageShown(message.id)
@@ -94,12 +96,11 @@ fun ComponentsScreen(
             route = AddComponent.route,
             dialogProperties = DialogProperties(usePlatformDefaultWidth = false),
         ) {
-            val context = LocalContext.current
             AddComponentDialog(
                 modifier = Modifier.fillMaxSize(),
                 onAddComponent = { component ->
                     scope.launch {
-                        componentsViewModel.addComponent(component, context)
+                        componentsViewModel.addComponent(component)
                         navController.popBackStack()
                     }
                 },
@@ -122,4 +123,9 @@ fun ComponentsScreen(
             ComponentDetailsScreen(component)
         }
     }
+}
+
+fun ComponentsMessageKind.message(context: Context): String = when (this) {
+    ComponentsMessageKind.ComponentAdded -> context.getString(R.string.component_added)
+    ComponentsMessageKind.ComponentDeleted -> context.getString(R.string.component_deleted)
 }
