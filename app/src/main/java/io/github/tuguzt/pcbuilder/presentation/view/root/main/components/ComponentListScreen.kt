@@ -16,6 +16,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDe
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun ComponentListScreen(
@@ -52,9 +53,10 @@ fun ComponentListScreen(
     }
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemScrollOffset }
+            .map { it > 0 }
             .distinctUntilChanged()
             .collect {
-                mainViewModel.updateFilled(isFilled = it > 0)
+                mainViewModel.updateFilled(isFilled = it)
             }
     }
 }

@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
 import android.content.Context
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,8 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestina
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsMessageKind
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 /**
  * Application screen which represents *Components* main application destination.
@@ -83,11 +86,20 @@ fun ComponentsScreen(
             }
 
             val title = stringResource(R.string.component_details)
+            val scrollState = rememberScrollState()
             SideEffect {
                 mainViewModel.updateTitle(title)
-                mainViewModel.updateFilled(isFilled = false)
             }
-            ComponentDetailsScreen(component)
+            ComponentDetailsScreen(component, scrollState)
+
+            LaunchedEffect(scrollState) {
+                snapshotFlow { scrollState.value }
+                    .map { it > 0 }
+                    .distinctUntilChanged()
+                    .collect {
+                        mainViewModel.updateFilled(isFilled = it)
+                    }
+            }
         }
     }
 }

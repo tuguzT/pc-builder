@@ -1,6 +1,7 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -29,6 +30,7 @@ import io.github.tuguzt.pcbuilder.domain.model.units.hertz
 import io.github.tuguzt.pcbuilder.domain.model.units.watt
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.github.tuguzt.pcbuilder.presentation.view.utils.round
 import io.nacular.measured.units.BinarySize.Companion.gigabytes
 import io.nacular.measured.units.Length.Companion.millimeters
 import io.nacular.measured.units.Mass.Companion.grams
@@ -39,11 +41,14 @@ import io.nacular.measured.units.times
  * Application screen with information about provided [component].
  */
 @Composable
-fun ComponentDetailsScreen(component: Component) {
+fun ComponentDetailsScreen(
+    component: Component,
+    scrollState: ScrollState = rememberScrollState(),
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState),
     ) {
         val imageShape = MaterialTheme.shapes.medium.copy(
             topStart = ZeroCornerSize,
@@ -57,7 +62,7 @@ fun ComponentDetailsScreen(component: Component) {
                 model = component.imageUri,
                 contentDescription = component.imageUri?.let { stringResource(R.string.component_picture) },
                 modifier = Modifier
-                    .heightIn(max = 240.dp)
+                    .heightIn(min = 240.dp)
                     .fillMaxWidth()
                     .clip(imageShape)
                     .placeholder(
@@ -71,7 +76,7 @@ fun ComponentDetailsScreen(component: Component) {
                 imageVector = Icons.Rounded.DeveloperBoard,
                 contentDescription = stringResource(R.string.image_not_loaded),
                 modifier = Modifier
-                    .heightIn(max = 240.dp)
+                    .heightIn(min = 240.dp)
                     .fillMaxWidth()
                     .clip(imageShape)
                     .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
@@ -97,28 +102,37 @@ fun ComponentDetailsScreen(component: Component) {
             Divider()
             ComponentProperty(
                 name = stringResource(R.string.weight),
-                value = "${component.weight.asMeasure() `in` grams} ${stringResource(R.string.unit_gram)}",
+                value = kotlin.run {
+                    val value = component.weight.asMeasure() `in` grams
+                    "${value.round(3)} ${stringResource(R.string.unit_gram)}"
+                },
             )
 
             Divider()
             ComponentProperty(
                 name = stringResource(R.string.length),
-                value = "${component.size.length `in` millimeters} " +
-                        stringResource(R.string.unit_millimeter),
+                value = kotlin.run {
+                    val value = component.size.length `in` millimeters
+                    "${value.round(3)} ${stringResource(R.string.unit_millimeter)}"
+                },
             )
 
             Divider()
             ComponentProperty(
                 name = stringResource(R.string.width),
-                value = "${component.size.width `in` millimeters} " +
-                        stringResource(R.string.unit_millimeter),
+                value = kotlin.run {
+                    val value = component.size.width `in` millimeters
+                    "${value.round(3)} ${stringResource(R.string.unit_millimeter)}"
+                },
             )
 
             Divider()
             ComponentProperty(
                 name = stringResource(R.string.height),
-                value = "${component.size.height `in` millimeters} " +
-                        stringResource(R.string.unit_millimeter)
+                value = kotlin.run {
+                    val value = component.size.height `in` millimeters
+                    "${value.round(3)} ${stringResource(R.string.unit_millimeter)}"
+                },
             )
         }
     }
