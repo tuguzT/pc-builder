@@ -6,7 +6,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.tuguzt.pcbuilder.data.datasource.local.impl.*
+import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalCaseMotherboardFormFactorCrossRefDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalManufacturerDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalMotherboardFormFactorDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.PCBuilderDatabase
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.buildDatabase
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dao.*
@@ -47,28 +49,8 @@ object RoomModule {
         LocalMotherboardFormFactorDataSource(dao)
 
     @Provides
-    fun provideLocalComponentDataSource(
-        componentDao: ComponentDao,
-        manufacturerDataSource: LocalManufacturerDataSource,
-    ): LocalComponentDataSource = LocalComponentDataSource(componentDao, manufacturerDataSource)
-
-    @Provides
     fun provideLocalCaseMotherboardFormFactorCrossRefDataSource(
         dao: CaseMotherboardFormFactorCrossRefDao,
     ): LocalCaseMotherboardFormFactorCrossRefDataSource =
         LocalCaseMotherboardFormFactorCrossRefDataSource(dao)
-
-    @Provides
-    fun provideLocalCaseDataSource(
-        caseDao: CaseDao,
-        componentDataSource: LocalComponentDataSource,
-        motherboardFormFactorDataSource: LocalMotherboardFormFactorDataSource,
-        caseMotherboardFormFactorCrossRefDataSource: LocalCaseMotherboardFormFactorCrossRefDataSource,
-    ): LocalCaseDataSource =
-        LocalCaseDataSource(
-            caseDao,
-            componentDataSource,
-            motherboardFormFactorDataSource,
-            caseMotherboardFormFactorCrossRefDataSource,
-        )
 }

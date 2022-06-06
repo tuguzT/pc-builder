@@ -18,14 +18,16 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.tuguzt.pcbuilder.domain.model.component.Component
-import io.github.tuguzt.pcbuilder.domain.model.component.Size
-import io.github.tuguzt.pcbuilder.domain.model.component.Weight
-import io.github.tuguzt.pcbuilder.domain.model.component.asMeasure
-import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
+import io.github.tuguzt.pcbuilder.domain.model.component.*
+import io.github.tuguzt.pcbuilder.domain.model.component.data.GpuChipsetData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.GpuData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ManufacturerData
+import io.github.tuguzt.pcbuilder.domain.model.component.gpu.*
+import io.github.tuguzt.pcbuilder.domain.model.units.hertz
+import io.github.tuguzt.pcbuilder.domain.model.units.watt
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.nacular.measured.units.BinarySize.Companion.gigabytes
 import io.nacular.measured.units.Length.Companion.millimeters
 import io.nacular.measured.units.Mass.Companion.grams
 import io.nacular.measured.units.Mass.Companion.kilograms
@@ -127,7 +129,7 @@ fun ComponentProperty(name: String, value: String) {
 @Composable
 private fun ComponentDetailsScreenPreview() {
     PCBuilderTheme {
-        val component = ComponentData(
+        val component = GpuData(
             name = "NVIDIA GeForce RTX 3050",
             description = "The RTX 3050 is built on Ampere architecture and uses 8GB" +
                     " of GDDR6 VRAM. This is the same memory found in the RTX 3060 Ti." +
@@ -143,6 +145,32 @@ private fun ComponentDetailsScreenPreview() {
             manufacturer = ManufacturerData(
                 name = "Example",
                 description = "Hello World",
+            ),
+            imageUri = null,
+            isFavorite = false,
+            `interface` = GpuInterface.AGP,
+            chipset = GpuChipsetData("hehe boi"),
+            coreClockRate = GpuClockRate(0 * hertz),
+            boostClockRate = GpuClockRate(0 * hertz),
+            memoryType = GpuMemoryType.GDDR6X,
+            memoryCapacity = GpuMemoryCapacity(1 * gigabytes),
+            multiSupport = null,
+            frameSyncType = null,
+            thermalDesignPower = ThermalDesignPower(0 * watt),
+            ports = GpuPorts(
+                dviCount = 0u,
+                hdmiCount = 0u,
+                miniHdmiCount = 0u,
+                displayPortCount = 0u,
+                miniDisplayPortCount = 0u,
+            ),
+            expansionSlotWidth = 0u,
+            cooling = GpuCooling(0u, GpuCooling.Radiator.R360),
+            externalPower = GpuExternalPower(
+                pciExpress6pinCount = 0u,
+                pciExpress8pinCount = 0u,
+                pciExpress12pinCount = 0u,
+                pciExpress16pinCount = 0u,
             ),
         )
         Surface {

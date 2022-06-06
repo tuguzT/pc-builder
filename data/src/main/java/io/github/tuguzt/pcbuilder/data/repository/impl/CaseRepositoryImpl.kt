@@ -5,7 +5,7 @@ import io.github.tuguzt.pcbuilder.data.Result
 import io.github.tuguzt.pcbuilder.data.datasource.CaseDataSource
 import io.github.tuguzt.pcbuilder.data.repository.CaseRepository
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
-import io.github.tuguzt.pcbuilder.domain.model.component.cases.data.CaseData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.CaseData
 
 class CaseRepositoryImpl(private val dataSource: CaseDataSource) : CaseRepository {
     override suspend fun getAll(): Result<List<CaseData>, Error> = dataSource.getAll()

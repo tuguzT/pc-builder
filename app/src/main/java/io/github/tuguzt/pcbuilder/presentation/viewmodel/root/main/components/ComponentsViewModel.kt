@@ -12,12 +12,17 @@ import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import mu.KotlinLogging
 import javax.inject.Inject
 
 @HiltViewModel
 class ComponentsViewModel @Inject constructor(
     private val componentRepository: ComponentRepository,
 ) : ViewModel() {
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+    }
 
     private var _uiState by mutableStateOf(ComponentsState())
     val uiState get() = _uiState
@@ -34,6 +39,7 @@ class ComponentsViewModel @Inject constructor(
             _uiState = uiState.copy(isUpdating = true)
             _uiState = when (val result = componentRepository.getAll()) {
                 is Result.Error -> {
+                    logger.error(result.throwable) { "Unknown error: ${result.error}" }
                     val message = UserMessage(ComponentsMessageKind.UnknownError)
                     val userMessages = uiState.userMessages + message
                     uiState.copy(userMessages = userMessages, isUpdating = false)

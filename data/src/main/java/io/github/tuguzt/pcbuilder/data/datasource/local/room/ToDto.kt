@@ -5,14 +5,14 @@ import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.Manuf
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.cases.CaseDto
 import io.github.tuguzt.pcbuilder.data.datasource.local.room.dto.component.cases.toEmbedded
 import io.github.tuguzt.pcbuilder.domain.model.component.asMeasure
-import io.github.tuguzt.pcbuilder.domain.model.component.cases.data.CaseData
-import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.CaseData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ManufacturerData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.PolymorphicComponent
 
 /**
- * Converts [ComponentData] object to [ComponentDto] object.
+ * Converts [PolymorphicComponent] object to [ComponentDto] object.
  */
-fun ComponentData.toEntity() = ComponentDto(
+fun PolymorphicComponent.toEntity() = ComponentDto(
     componentId = "$id",
     name = name,
     description = description,
@@ -40,5 +40,5 @@ fun CaseData.toEntity(): CaseDto = CaseDto(
     powerSupply = powerSupply?.power,
     powerSupplyShroud = powerSupplyShroud,
     sidePanelWindow = sidePanelWindow,
-    type = type,
+    type = caseType,
 )

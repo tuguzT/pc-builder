@@ -15,10 +15,17 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.tuguzt.pcbuilder.domain.model.component.Size
+import io.github.tuguzt.pcbuilder.domain.model.component.ThermalDesignPower
 import io.github.tuguzt.pcbuilder.domain.model.component.Weight
-import io.github.tuguzt.pcbuilder.domain.model.component.data.ComponentData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.GpuChipsetData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.GpuData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.ManufacturerData
+import io.github.tuguzt.pcbuilder.domain.model.component.data.PolymorphicComponent
+import io.github.tuguzt.pcbuilder.domain.model.component.gpu.*
+import io.github.tuguzt.pcbuilder.domain.model.units.hertz
+import io.github.tuguzt.pcbuilder.domain.model.units.watt
 import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import io.nacular.measured.units.BinarySize
 import io.nacular.measured.units.Length
 import io.nacular.measured.units.Mass.Companion.kilograms
 import io.nacular.measured.units.times
@@ -28,8 +35,8 @@ import io.nacular.measured.units.times
  */
 @Composable
 fun ComponentList(
-    components: List<ComponentData>,
-    onComponentClick: (ComponentData) -> Unit,
+    components: List<PolymorphicComponent>,
+    onComponentClick: (PolymorphicComponent) -> Unit,
     modifier: Modifier = Modifier,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
@@ -46,6 +53,8 @@ fun ComponentList(
                 ComponentItem(
                     component = component,
                     onClick = { onComponentClick(component) },
+                    isFavorite = false, // todo
+                    onFavoriteClick = {}, // todo
                 )
             }
         }
@@ -61,7 +70,7 @@ fun ComponentList(
 private fun ComponentListPreview() {
     PCBuilderTheme {
         val components = List(5) {
-            ComponentData(
+            GpuData(
                 name = "NVIDIA GeForce RTX 3050",
                 description = "The RTX 3050 is built on Ampere architecture and uses 8GB" +
                         " of GDDR6 VRAM. This is the same memory found in the RTX 3060 Ti." +
@@ -77,6 +86,32 @@ private fun ComponentListPreview() {
                 manufacturer = ManufacturerData(
                     name = "Example",
                     description = "Hello World",
+                ),
+                imageUri = null,
+                isFavorite = false,
+                `interface` = GpuInterface.AGP,
+                chipset = GpuChipsetData("hehe boi"),
+                coreClockRate = GpuClockRate(0 * hertz),
+                boostClockRate = GpuClockRate(0 * hertz),
+                memoryType = GpuMemoryType.GDDR6X,
+                memoryCapacity = GpuMemoryCapacity(1 * BinarySize.gigabytes),
+                multiSupport = null,
+                frameSyncType = null,
+                thermalDesignPower = ThermalDesignPower(0 * watt),
+                ports = GpuPorts(
+                    dviCount = 0u,
+                    hdmiCount = 0u,
+                    miniHdmiCount = 0u,
+                    displayPortCount = 0u,
+                    miniDisplayPortCount = 0u,
+                ),
+                expansionSlotWidth = 0u,
+                cooling = GpuCooling(0u, GpuCooling.Radiator.R360),
+                externalPower = GpuExternalPower(
+                    pciExpress6pinCount = 0u,
+                    pciExpress8pinCount = 0u,
+                    pciExpress12pinCount = 0u,
+                    pciExpress16pinCount = 0u,
                 ),
             )
         }
