@@ -1,23 +1,25 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DeveloperBoard
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
+import com.google.accompanist.placeholder.material.placeholder
 import io.github.tuguzt.pcbuilder.domain.model.component.*
 import io.github.tuguzt.pcbuilder.domain.model.component.data.GpuChipsetData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.GpuData
@@ -37,7 +39,7 @@ import io.nacular.measured.units.times
  * Application screen with information about provided [component].
  */
 @Composable
-fun ComponentDetailsScreen(component: Component, painter: Painter? = null) {
+fun ComponentDetailsScreen(component: Component) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,13 +49,32 @@ fun ComponentDetailsScreen(component: Component, painter: Painter? = null) {
             topStart = ZeroCornerSize,
             topEnd = ZeroCornerSize,
         )
-        Surface(tonalElevation = 5.dp, shape = imageShape) {
-            Image(
+        var imageState: AsyncImagePainter.State by remember {
+            mutableStateOf(AsyncImagePainter.State.Empty)
+        }
+        if (imageState !is AsyncImagePainter.State.Error) {
+            AsyncImage(
+                model = component.imageUri,
+                contentDescription = component.imageUri?.let { stringResource(R.string.component_picture) },
                 modifier = Modifier
-                    .heightIn(min = 240.dp)
-                    .fillMaxWidth(),
-                painter = painter ?: ColorPainter(Color.Transparent),
-                contentDescription = stringResource(R.string.component_picture),
+                    .heightIn(max = 240.dp)
+                    .fillMaxWidth()
+                    .clip(imageShape)
+                    .placeholder(
+                        visible = imageState is AsyncImagePainter.State.Loading,
+                        highlight = PlaceholderHighlight.fade(),
+                    ),
+                onState = { imageState = it },
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Rounded.DeveloperBoard,
+                contentDescription = stringResource(R.string.image_not_loaded),
+                modifier = Modifier
+                    .heightIn(max = 240.dp)
+                    .fillMaxWidth()
+                    .clip(imageShape)
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
             )
         }
 

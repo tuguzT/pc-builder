@@ -1,26 +1,24 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DeveloperBoard
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
@@ -42,38 +40,45 @@ import io.nacular.measured.units.Mass.Companion.kilograms
 import io.nacular.measured.units.times
 
 /**
- * [Card] with data of the provided [component] and optional image provided by [painter].
+ * [Card] with data of the provided [component].
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ComponentItem(
     component: Component,
-    isFavorite: Boolean,
     onFavoriteClick: (Boolean) -> Unit,
-    painter: Painter? = null,
     shape: Shape = MaterialTheme.shapes.medium,
     imageShape: Shape = MaterialTheme.shapes.medium,
     onClick: () -> Unit,
 ) {
     ElevatedCard(shape = shape, onClick = onClick) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Image(
-                modifier = Modifier
-                    .size(128.dp)
-                    .clip(imageShape)
-                    .run {
-                        when (painter) {
-                            null -> placeholder(
-                                visible = true,
-                                highlight = PlaceholderHighlight.fade(),
-                            )
-                            else -> this
-                        }
-                    },
-                painter = painter ?: ColorPainter(Color.Transparent),
-                contentDescription = painter?.let { stringResource(R.string.component_picture) },
-                contentScale = ContentScale.Crop,
-            )
+            var imageState: AsyncImagePainter.State by remember {
+                mutableStateOf(AsyncImagePainter.State.Empty)
+            }
+            if (imageState !is AsyncImagePainter.State.Error) {
+                AsyncImage(
+                    model = component.imageUri,
+                    contentDescription = component.imageUri?.let { stringResource(R.string.component_picture) },
+                    modifier = Modifier
+                        .size(128.dp)
+                        .clip(imageShape)
+                        .placeholder(
+                            visible = imageState is AsyncImagePainter.State.Loading,
+                            highlight = PlaceholderHighlight.fade(),
+                        ),
+                    contentScale = ContentScale.Crop,
+                    onState = { imageState = it },
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Rounded.DeveloperBoard,
+                    contentDescription = stringResource(R.string.image_not_loaded),
+                    modifier = Modifier
+                        .size(128.dp)
+                        .clip(imageShape),
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 DisableSelection {
@@ -88,9 +93,13 @@ fun ComponentItem(
                             style = MaterialTheme.typography.titleMedium,
                             overflow = TextOverflow.Ellipsis,
                         )
-                        IconButton(onClick = { onFavoriteClick(!isFavorite) }) {
+                        IconButton(onClick = { onFavoriteClick(!component.isFavorite) }) {
+                            val imageVector = when {
+                                component.isFavorite -> Icons.Rounded.Star
+                                else -> Icons.Rounded.StarOutline
+                            }
                             Icon(
-                                imageVector = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarOutline,
+                                imageVector = imageVector,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.tertiary,
                             )
@@ -164,8 +173,6 @@ private fun ComponentItemPreview() {
         Surface {
             ComponentItem(
                 component = component,
-                painter = painterResource(R.drawable.ic_launcher_background),
-                isFavorite = false,
                 onFavoriteClick = {},
                 onClick = {},
             )

@@ -52,4 +52,5 @@
     <string name="google_auth_error">Google authorization failed</string>
     <string name="no_google_id">Cannot retrieve id from Google account</string>
     <string name="favorite_components">Favorite components</string>
+    <string name="image_not_loaded">Image not loaded</string>
 </resources>

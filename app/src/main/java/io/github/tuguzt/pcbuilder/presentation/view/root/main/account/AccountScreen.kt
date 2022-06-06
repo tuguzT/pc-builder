@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,7 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
@@ -49,30 +49,32 @@ fun AccountScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        SubcomposeAsyncImage(
-            model = user.imageUri,
-            contentDescription = user.imageUri?.let { stringResource(R.string.user_avatar) },
-            modifier = Modifier
-                .size(144.dp)
-                .clip(MaterialTheme.shapes.medium),
-            loading = {
-                Box(
-                    modifier = Modifier.placeholder(
-                        visible = true,
+        var imageState: AsyncImagePainter.State by remember {
+            mutableStateOf(AsyncImagePainter.State.Empty)
+        }
+        if (imageState !is AsyncImagePainter.State.Error) {
+            AsyncImage(
+                model = user.imageUri,
+                contentDescription = user.imageUri?.let { stringResource(R.string.user_avatar) },
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .placeholder(
+                        visible = imageState is AsyncImagePainter.State.Loading,
                         highlight = PlaceholderHighlight.fade(),
                     ),
-                    content = {},
-                )
-            },
-            error = {
-                Icon(
-                    imageVector = Icons.Rounded.Person,
-                    contentDescription = stringResource(R.string.avatar_not_loaded),
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
-                )
-            }
-        )
+                onState = { imageState = it },
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Rounded.Person,
+                contentDescription = stringResource(R.string.avatar_not_loaded),
+                modifier = Modifier
+                    .size(144.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
+            )
+        }
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(text = user.username, style = MaterialTheme.typography.headlineSmall)

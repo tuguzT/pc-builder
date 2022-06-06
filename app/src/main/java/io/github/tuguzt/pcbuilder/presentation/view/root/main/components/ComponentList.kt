@@ -53,7 +53,6 @@ fun ComponentList(
                 ComponentItem(
                     component = component,
                     onClick = { onComponentClick(component) },
-                    isFavorite = false, // todo
                     onFavoriteClick = {}, // todo
                 )
             }
