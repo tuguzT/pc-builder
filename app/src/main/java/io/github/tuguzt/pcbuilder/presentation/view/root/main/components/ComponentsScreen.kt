@@ -1,9 +1,13 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
 import android.content.Context
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -18,8 +22,7 @@ import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsMessageKind
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.*
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -30,6 +33,7 @@ import kotlinx.coroutines.flow.map
 fun ComponentsScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     componentsViewModel: ComponentsViewModel = hiltViewModel(),
+    componentsCompareViewModel: ComponentsCompareViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     navController: NavHostController = rememberNavController(),
 ) {
@@ -40,6 +44,7 @@ fun ComponentsScreen(
         val currentDestination = when {
             currentRoute == ComponentList.route -> MainScreenDestinations.Components
             currentRoute == SearchComponent.route -> SearchComponent
+            CompareComponents.route in currentRoute -> CompareComponents
             currentRoute == Favorites.route -> Favorites
             ComponentDetails.route in currentRoute -> ComponentDetails
             else -> return@LaunchedEffect
@@ -47,8 +52,6 @@ fun ComponentsScreen(
         mainViewModel.updateCurrentDestination(currentDestination)
         mainViewModel.updateOnNavigateUpAction(navController::navigateUp)
     }
-
-    val appName = stringResource(R.string.app_name)
 
     NavHost(navController = navController, startDestination = ComponentList.route) {
         composable(ComponentList.route) {
@@ -67,9 +70,109 @@ fun ComponentsScreen(
                 navController = navController,
             )
         }
-        composable(SearchComponent.route) {
+        composable(CompareComponents.route) {
+            val context = LocalContext.current
+            val title = CompareComponents.description
             SideEffect {
-                mainViewModel.updateTitle(appName)
+                mainViewModel.updateTitle(title)
+            }
+
+            val scrollState = rememberScrollState()
+            ComponentCompareScreen(
+                firstComponent = componentsCompareViewModel.uiState.firstComponent,
+                secondComponent = componentsCompareViewModel.uiState.secondComponent,
+                scrollState = scrollState,
+                onFirstComponentCleared = {
+                    componentsCompareViewModel.updateFirstComponent(component = null)
+                },
+                onSecondComponentCleared = {
+                    componentsCompareViewModel.updateSecondComponent(component = null)
+                },
+                onFirstComponentChoose = {
+                    navController.navigate("${ChooseComponent.route}/${ComponentToChoose.First}")
+                },
+                onSecondComponentChoose = {
+                    navController.navigate("${ChooseComponent.route}/${ComponentToChoose.Second}")
+                },
+            )
+
+            componentsCompareViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(
+                        message = when (message.kind) {
+                            CompareComponentsMessageKind.DifferentTypes -> context.getString(R.string.choose_one_type)
+                            CompareComponentsMessageKind.EqualComponents -> context.getString(R.string.equal_components)
+                        },
+                        actionLabel = context.getString(R.string.dismiss),
+                    )
+                    componentsCompareViewModel.userMessageShown(message.id)
+                }
+            }
+            LaunchedEffect(scrollState) {
+                snapshotFlow { scrollState.value }
+                    .map { it > 0 }
+                    .distinctUntilChanged()
+                    .collect {
+                        mainViewModel.updateFilled(isFilled = it)
+                    }
+            }
+        }
+        composable(
+            route = "${ChooseComponent.route}/{discriminator}",
+            arguments = listOf(
+                navArgument(name = "discriminator") { type = NavType.StringType },
+            ),
+        ) { backStackEntry ->
+            val discriminator = backStackEntry.arguments?.getString("discriminator")
+                ?.let { ComponentToChoose.valueOf(it) } ?: return@composable
+
+            val listState = rememberLazyListState()
+            val context = LocalContext.current
+            val title = ChooseComponent.description
+            SideEffect {
+                mainViewModel.updateTitle(title)
+            }
+
+            ComponentList(
+                modifier = Modifier.fillMaxSize(),
+                components = componentsViewModel.uiState.components,
+                onComponentClick = { component ->
+                    when (discriminator) {
+                        ComponentToChoose.First ->
+                            componentsCompareViewModel.updateFirstComponent(component)
+                        ComponentToChoose.Second ->
+                            componentsCompareViewModel.updateSecondComponent(component)
+                    }
+                    navController.popBackStack()
+                },
+                onFavoriteComponentClick = { _, _ -> },
+                isRefreshing = componentsViewModel.uiState.isUpdating,
+                onRefresh = { componentsViewModel.updateComponents() },
+                lazyListState = listState,
+            )
+
+            componentsViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(
+                        message = message.kind.message(context),
+                        actionLabel = context.getString(R.string.dismiss),
+                    )
+                    componentsViewModel.userMessageShown(message.id)
+                }
+            }
+            LaunchedEffect(listState) {
+                snapshotFlow { listState.firstVisibleItemScrollOffset }
+                    .map { it > 0 }
+                    .distinctUntilChanged()
+                    .collect {
+                        mainViewModel.updateFilled(isFilled = it)
+                    }
+            }
+        }
+        composable(SearchComponent.route) {
+            val title = SearchComponent.description
+            SideEffect {
+                mainViewModel.updateTitle(title)
                 mainViewModel.updateFilled(isFilled = false)
             }
             // todo

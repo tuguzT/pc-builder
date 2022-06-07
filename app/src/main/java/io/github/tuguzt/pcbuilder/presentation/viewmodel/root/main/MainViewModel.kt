@@ -18,6 +18,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private var _uiState by mutableStateOf(MainState())
     val uiState get() = _uiState
 
+    fun updateMenuExpanded(expanded: Boolean) {
+        _uiState = uiState.copy(menuExpanded = expanded)
+    }
+
     fun updateTitle(title: String) {
         _uiState = uiState.copy(title = title)
     }

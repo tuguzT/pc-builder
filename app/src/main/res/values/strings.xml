@@ -51,6 +51,11 @@
     <string name="no_account">No account?</string>
     <string name="have_account">Already have account?</string>
     <string name="coming_soon">Coming soon…</string>
+    <string name="clear_selection">Clear selection</string>
+    <string name="compare_components">Compare components</string>
+    <string name="choose_one_type">You must choose components of one type</string>
+    <string name="show_more">Show more</string>
+    <string name="choose_component">Choose component</string>
 
     <string name="server_error">Error on the server side: try later</string>
     <string name="network_error">Can\'t connect to the server: check Internet connection</string>
@@ -100,4 +105,5 @@
     <string name="motherboard_usb_3_2_gen1_headers">USB 3.2 gen 1 headers</string>
     <string name="motherboard_usb_3_2_gen2_headers">USB 3.2 gen 2 headers</string>
     <string name="motherboard_usb_3_2_gen2x2_headers">USB 3.2 gen 2x2 headers</string>
+    <string name="equal_components">Component mustn\'t be the same</string>
 </resources>

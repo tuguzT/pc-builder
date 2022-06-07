@@ -5,8 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,19 +23,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.ToastDuration
-import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.Favorites
-import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.SearchComponent
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.account.AccountScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.builds.BuildsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.components.ComponentsScreen
 import io.github.tuguzt.pcbuilder.presentation.view.showToast
 import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.favoritesVisible
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.navigationVisible
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.searchVisible
 
 /**
  * Main screen of the application.
@@ -90,7 +85,7 @@ fun MainScreen(
         ) {
             composable(Components.route) {
                 ComponentsScreen(
-                    mainViewModel,
+                    mainViewModel = mainViewModel,
                     navController = componentsNavController,
                     snackbarHostState = snackbarHostState,
                 )
@@ -130,7 +125,11 @@ private fun MainScreenTopAppBar(
                 AnimatedContent(targetState = viewModel.uiState.title) { title -> Text(title) }
             },
             navigationIcon = {
-                if (viewModel.uiState.navigationVisible) {
+                AnimatedVisibility(
+                    visible = viewModel.uiState.navigationVisible,
+                    enter = fadeIn() + expandHorizontally(),
+                    exit = fadeOut() + shrinkHorizontally(),
+                ) {
                     IconButton(onClick = viewModel.uiState.onNavigateUpAction) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
@@ -140,35 +139,34 @@ private fun MainScreenTopAppBar(
                 }
             },
             actions = {
-                AnimatedVisibility(
-                    visible = viewModel.uiState.searchVisible,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    IconButton(
-                        onClick = {
-                            componentsNavController.navigate(SearchComponent.route)
-                        },
-                    ) {
+                AnimatedVisibility(visible = viewModel.uiState.menuVisible) {
+                    IconButton(onClick = { viewModel.updateMenuExpanded(expanded = true) }) {
                         Icon(
-                            imageVector = Icons.Rounded.Search,
-                            contentDescription = stringResource(R.string.search_components),
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = stringResource(R.string.show_more),
                         )
                     }
                 }
-                AnimatedVisibility(
-                    visible = viewModel.uiState.favoritesVisible,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                DropdownMenu(
+                    expanded = viewModel.uiState.menuExpanded,
+                    onDismissRequest = { viewModel.updateMenuExpanded(expanded = false) },
                 ) {
-                    IconButton(
-                        onClick = {
-                            componentsNavController.navigate(Favorites.route)
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Star,
-                            contentDescription = stringResource(R.string.favorite_components),
+                    if (viewModel.uiState.searchVisible) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.search_components)) },
+                            onClick = { componentsNavController.navigate(SearchComponent.route) },
+                        )
+                    }
+                    if (viewModel.uiState.favoritesVisible) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.favorite_components)) },
+                            onClick = { componentsNavController.navigate(Favorites.route) },
+                        )
+                    }
+                    if (viewModel.uiState.compareVisible) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.compare_components)) },
+                            onClick = { componentsNavController.navigate(CompareComponents.route) },
                         )
                     }
                 }

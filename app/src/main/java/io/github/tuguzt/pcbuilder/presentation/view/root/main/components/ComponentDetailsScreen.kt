@@ -2,7 +2,6 @@ package io.github.tuguzt.pcbuilder.presentation.view.root.main.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.ZeroCornerSize
@@ -78,10 +77,10 @@ private fun ComponentImage(component: Component) {
     var imageState: AsyncImagePainter.State by remember {
         mutableStateOf(AsyncImagePainter.State.Empty)
     }
-    if (imageState !is AsyncImagePainter.State.Error) {
+    if (imageState !is AsyncImagePainter.State.Error && component.imageUri != null) {
         AsyncImage(
             model = component.imageUri,
-            contentDescription = component.imageUri?.let { stringResource(R.string.component_picture) },
+            contentDescription = stringResource(R.string.component_picture),
             modifier = Modifier
                 .heightIn(min = 240.dp)
                 .fillMaxWidth()
@@ -93,15 +92,15 @@ private fun ComponentImage(component: Component) {
             onState = { imageState = it },
         )
     } else {
-        Icon(
-            imageVector = Icons.Rounded.DeveloperBoard,
-            contentDescription = stringResource(R.string.image_not_loaded),
-            modifier = Modifier
-                .heightIn(min = 240.dp)
-                .fillMaxWidth()
-                .clip(imageShape)
-                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
-        )
+        Surface(tonalElevation = 2.dp, shape = imageShape) {
+            Icon(
+                modifier = Modifier
+                    .heightIn(min = 240.dp)
+                    .fillMaxWidth(),
+                imageVector = Icons.Rounded.DeveloperBoard,
+                contentDescription = stringResource(R.string.image_not_loaded),
+            )
+        }
     }
 }
 

@@ -26,7 +26,6 @@ fun FavoriteComponentListScreen(
     snackbarHostState: SnackbarHostState,
     navController: NavHostController,
 ) {
-    println(componentsViewModel.uiState)
     val listState = rememberLazyListState()
     val context = LocalContext.current
 

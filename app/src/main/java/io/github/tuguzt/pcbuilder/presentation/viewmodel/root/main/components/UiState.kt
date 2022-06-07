@@ -19,3 +19,17 @@ enum class ComponentsMessageKind : MessageKind {
     ComponentDeleted,
     UnknownError,
 }
+
+data class CompareComponentsState(
+    val firstComponent: PolymorphicComponent? = null,
+    val secondComponent: PolymorphicComponent? = null,
+    override val userMessages: List<UserMessage<out CompareComponentsMessageKind>> = listOf(),
+) : MessageState<CompareComponentsMessageKind>
+
+enum class CompareComponentsMessageKind : MessageKind {
+    DifferentTypes, EqualComponents,
+}
+
+enum class ComponentToChoose {
+    First, Second,
+}

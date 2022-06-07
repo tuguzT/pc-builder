@@ -6,14 +6,21 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestina
 data class MainState(
     val title: String = "",
     val isFilled: Boolean = false,
+    val menuExpanded: Boolean = false,
     val currentDestination: Destination = MainScreenDestinations.Components,
     val onNavigateUpAction: () -> Unit = {},
 )
+
+inline val MainState.menuVisible: Boolean
+    get() = favoritesVisible
 
 inline val MainState.favoritesVisible: Boolean
     get() = currentDestination == MainScreenDestinations.Components
 
 inline val MainState.searchVisible: Boolean
+    get() = favoritesVisible
+
+inline val MainState.compareVisible: Boolean
     get() = favoritesVisible
 
 inline val MainState.navigationVisible: Boolean

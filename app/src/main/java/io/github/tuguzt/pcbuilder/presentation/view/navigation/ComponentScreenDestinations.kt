@@ -25,6 +25,16 @@ sealed class ComponentScreenDestinations(override val route: String) : Describab
             @Composable get() = stringResource(R.string.search_components)
     }
 
+    object CompareComponents : ComponentScreenDestinations(route = "compareComponents") {
+        override val description: String
+            @Composable get() = stringResource(R.string.compare_components)
+    }
+
+    object ChooseComponent : ComponentScreenDestinations(route = "chooseComponent") {
+        override val description: String
+            @Composable get() = stringResource(R.string.choose_component)
+    }
+
     object ComponentDetails : ComponentScreenDestinations(route = "component") {
         override val description: String
             @Composable get() = stringResource(R.string.component_details)

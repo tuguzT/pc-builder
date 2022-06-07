@@ -27,6 +27,7 @@ object JetpackCompose {
 
         const val placeholder = "com.google.accompanist:accompanist-placeholder-material:$version"
         const val swipeToRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
+        const val pagerLayouts = "com.google.accompanist:accompanist-pager:$version"
     }
 
     object AndroidStudio {

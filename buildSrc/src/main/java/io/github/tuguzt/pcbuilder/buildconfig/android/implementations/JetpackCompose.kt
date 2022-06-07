@@ -20,4 +20,5 @@ fun DependencyHandler.composeThirdPartyImplementation() {
 fun DependencyHandler.accompanistImplementation() {
     implementation(JetpackCompose.Accompanist.placeholder)
     implementation(JetpackCompose.Accompanist.swipeToRefresh)
+    implementation(JetpackCompose.Accompanist.pagerLayouts)
 }
