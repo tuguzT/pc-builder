@@ -16,9 +16,15 @@
     <string name="password">Password</string>
     <string name="dismiss">Dismiss</string>
     <string name="favorites">Favorites</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="none">None</string>
+    <string name="integrated">Integrated</string>
 
     <string name="unit_gram">g</string>
     <string name="unit_millimeter">mm</string>
+    <string name="unit_watt">W</string>
+    <string name="unit_gigabytes">GB</string>
 
     <string name="search_components">Search for components</string>
     <string name="component_details">Component details</string>
@@ -53,4 +59,45 @@
     <string name="no_google_id">Cannot retrieve id from Google account</string>
     <string name="favorite_components">Favorite components</string>
     <string name="image_not_loaded">Image not loaded</string>
+
+    <string name="memory_type">Memory type</string>
+    <string name="memory_ecc_support">Memory ECC support</string>
+
+    <string name="cpu_socket">CPU socket</string>
+
+    <string name="gpu_crossfire_x_support">CrossfireX support</string>
+    <string name="gpu_sli_support">SLI support</string>
+    <string name="gpu_multi_support_with_ways">%1$d Way</string>
+
+    <string name="case_type">Case type</string>
+    <string name="case_external_5_25_bays">External 5.25" bays</string>
+    <string name="case_external_3_5_bays">External 3.5" bays</string>
+    <string name="case_internal_3_5_bays">Internal 3.5" bays</string>
+    <string name="case_internal_2_5_bays">Internal 2.5" bays</string>
+    <string name="case_full_height_expansion_slots">Full-height expansion slots</string>
+    <string name="case_half_height_expansion_slots">Half-height expansion slots</string>
+    <string name="case_power_supply">Case power supply</string>
+    <string name="case_power_supply_shroud">Case power supply shroud</string>
+    <string name="shroud">Shroud</string>
+    <string name="non_shroud">Non-shroud</string>
+    <string name="case_side_panel_window">Side panel window</string>
+
+    <string name="motherboard_form_factors">Motherboard form factors</string>
+    <string name="motherboard_form_factor">Form factor</string>
+    <string name="motherboard_chipset">Motherboard chipset</string>
+    <string name="motherboard_max_memory_amount">Max memory amount</string>
+    <string name="motherboard_memory_slot_count">Memory slot count</string>
+    <string name="motherboard_pcie_x16_slots">PCIe x16 slots</string>
+    <string name="motherboard_pcie_x8_slots">PCIe x8 slots</string>
+    <string name="motherboard_pcie_x4_slots">PCIe x4 slots</string>
+    <string name="motherboard_pcie_x1_slots">PCIe x1 slots</string>
+    <string name="motherboard_pci_slots">PCI slots</string>
+    <string name="motherboard_m2_slots">M.2 slots</string>
+    <string name="motherboard_m_sata_slots">mSATA slots</string>
+    <string name="motherboard_sata_3gbps_ports">SATA 3 GB/s ports</string>
+    <string name="motherboard_sata_6gbps_ports">SATA 6 GB/s ports</string>
+    <string name="motherboard_usb2_headers">USB 2.0 headers</string>
+    <string name="motherboard_usb_3_2_gen1_headers">USB 3.2 gen 1 headers</string>
+    <string name="motherboard_usb_3_2_gen2_headers">USB 3.2 gen 2 headers</string>
+    <string name="motherboard_usb_3_2_gen2x2_headers">USB 3.2 gen 2x2 headers</string>
 </resources>
