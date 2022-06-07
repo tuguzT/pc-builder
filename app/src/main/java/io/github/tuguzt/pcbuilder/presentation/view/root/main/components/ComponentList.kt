@@ -37,6 +37,7 @@ import io.nacular.measured.units.times
 fun ComponentList(
     components: List<PolymorphicComponent>,
     onComponentClick: (PolymorphicComponent) -> Unit,
+    onFavoriteComponentClick: (PolymorphicComponent, Boolean) -> Unit,
     modifier: Modifier = Modifier,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
@@ -53,7 +54,7 @@ fun ComponentList(
                 ComponentItem(
                     component = component,
                     onClick = { onComponentClick(component) },
-                    onFavoriteClick = {}, // todo
+                    onFavoriteClick = { onFavoriteComponentClick(component, it) },
                 )
             }
         }
@@ -118,6 +119,7 @@ private fun ComponentListPreview() {
             ComponentList(
                 components = components,
                 onComponentClick = {},
+                onFavoriteComponentClick = { _, _ -> },
             )
         }
     }

@@ -34,7 +34,8 @@ object AppModule {
     @Singleton
     fun provideJson(): Json = Json(domainJson) {}
 
-    private const val serverClientId = "SECRET"
+    private const val serverClientId =
+        "721437970114-hh7th0maj212se0fbgk3t1rh2hno750t.apps.googleusercontent.com"
 
     @Provides
     @Singleton

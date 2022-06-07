@@ -21,7 +21,7 @@ class RemoteComponentDataSource(private val backendComponentsAPI: BackendCompone
         backendComponentsAPI.getAll().toResult()
 
     override suspend fun findById(id: NanoId): Result<PolymorphicComponent?, Error> =
-        backendComponentsAPI.findById(id = "$id").toResult()
+        backendComponentsAPI.findById(id).toResult()
 
     override suspend fun save(item: PolymorphicComponent): Result<Unit, Error> {
         TODO("Not yet implemented")

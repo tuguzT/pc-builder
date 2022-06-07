@@ -60,11 +60,12 @@ fun ComponentsScreen(
             )
         }
         composable(Favorites.route) {
-            SideEffect {
-                mainViewModel.updateTitle(appName)
-                mainViewModel.updateFilled(isFilled = false)
-            }
-            // todo
+            FavoriteComponentListScreen(
+                mainViewModel = mainViewModel,
+                componentsViewModel = componentsViewModel,
+                snackbarHostState = snackbarHostState,
+                navController = navController,
+            )
         }
         composable(SearchComponent.route) {
             SideEffect {

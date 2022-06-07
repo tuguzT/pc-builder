@@ -15,25 +15,27 @@ import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.ComponentDetails
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.favoriteComponents
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun ComponentListScreen(
+fun FavoriteComponentListScreen(
     mainViewModel: MainViewModel,
     componentsViewModel: ComponentsViewModel,
     snackbarHostState: SnackbarHostState,
     navController: NavHostController,
 ) {
+    println(componentsViewModel.uiState)
     val listState = rememberLazyListState()
     val context = LocalContext.current
 
-    val appName = stringResource(R.string.app_name)
-    SideEffect { mainViewModel.updateTitle(appName) }
+    val title = stringResource(R.string.favorite_components)
+    SideEffect { mainViewModel.updateTitle(title) }
 
     ComponentList(
         modifier = Modifier.fillMaxSize(),
-        components = componentsViewModel.uiState.components,
+        components = componentsViewModel.uiState.favoriteComponents,
         onComponentClick = { component ->
             navController.navigate("${ComponentDetails.route}/${component.id}")
         },

@@ -11,6 +11,9 @@ data class ComponentsState(
     override val userMessages: List<UserMessage<ComponentsMessageKind>> = listOf(),
 ) : MessageState<ComponentsMessageKind>
 
+val ComponentsState.favoriteComponents: List<PolymorphicComponent>
+    get() = components.filter(PolymorphicComponent::isFavorite)
+
 enum class ComponentsMessageKind : MessageKind {
     ComponentAdded,
     ComponentDeleted,
