@@ -1,5 +1,6 @@
 package io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main
 
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.BuildScreenDestinations
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.Destination
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations
 
@@ -14,13 +15,13 @@ data class MainState(
 )
 
 inline val MainState.menuVisible: Boolean
-    get() = favoritesVisible || buildCompatibilityVisible
+    get() = favoritesVisible || buildEditVisible
 
 inline val MainState.favoritesVisible: Boolean
     get() = currentDestination == MainScreenDestinations.Components
 
 inline val MainState.searchVisible: Boolean
-    get() = false
+    get() = favoritesVisible
 
 inline val MainState.compareVisible: Boolean
     get() = favoritesVisible
@@ -32,7 +33,7 @@ inline val MainState.buildCompatibilityVisible: Boolean
     get() = false
 
 inline val MainState.buildEditVisible: Boolean
-    get() = buildCompatibilityVisible
+    get() = currentDestination == BuildScreenDestinations.BuildDetails
 
 inline val MainState.addBuildVisible: Boolean
     get() = currentDestination == MainScreenDestinations.Builds
