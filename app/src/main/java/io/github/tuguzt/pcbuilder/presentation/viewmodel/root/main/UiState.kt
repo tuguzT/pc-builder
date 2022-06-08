@@ -15,7 +15,7 @@ data class MainState(
 )
 
 inline val MainState.menuVisible: Boolean
-    get() = favoritesVisible || buildCompatibilityVisible
+    get() = favoritesVisible || buildEditVisible
 
 inline val MainState.favoritesVisible: Boolean
     get() = currentDestination == MainScreenDestinations.Components
@@ -30,10 +30,10 @@ inline val MainState.navigationVisible: Boolean
     get() = currentDestination !is MainScreenDestinations
 
 inline val MainState.buildCompatibilityVisible: Boolean
-    get() = currentDestination == BuildScreenDestinations.BuildDetails
+    get() = false
 
 inline val MainState.buildEditVisible: Boolean
-    get() = buildCompatibilityVisible
+    get() = currentDestination == BuildScreenDestinations.BuildDetails
 
 inline val MainState.addBuildVisible: Boolean
     get() = currentDestination == MainScreenDestinations.Builds
