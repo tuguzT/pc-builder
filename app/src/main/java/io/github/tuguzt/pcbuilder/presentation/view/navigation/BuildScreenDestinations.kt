@@ -20,6 +20,16 @@ sealed class BuildScreenDestinations(override val route: String) : DescribableDe
             @Composable get() = stringResource(R.string.add_build)
     }
 
+    object EditBuild : BuildScreenDestinations(route = "editBuild") {
+        override val description: String
+            @Composable get() = stringResource(R.string.build_edit)
+    }
+
+    object CompatibilityBuild : BuildScreenDestinations(route = "buildCompatibility") {
+        override val description: String
+            @Composable get() = stringResource(R.string.build_compatibility)
+    }
+
     object BuildDetails : BuildScreenDestinations(route = "buildDetails") {
         override val description: String
             @Composable get() = stringResource(R.string.build_details)

@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -74,9 +73,8 @@ fun MainScreen(
     Scaffold(
         topBar = {
             MainScreenTopAppBar(
-                viewModel = mainViewModel,
+                mainViewModel = mainViewModel,
                 componentsNavController = componentsNavController,
-                buildsNavController = buildsNavController,
             )
         },
         bottomBar = {
@@ -139,24 +137,23 @@ fun MainScreen(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MainScreenTopAppBar(
-    viewModel: MainViewModel,
+    mainViewModel: MainViewModel,
     componentsNavController: NavHostController,
-    buildsNavController: NavController,
 ) {
-    val tonalElevation by animateDpAsState(if (viewModel.uiState.isFilled) 4.dp else 0.dp)
+    val tonalElevation by animateDpAsState(if (mainViewModel.uiState.isFilled) 4.dp else 0.dp)
 
     Surface(tonalElevation = tonalElevation) {
         CenterAlignedTopAppBar(
             title = {
-                AnimatedContent(targetState = viewModel.uiState.title) { title -> Text(title) }
+                AnimatedContent(targetState = mainViewModel.uiState.title) { title -> Text(title) }
             },
             navigationIcon = {
                 AnimatedVisibility(
-                    visible = viewModel.uiState.navigationVisible,
+                    visible = mainViewModel.uiState.navigationVisible,
                     enter = fadeIn() + expandHorizontally(),
                     exit = fadeOut() + shrinkHorizontally(),
                 ) {
-                    IconButton(onClick = viewModel.uiState.onNavigateUpAction) {
+                    IconButton(onClick = mainViewModel.uiState.onNavigateUpAction) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
                             contentDescription = stringResource(R.string.navigate_up),
@@ -165,8 +162,8 @@ private fun MainScreenTopAppBar(
                 }
             },
             actions = {
-                AnimatedVisibility(visible = viewModel.uiState.menuVisible) {
-                    IconButton(onClick = { viewModel.updateMenuExpanded(expanded = true) }) {
+                AnimatedVisibility(visible = mainViewModel.uiState.menuVisible) {
+                    IconButton(onClick = { mainViewModel.updateMenuExpanded(expanded = true) }) {
                         Icon(
                             imageVector = Icons.Rounded.MoreVert,
                             contentDescription = stringResource(R.string.show_more),
@@ -174,25 +171,37 @@ private fun MainScreenTopAppBar(
                     }
                 }
                 DropdownMenu(
-                    expanded = viewModel.uiState.menuExpanded,
-                    onDismissRequest = { viewModel.updateMenuExpanded(expanded = false) },
+                    expanded = mainViewModel.uiState.menuExpanded,
+                    onDismissRequest = { mainViewModel.updateMenuExpanded(expanded = false) },
                 ) {
-                    if (viewModel.uiState.searchVisible) {
+                    if (mainViewModel.uiState.searchVisible) {
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.search_components)) },
                             onClick = { componentsNavController.navigate(SearchComponent.route) },
                         )
                     }
-                    if (viewModel.uiState.favoritesVisible) {
+                    if (mainViewModel.uiState.favoritesVisible) {
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.favorite_components)) },
                             onClick = { componentsNavController.navigate(Favorites.route) },
                         )
                     }
-                    if (viewModel.uiState.compareVisible) {
+                    if (mainViewModel.uiState.compareVisible) {
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.compare_components)) },
                             onClick = { componentsNavController.navigate(CompareComponents.route) },
+                        )
+                    }
+                    if (mainViewModel.uiState.buildEditVisible) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.build_edit)) },
+                            onClick = mainViewModel.uiState.onBuildEditAction,
+                        )
+                    }
+                    if (mainViewModel.uiState.buildCompatibilityVisible) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.build_compatibility)) },
+                            onClick = mainViewModel.uiState.onBuildCompatibilityAction,
                         )
                     }
                 }

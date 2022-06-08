@@ -21,20 +21,20 @@ import io.github.tuguzt.pcbuilder.domain.model.component.data.CaseData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.MotherboardData
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
-import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.AddBuildViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.EditBuildViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.isValid
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.toData
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 
 @Composable
-fun AddBuildScreen(
-    onAdd: (BuildData) -> Unit,
+fun EditBuildScreen(
+    onEdit: (BuildData) -> Unit,
     mainViewModel: MainViewModel,
     componentsViewModel: ComponentsViewModel,
-    addBuildViewModel: AddBuildViewModel = hiltViewModel(),
+    editBuildViewModel: EditBuildViewModel = hiltViewModel(),
 ) {
     val focusManager = LocalFocusManager.current
-    val title = stringResource(R.string.add_build)
+    val title = stringResource(R.string.build_edit)
     SideEffect {
         mainViewModel.updateTitle(title)
     }
@@ -51,8 +51,8 @@ fun AddBuildScreen(
                 ),
         ) {
             OutlinedTextField(
-                value = addBuildViewModel.uiState.name,
-                onValueChange = addBuildViewModel::updateName,
+                value = editBuildViewModel.uiState.name,
+                onValueChange = editBuildViewModel::updateName,
                 label = { Text(stringResource(R.string.name)) },
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -64,8 +64,8 @@ fun AddBuildScreen(
             ComponentExposedDropdown(
                 items = cases,
                 label = stringResource(R.string.case_label),
-                currentItem = addBuildViewModel.uiState.case,
-                onItemChoose = { addBuildViewModel.updateCase(it) },
+                currentItem = editBuildViewModel.uiState.case,
+                onItemChoose = { editBuildViewModel.updateCase(it) },
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -75,8 +75,8 @@ fun AddBuildScreen(
             ComponentExposedDropdown(
                 items = motherboards,
                 label = stringResource(R.string.motherboard),
-                currentItem = addBuildViewModel.uiState.motherboard,
-                onItemChoose = { addBuildViewModel.updateMotherboard(it) },
+                currentItem = editBuildViewModel.uiState.motherboard,
+                onItemChoose = { editBuildViewModel.updateMotherboard(it) },
             )
             Spacer(
                 modifier = Modifier
@@ -85,13 +85,13 @@ fun AddBuildScreen(
             )
             Button(
                 onClick = {
-                    val build = addBuildViewModel.uiState.toData()
-                    onAdd(build)
+                    val build = editBuildViewModel.uiState.toData()
+                    onEdit(build)
                 },
                 modifier = Modifier.align(Alignment.End),
-                enabled = addBuildViewModel.uiState.isValid,
+                enabled = editBuildViewModel.uiState.isValid,
             ) {
-                Text(stringResource(id = R.string.add_build))
+                Text(stringResource(id = R.string.build_edit))
             }
         }
     }

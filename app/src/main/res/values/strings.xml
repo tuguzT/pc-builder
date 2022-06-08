@@ -42,6 +42,8 @@
     <string name="show_password">Show password</string>
     <string name="navigate_up">Navigate up</string>
 
+    <string name="build_edit">Edit build</string>
+    <string name="build_compatibility">Build compatibility</string>
     <string name="add_new_component">Add new component</string>
     <string name="add_component">Add component</string>
     <string name="weight_in_g">Weight in grams</string>
@@ -111,6 +113,6 @@
     <string name="motherboard_usb_3_2_gen1_headers">USB 3.2 gen 1 headers</string>
     <string name="motherboard_usb_3_2_gen2_headers">USB 3.2 gen 2 headers</string>
     <string name="motherboard_usb_3_2_gen2x2_headers">USB 3.2 gen 2x2 headers</string>
-    <string name="build_added">Build added successfully</string>
+    <string name="build_saved">Build saved successfully</string>
     <string name="build_deleted">Build deleted successfully</string>
 </resources>

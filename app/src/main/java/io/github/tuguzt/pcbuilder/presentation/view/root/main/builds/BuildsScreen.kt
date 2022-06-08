@@ -3,6 +3,7 @@ package io.github.tuguzt.pcbuilder.presentation.view.root.main.builds
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -16,6 +17,7 @@ import io.github.tuguzt.pcbuilder.presentation.view.navigation.BuildScreenDestin
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.BuildsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.EditBuildViewModel
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 
 /**
@@ -36,6 +38,8 @@ fun BuildsScreen(
         val currentDestination = when {
             currentRoute == BuildList.route -> MainScreenDestinations.Builds
             currentRoute == AddBuild.route -> AddBuild
+            EditBuild.route in currentRoute -> EditBuild
+            CompatibilityBuild.route in currentRoute -> CompatibilityBuild
             BuildDetails.route in currentRoute -> BuildDetails
             else -> return@LaunchedEffect
         }
@@ -71,11 +75,56 @@ fun BuildsScreen(
             val id = backStackEntry.arguments?.getString("buildId")
                 ?.let { NanoId(it) } ?: return@composable
 
+            SideEffect {
+                mainViewModel.updateOnBuildEditAction {
+                    navController.navigate("${EditBuild.route}/${id}")
+                }
+                mainViewModel.updateOnBuildCompatibilityAction {
+                    navController.navigate("${CompatibilityBuild.route}/${id}")
+                }
+            }
             BuildDetailsScreen(
                 buildId = id,
                 mainViewModel = mainViewModel,
                 buildsViewModel = buildsViewModel,
+                snackbarHostState = snackbarHostState,
             )
+        }
+        composable(
+            route = "${EditBuild.route}/{buildId}",
+            arguments = listOf(
+                navArgument(name = "buildId") { type = NavType.StringType },
+            ),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("buildId")
+                ?.let { NanoId(it) } ?: return@composable
+
+            val editBuildViewModel: EditBuildViewModel = hiltViewModel()
+            SideEffect {
+                val prevBuildData = buildsViewModel.uiState.builds.first { it.id == id }
+                editBuildViewModel.updatePrevBuildData(prevBuildData)
+            }
+
+            EditBuildScreen(
+                onEdit = {
+                    buildsViewModel.saveBuild(it)
+                    navController.popBackStack()
+                },
+                mainViewModel = mainViewModel,
+                componentsViewModel = componentsViewModel,
+                editBuildViewModel = editBuildViewModel,
+            )
+        }
+        composable(
+            route = "${CompatibilityBuild.route}/{buildId}",
+            arguments = listOf(
+                navArgument(name = "buildId") { type = NavType.StringType },
+            ),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("buildId")
+                ?.let { NanoId(it) } ?: return@composable
+
+            // todo
         }
     }
 }

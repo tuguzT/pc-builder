@@ -5,17 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.tuguzt.pcbuilder.domain.model.build.BuildData
 import io.github.tuguzt.pcbuilder.domain.model.component.data.*
 import mu.KotlinLogging
 import javax.inject.Inject
 
 @HiltViewModel
-class AddBuildViewModel @Inject constructor() : ViewModel() {
+class EditBuildViewModel @Inject constructor() : ViewModel() {
     companion object {
         private val logger = KotlinLogging.logger {}
     }
 
-    private var _uiState by mutableStateOf(AddBuildState())
+    private var _uiState by mutableStateOf(EditBuildState())
     val uiState get() = _uiState
 
     fun updateName(name: String) {
@@ -56,5 +57,21 @@ class AddBuildViewModel @Inject constructor() : ViewModel() {
 
     fun updateStorage(storage: List<StorageData>) {
         _uiState = uiState.copy(storage = storage)
+    }
+
+    fun updatePrevBuildData(prevBuildData: BuildData) {
+        _uiState = uiState.copy(
+            prevBuildData = prevBuildData,
+            name = prevBuildData.name,
+            case = prevBuildData.case,
+            centralProcessingUnit = prevBuildData.centralProcessingUnit,
+            cooler = prevBuildData.cooler,
+            graphicsProcessingUnit = prevBuildData.graphicsProcessingUnit,
+            memory = prevBuildData.memory,
+            monitor = prevBuildData.monitor,
+            motherboard = prevBuildData.motherboard,
+            powerSupplyUnit = prevBuildData.powerSupplyUnit,
+            storage = prevBuildData.storage,
+        )
     }
 }

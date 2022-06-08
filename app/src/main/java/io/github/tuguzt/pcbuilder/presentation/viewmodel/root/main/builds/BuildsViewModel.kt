@@ -70,7 +70,7 @@ class BuildsViewModel @Inject constructor(
                 }
                 is Result.Success -> {
                     updateBuildsNow()
-                    val message = UserMessage(BuildsMessageKind.BuildAdded)
+                    val message = UserMessage(BuildsMessageKind.BuildSaved)
                     val userMessages = uiState.userMessages + message
                     uiState.copy(userMessages = userMessages, isUpdating = false)
                 }

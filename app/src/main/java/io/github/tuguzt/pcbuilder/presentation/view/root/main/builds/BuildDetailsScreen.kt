@@ -1,7 +1,9 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.builds
 
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import io.github.tuguzt.pcbuilder.domain.model.NanoId
 import io.github.tuguzt.pcbuilder.presentation.R
@@ -15,8 +17,10 @@ fun BuildDetailsScreen(
     buildId: NanoId,
     mainViewModel: MainViewModel,
     buildsViewModel: BuildsViewModel,
+    snackbarHostState: SnackbarHostState,
 ) {
-    val build = remember(buildId) {
+    val context = LocalContext.current
+    val build = remember(buildsViewModel.uiState) {
         buildsViewModel.uiState.builds.first { it.id == buildId }
     }
     val title = stringResource(R.string.build_details)
@@ -26,6 +30,15 @@ fun BuildDetailsScreen(
     }
     BuildDetails(build, scrollState)
 
+    buildsViewModel.uiState.userMessages.firstOrNull()?.let { message ->
+        LaunchedEffect(message) {
+            snackbarHostState.showSnackbar(
+                message = message.kind.message(context),
+                actionLabel = context.getString(R.string.dismiss),
+            )
+            buildsViewModel.userMessageShown(message.id)
+        }
+    }
     LaunchedEffect(scrollState) {
         snapshotFlow { scrollState.value }
             .map { it > 0 }

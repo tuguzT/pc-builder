@@ -37,4 +37,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun updateOnNavigateUpAction(onNavigateUpAction: () -> Unit) {
         _uiState = uiState.copy(onNavigateUpAction = onNavigateUpAction)
     }
+
+    fun updateOnBuildEditAction(onBuildEditAction: () -> Unit) {
+        _uiState = uiState.copy(onBuildEditAction = onBuildEditAction)
+    }
+
+    fun updateOnBuildCompatibilityAction(onBuildCompatibilityAction: () -> Unit) {
+        _uiState = uiState.copy(onBuildCompatibilityAction = onBuildCompatibilityAction)
+    }
 }

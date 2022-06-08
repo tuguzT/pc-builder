@@ -65,7 +65,7 @@ fun BuildListScreen(
 }
 
 fun BuildsMessageKind.message(context: Context): String = when (this) {
-    BuildsMessageKind.BuildAdded -> context.getString(R.string.build_added)
+    BuildsMessageKind.BuildSaved -> context.getString(R.string.build_saved)
     BuildsMessageKind.BuildDeleted -> context.getString(R.string.build_deleted)
     BuildsMessageKind.UnknownError -> context.getString(R.string.unknown_error)
 }
