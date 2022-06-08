@@ -13,7 +13,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.tuguzt.pcbuilder.data.datasource.AuthDataSource
-import io.github.tuguzt.pcbuilder.data.datasource.BuildDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UserTokenDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UsersDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalUserTokenDataSource
