@@ -20,6 +20,8 @@
     <string name="no">No</string>
     <string name="none">None</string>
     <string name="integrated">Integrated</string>
+    <string name="case_label">Case</string>
+    <string name="motherboard">Motherboard</string>
 
     <string name="unit_gram">g</string>
     <string name="unit_millimeter">mm</string>
@@ -29,6 +31,9 @@
     <string name="search_components">Search for components</string>
     <string name="component_details">Component details</string>
     <string name="component_picture">Component picture</string>
+    <string name="build_picture">Build picture</string>
+    <string name="build_details">Build details</string>
+    <string name="add_build">Add build</string>
     <string name="user_avatar">User avatar</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
@@ -54,6 +59,7 @@
     <string name="clear_selection">Clear selection</string>
     <string name="compare_components">Compare components</string>
     <string name="choose_one_type">You must choose components of one type</string>
+    <string name="equal_components">Component mustn\'t be the same</string>
     <string name="show_more">Show more</string>
     <string name="choose_component">Choose component</string>
 
@@ -105,5 +111,6 @@
     <string name="motherboard_usb_3_2_gen1_headers">USB 3.2 gen 1 headers</string>
     <string name="motherboard_usb_3_2_gen2_headers">USB 3.2 gen 2 headers</string>
     <string name="motherboard_usb_3_2_gen2x2_headers">USB 3.2 gen 2x2 headers</string>
-    <string name="equal_components">Component mustn\'t be the same</string>
+    <string name="build_added">Build added successfully</string>
+    <string name="build_deleted">Build deleted successfully</string>
 </resources>

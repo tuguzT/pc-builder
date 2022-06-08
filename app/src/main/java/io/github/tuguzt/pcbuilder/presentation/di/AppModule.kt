@@ -13,12 +13,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.tuguzt.pcbuilder.data.datasource.AuthDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.BuildDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UserTokenDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.UsersDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.local.impl.LocalUserTokenDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteAuthDataSource
+import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteBuildDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteComponentDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteUsersDataSource
 import io.github.tuguzt.pcbuilder.data.repository.*
@@ -73,10 +75,6 @@ object AppModule {
     }
 
     @Provides
-    fun provideComponentRepository(dataSource: RemoteComponentDataSource): ComponentRepository =
-        ComponentRepositoryImpl(dataSource)
-
-    @Provides
     fun provideAuthDataSource(backendAuthAPI: BackendAuthAPI): AuthDataSource =
         RemoteAuthDataSource(backendAuthAPI)
 
@@ -93,8 +91,16 @@ object AppModule {
         AuthRepositoryImpl(dataSource)
 
     @Provides
+    fun provideComponentRepository(dataSource: RemoteComponentDataSource): ComponentRepository =
+        ComponentRepositoryImpl(dataSource)
+
+    @Provides
     fun provideUsersRepository(dataSource: UsersDataSource): UsersRepository =
         UsersRepositoryImpl(dataSource)
+
+    @Provides
+    fun provideBuildRepository(dataSource: RemoteBuildDataSource): BuildRepository =
+        BuildRepositoryImpl(dataSource)
 
     @Provides
     fun provideTokenRepository(dataSource: UserTokenDataSource): UserTokenRepository =

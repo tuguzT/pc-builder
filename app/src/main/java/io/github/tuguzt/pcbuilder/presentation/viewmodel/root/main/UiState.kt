@@ -25,3 +25,6 @@ inline val MainState.compareVisible: Boolean
 
 inline val MainState.navigationVisible: Boolean
     get() = currentDestination !is MainScreenDestinations
+
+inline val MainState.addBuildVisible: Boolean
+    get() = currentDestination == MainScreenDestinations.Builds

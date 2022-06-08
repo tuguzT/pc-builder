@@ -9,6 +9,7 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
@@ -51,69 +52,73 @@ fun ComponentItem(
     imageShape: Shape = MaterialTheme.shapes.medium,
     onClick: () -> Unit,
 ) {
-    ElevatedCard(shape = shape, onClick = onClick) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            var imageState: AsyncImagePainter.State by remember {
-                mutableStateOf(AsyncImagePainter.State.Empty)
-            }
-            if (imageState !is AsyncImagePainter.State.Error) {
-                AsyncImage(
-                    model = component.imageUri,
-                    contentDescription = component.imageUri?.let { stringResource(R.string.component_picture) },
-                    modifier = Modifier
-                        .size(128.dp)
-                        .clip(imageShape)
-                        .placeholder(
-                            visible = imageState is AsyncImagePainter.State.Loading,
-                            highlight = PlaceholderHighlight.fade(),
-                        ),
-                    contentScale = ContentScale.Crop,
-                    onState = { imageState = it },
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Rounded.DeveloperBoard,
-                    contentDescription = stringResource(R.string.image_not_loaded),
-                    modifier = Modifier
-                        .size(128.dp)
-                        .clip(imageShape),
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                DisableSelection {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
+    Box {
+        ElevatedCard(shape = shape, onClick = onClick) {
+            Row(modifier = Modifier.padding(16.dp)) {
+                var imageState: AsyncImagePainter.State by remember {
+                    mutableStateOf(AsyncImagePainter.State.Empty)
+                }
+                if (imageState !is AsyncImagePainter.State.Error) {
+                    AsyncImage(
+                        model = component.imageUri,
+                        contentDescription = component.imageUri?.let {
+                            stringResource(R.string.component_picture)
+                        },
+                        modifier = Modifier
+                            .size(128.dp)
+                            .clip(imageShape)
+                            .placeholder(
+                                visible = imageState is AsyncImagePainter.State.Loading,
+                                highlight = PlaceholderHighlight.fade(),
+                            ),
+                        contentScale = ContentScale.Crop,
+                        onState = { imageState = it },
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Rounded.DeveloperBoard,
+                        contentDescription = stringResource(R.string.image_not_loaded),
+                        modifier = Modifier
+                            .size(128.dp)
+                            .clip(imageShape),
+                    )
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    DisableSelection {
                         Text(
-                            modifier = Modifier.fillMaxWidth(0.8f),
+                            modifier = Modifier.fillMaxWidth(0.85f),
                             text = component.name,
                             maxLines = 2,
                             style = MaterialTheme.typography.titleMedium,
                             overflow = TextOverflow.Ellipsis,
                         )
-                        IconButton(onClick = { onFavoriteClick(!component.isFavorite) }) {
-                            val imageVector = when {
-                                component.isFavorite -> Icons.Rounded.Star
-                                else -> Icons.Rounded.StarOutline
-                            }
-                            Icon(
-                                imageVector = imageVector,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.tertiary,
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = component.description,
+                            maxLines = 2,
+                            style = MaterialTheme.typography.bodyMedium,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = component.description,
-                        maxLines = 2,
-                        style = MaterialTheme.typography.bodyMedium,
-                        overflow = TextOverflow.Ellipsis,
-                    )
                 }
             }
+        }
+        IconButton(
+            onClick = { onFavoriteClick(!component.isFavorite) },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(4.dp),
+        ) {
+            val imageVector = when {
+                component.isFavorite -> Icons.Rounded.Star
+                else -> Icons.Rounded.StarOutline
+            }
+            Icon(
+                imageVector = imageVector,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.tertiary,
+            )
         }
     }
 }

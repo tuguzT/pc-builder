@@ -1,54 +1,81 @@
 package io.github.tuguzt.pcbuilder.presentation.view.root.main.builds
 
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.tuguzt.pcbuilder.presentation.R
-import io.github.tuguzt.pcbuilder.presentation.view.theme.PCBuilderTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
+import io.github.tuguzt.pcbuilder.domain.model.NanoId
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.BuildScreenDestinations.*
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.MainViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.BuildsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 
 /**
  * Application screen which represents *Builds* main application destination.
  */
 @Composable
-fun BuildsScreen(mainViewModel: MainViewModel = hiltViewModel()) {
-    val appName = stringResource(R.string.app_name)
-    SideEffect {
-        mainViewModel.updateTitle(appName)
-        mainViewModel.updateFilled(isFilled = false)
+fun BuildsScreen(
+    mainViewModel: MainViewModel,
+    componentsViewModel: ComponentsViewModel,
+    buildsViewModel: BuildsViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState,
+    navController: NavHostController,
+) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    LaunchedEffect(currentRoute) {
+        currentRoute ?: return@LaunchedEffect
+        val currentDestination = when {
+            currentRoute == BuildList.route -> MainScreenDestinations.Builds
+            currentRoute == AddBuild.route -> AddBuild
+            BuildDetails.route in currentRoute -> BuildDetails
+            else -> return@LaunchedEffect
+        }
+        mainViewModel.updateCurrentDestination(currentDestination)
+        mainViewModel.updateOnNavigateUpAction(navController::navigateUp)
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = stringResource(R.string.coming_soon),
-            style = MaterialTheme.typography.headlineMedium,
-        )
-    }
-}
+    NavHost(navController = navController, startDestination = BuildList.route) {
+        composable(BuildList.route) {
+            BuildListScreen(
+                mainViewModel = mainViewModel,
+                buildsViewModel = buildsViewModel,
+                snackbarHostState = snackbarHostState,
+                navController = navController,
+            )
+        }
+        composable(AddBuild.route) {
+            AddBuildScreen(
+                mainViewModel = mainViewModel,
+                componentsViewModel = componentsViewModel,
+                onAdd = {
+                    buildsViewModel.saveBuild(it)
+                    navController.popBackStack()
+                },
+            )
+        }
+        composable(
+            route = "${BuildDetails.route}/{buildId}",
+            arguments = listOf(
+                navArgument(name = "buildId") { type = NavType.StringType },
+            ),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("buildId")
+                ?.let { NanoId(it) } ?: return@composable
 
-@Preview(name = "Light Mode")
-@Preview(
-    name = "Dark Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Composable
-private fun BuildsScreenPreview() {
-    PCBuilderTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            BuildsScreen()
+            BuildDetailsScreen(
+                buildId = id,
+                mainViewModel = mainViewModel,
+                buildsViewModel = buildsViewModel,
+            )
         }
     }
 }

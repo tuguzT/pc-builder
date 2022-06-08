@@ -10,52 +10,53 @@ import io.github.tuguzt.pcbuilder.domain.model.component.cases.CasePowerSupplySh
 import io.github.tuguzt.pcbuilder.domain.model.component.cases.asMeasure
 import io.github.tuguzt.pcbuilder.domain.model.units.watt
 import io.github.tuguzt.pcbuilder.presentation.R
+import io.github.tuguzt.pcbuilder.presentation.view.utils.SimpleProperty
 import io.github.tuguzt.pcbuilder.presentation.view.utils.round
 
 @Composable
 fun CaseProperties(case: Case, modifier: Modifier = Modifier) = Column(modifier) {
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_type),
         value = case.caseType.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_external_5_25_bays),
         value = case.driveBays.external5_25_count.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_external_3_5_bays),
         value = case.driveBays.external3_5_count.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_internal_3_5_bays),
         value = case.driveBays.internal3_5_count.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_internal_2_5_bays),
         value = case.driveBays.internal2_5_count.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_full_height_expansion_slots),
         value = case.expansionSlots.fullHeightCount.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_half_height_expansion_slots),
         value = case.expansionSlots.halfHeightCount.toString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.motherboard_form_factors),
         value = case.motherboardFormFactors.joinToString(),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_power_supply),
         value = case.powerSupply?.let {
             val value = it.asMeasure() `in` watt
@@ -63,7 +64,7 @@ fun CaseProperties(case: Case, modifier: Modifier = Modifier) = Column(modifier)
         } ?: stringResource(R.string.none),
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_power_supply_shroud),
         value = when (case.powerSupplyShroud) {
             CasePowerSupplyShroud.Shroud -> stringResource(R.string.shroud)
@@ -71,7 +72,7 @@ fun CaseProperties(case: Case, modifier: Modifier = Modifier) = Column(modifier)
         },
     )
     Divider()
-    ComponentProperty(
+    SimpleProperty(
         name = stringResource(R.string.case_side_panel_window),
         value = case.sidePanelWindow?.toString() ?: stringResource(R.string.none),
     )

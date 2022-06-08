@@ -8,8 +8,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.tuguzt.pcbuilder.data.dataOrNull
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendAuthAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendBuildAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendComponentsAPI
 import io.github.tuguzt.pcbuilder.data.datasource.remote.api.BackendUsersAPI
+import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteBuildDataSource
 import io.github.tuguzt.pcbuilder.data.datasource.remote.impl.RemoteComponentDataSource
 import io.github.tuguzt.pcbuilder.data.repository.UserTokenRepository
 import kotlinx.coroutines.runBlocking
@@ -68,12 +70,20 @@ object BackendModule {
         retrofit.create()
 
     @Provides
+    fun provideBackendBuildAPI(@SimpleRetrofit retrofit: Retrofit): BackendBuildAPI =
+        retrofit.create()
+
+    @Provides
     fun provideBackendComponentsAPI(@SimpleRetrofit retrofit: Retrofit): BackendComponentsAPI =
         retrofit.create()
 
     @Provides
     fun provideRemoteComponentDataSource(backendComponentsAPI: BackendComponentsAPI): RemoteComponentDataSource =
         RemoteComponentDataSource(backendComponentsAPI)
+
+    @Provides
+    fun provideRemoteBuildDataSource(backendBuildAPI: BackendBuildAPI): RemoteBuildDataSource =
+        RemoteBuildDataSource(backendBuildAPI)
 
     @JvmStatic
     @Suppress("NOTHING_TO_INLINE")

@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.tuguzt.pcbuilder.presentation.R
 import io.github.tuguzt.pcbuilder.presentation.view.ToastDuration
+import io.github.tuguzt.pcbuilder.presentation.view.navigation.BuildScreenDestinations.AddBuild
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.ComponentScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.navigation.MainScreenDestinations.*
 import io.github.tuguzt.pcbuilder.presentation.view.root.main.account.AccountScreen
@@ -32,6 +35,8 @@ import io.github.tuguzt.pcbuilder.presentation.view.showToast
 import io.github.tuguzt.pcbuilder.presentation.view.utils.DestinationsNavigationBar
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.*
 import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.AccountViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.builds.BuildsViewModel
+import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.components.ComponentsViewModel
 
 /**
  * Main screen of the application.
@@ -41,6 +46,8 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.root.main.account.Accou
 fun MainScreen(
     accountViewModel: AccountViewModel = hiltViewModel(),
     mainViewModel: MainViewModel = hiltViewModel(),
+    componentsViewModel: ComponentsViewModel = hiltViewModel(),
+    buildsViewModel: BuildsViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
     val appName = stringResource(R.string.app_name)
@@ -61,6 +68,7 @@ fun MainScreen(
     }
 
     val componentsNavController = rememberNavController()
+    val buildsNavController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -68,6 +76,7 @@ fun MainScreen(
             MainScreenTopAppBar(
                 viewModel = mainViewModel,
                 componentsNavController = componentsNavController,
+                buildsNavController = buildsNavController,
             )
         },
         bottomBar = {
@@ -75,6 +84,15 @@ fun MainScreen(
                 navController = navController,
                 destinations = listOf(Components, Builds, Account),
             )
+        },
+        floatingActionButton = {
+            if (mainViewModel.uiState.addBuildVisible) {
+                ExtendedFloatingActionButton(
+                    text = { Text(stringResource(R.string.add_build)) },
+                    icon = { Icon(imageVector = Icons.Rounded.Add, contentDescription = null) },
+                    onClick = { buildsNavController.navigate(AddBuild.route) },
+                )
+            }
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { padding ->
@@ -86,12 +104,19 @@ fun MainScreen(
             composable(Components.route) {
                 ComponentsScreen(
                     mainViewModel = mainViewModel,
+                    componentsViewModel = componentsViewModel,
                     navController = componentsNavController,
                     snackbarHostState = snackbarHostState,
                 )
             }
             composable(Builds.route) {
-                BuildsScreen(mainViewModel)
+                BuildsScreen(
+                    mainViewModel = mainViewModel,
+                    buildsViewModel = buildsViewModel,
+                    componentsViewModel = componentsViewModel,
+                    navController = buildsNavController,
+                    snackbarHostState = snackbarHostState,
+                )
             }
             composable(Account.route) account@{
                 val user = accountViewModel.uiState.currentUser ?: return@account
@@ -116,6 +141,7 @@ fun MainScreen(
 private fun MainScreenTopAppBar(
     viewModel: MainViewModel,
     componentsNavController: NavHostController,
+    buildsNavController: NavController,
 ) {
     val tonalElevation by animateDpAsState(if (viewModel.uiState.isFilled) 4.dp else 0.dp)
 

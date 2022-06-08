@@ -8,10 +8,10 @@ import io.github.tuguzt.pcbuilder.presentation.viewmodel.UserMessage
 data class ComponentsState(
     val components: List<PolymorphicComponent> = listOf(),
     val isUpdating: Boolean = true,
-    override val userMessages: List<UserMessage<ComponentsMessageKind>> = listOf(),
+    override val userMessages: List<UserMessage<out ComponentsMessageKind>> = listOf(),
 ) : MessageState<ComponentsMessageKind>
 
-val ComponentsState.favoriteComponents: List<PolymorphicComponent>
+inline val ComponentsState.favoriteComponents: List<PolymorphicComponent>
     get() = components.filter(PolymorphicComponent::isFavorite)
 
 enum class ComponentsMessageKind : MessageKind {

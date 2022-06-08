@@ -15,7 +15,7 @@ sealed class ComponentScreenDestinations(override val route: String) : Describab
             @Composable get() = stringResource(R.string.components)
     }
 
-    object Favorites : ComponentScreenDestinations(route = "favorites") {
+    object Favorites : ComponentScreenDestinations(route = "favoriteComponents") {
         override val description: String
             @Composable get() = stringResource(R.string.favorites)
     }
@@ -35,7 +35,7 @@ sealed class ComponentScreenDestinations(override val route: String) : Describab
             @Composable get() = stringResource(R.string.choose_component)
     }
 
-    object ComponentDetails : ComponentScreenDestinations(route = "component") {
+    object ComponentDetails : ComponentScreenDestinations(route = "componentDetails") {
         override val description: String
             @Composable get() = stringResource(R.string.component_details)
     }
